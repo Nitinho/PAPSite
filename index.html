@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="styles/style.css">
+    <script src="js/index.js"></script>
 </head>
 <body>
     <header>
@@ -16,11 +17,13 @@
             <a href="">PRODUTOS</a>
             <a href="">SOBRE</a>
             <a href="">CONTATOS</a>
+            <a href="#container4">VIRAR CLIENTE</a>
+            <button id="buttonheader"><strong>AREA CLIENTE</strong></button>
          </div>
     </header>
 
     <main>
-        <div id="container1">
+        <div id="container1" class="fade-in">
             <div id="container1txt">
                 <h1>Armazém Lopes, onde a qualidade é <br>
                     prioridade e encontrar o que precisa é 
@@ -33,42 +36,42 @@
                 <img src="img/carrinhop.png" alt="">
             </div>
         </div>
-        <div id="container2">
-            <h1><strong>CONHEÇA NOSSOS PRODUTOS</strong></h1>
+        <div id="container2" class="fade-in">
+            <h1>CONHEÇA OS NOSSOS PRODUTOS</h1>
             <div id="produtos1">
-                <div class="containerproduto">
+                <div class="containerproduto" class="fade-in">
                     <div class="produtosselect">
                         <img src="img/pao.png" alt="">
                         <button>Padaria e <br>Pastaleria</button>
                     </div>
                 </div>
-                <div class="containerproduto">
+                <div class="containerproduto" class="fade-in">
+                    <div class="produtosselect">
+                        <img src="img/image.png" alt="">
+                        <button>Padaria e <br>Pastaleria</button>
+                    </div>
+                </div>
+                <div class="containerproduto" class="fade-in">
                     <div class="produtosselect">
                         <img src="img/pao.png" alt="">
                         <button>Padaria e <br>Pastaleria</button>
                     </div>
                 </div>
-                <div class="containerproduto">
-                    <div class="produtosselect">
-                        <img src="img/pao.png" alt="">
-                        <button>Padaria e <br>Pastaleria</button>
-                    </div>
-                </div>
-                <div class="containerproduto">
+                <div class="containerproduto" class="fade-in">
                     <div class="produtosselect">
                         <img src="img/pao.png" alt="">
                         <button>Padaria e <br>Pastaleria</button>
                     </div>
                 </div>
             </div>
-            <div id="produtos2">
-                <div class="containerproduto">
+            <div id="produtos2" class="fade-in">
+                <div class="containerproduto" class="fade-in">
                     <div class="produtosselect">
                         <img src="img/pao.png" alt="">
                         <button>Padaria e <br>Pastaleria</button>
                     </div>
                 </div>
-                <div class="containerproduto">
+                <div class="containerproduto" class="fade-in">
                     <div class="produtosselect">
                         <img src="img/pao.png" alt="">
                         <button>Padaria e <br>Pastaleria</button>
@@ -76,13 +79,36 @@
                 </div>
             </div>
         </div>
-        <div id="container3">
-            
+        <div id="container3" class="fade-in">
+            <div id="imgcontaner3">
+                <img id="imgcontainer3" src="img/polvo.jpg" alt="Polvo" onclick="openNewPage()">
+            </div>
+            <div id="txtcontainer3">
+                <h1>ALGUMAS RECEITAS NOSSAS</h1>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias consectetur itaque odio at nihil vero vel nobis quod tempora.</p>
+            </div>
         </div>
+        <div id="container4" class="fade-in">
+            <h1>COMO VIRAR CLIENTE</h1>
+            <div class="step" class="fade-in">
+                <h2>1. ASDASDASASDA</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Voluptatem libero dolore delectus. Quam.</p>
+            </div>
+            <div class="step" class="fade-in">
+                <h2>2. ASDASDASASDA</h2>
+                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Dicta, consequuntur?</p>
+            </div>
+            <div class="step" class="fade-in">
+                <h2>3. ASDASDASASDA</h2>
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Hic, facilis quod pariatur consectetur impedit quae?</p>
+            </div>
+        </div>
+        
     </main>
 
     <footer>
-
+        <p><strong>TODOS OS DIREITOS RESERVADOS NA LOPESMARKET 2024 ©</strong></p>
     </footer>
+
 </body>
 </html>
