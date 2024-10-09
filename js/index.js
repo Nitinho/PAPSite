@@ -46,3 +46,26 @@ document.addEventListener('DOMContentLoaded', function () {
         observer.observe(element);
     });
 });
+
+document.addEventListener('DOMContentLoaded', function () {
+    // Adiciona o evento de clique a cada pergunta
+    document.querySelectorAll('.faq-question').forEach((question) => {
+        question.addEventListener('click', () => {
+            const answer = question.nextElementSibling;
+
+            // Fecha outras respostas abertas
+            document.querySelectorAll('.faq-answer').forEach((ans) => {
+                if (ans !== answer) {
+                    ans.style.maxHeight = null;
+                }
+            });
+
+            // Alterna entre abrir e fechar a resposta clicada
+            if (answer.style.maxHeight) {
+                answer.style.maxHeight = null; // Fecha se já estiver aberta
+            } else {
+                answer.style.maxHeight = answer.scrollHeight + "px"; // Abre a resposta
+            }
+        });
+    });
+});
