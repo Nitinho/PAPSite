@@ -11,14 +11,19 @@
 }
 
 
-header{
+header {
     display: flex;
     height: 80px;
     align-items: center;
     justify-content: space-between;
     flex-direction: row;
     background-color: #ffff;
+    position: fixed;
+    width: 100%;
+    z-index: 1000; /* Certifica-te que o header fica acima de outros conteúdos */
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
 }
+
 
 #headerimg img{
     display: flex;
@@ -175,8 +180,74 @@ header{
     color: white;
 }
 
+#container5 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 50px;
+    background-color: #ffffff;
+    border-radius: 10px;
+    margin-top: 40px;
+}
+
+#container5 h1 {
+    font-size: 36px;
+    font-weight: 900;
+    color: black;
+    margin-bottom: 30px;
+}
+
+.reabastecimento {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+.reabastecimento-card {
+    background-color: #FF4C4C;
+    border-radius: 15px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 300px;
+    padding: 20px;
+    text-align: center;
+    transition: transform 0.3s ease;
+}
+
+.reabastecimento-card:hover {
+    transform: scale(1.05);
+}
+
+.reabastecimento-card img {
+    width: 100%;
+    height: 180px;
+    border-radius: 10px;
+    margin-bottom: 15px;
+}
+
+.reabastecimento-info h2 {
+    font-size: 22px;
+    color: white;
+    margin-bottom: 10px;
+}
+
+.reabastecimento-info p {
+    font-size: 16px;
+    color: #ffffff;
+    margin-bottom: 5px;
+}
+
+
 footer{
-    margin-top: 1000px;
+    background-color: #FF4C4C;
+    margin-top: 100px;
+    width: 100%;
+    height: 150px;
+    color: white;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
 }
 
 #container3{
@@ -248,18 +319,6 @@ footer{
 }
 
 
-
-
-footer{
-    background-color: #FF4C4C;
-    width: 100%;
-    height: 150px;
-    color: white;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-}
 
 
 
