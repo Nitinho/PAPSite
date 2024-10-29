@@ -154,3 +154,13 @@ footer{
     color: #ffffff;
 }
 
+.form-group input,
+.form-group textarea {
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    font-size: 16px;
+    background-color: #ffffff;
+    color: #333;
+}
+
