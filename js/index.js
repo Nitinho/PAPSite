@@ -69,3 +69,13 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     });
 });
+
+
+
+function copyToClipboard(text) {
+    navigator.clipboard.writeText(text).then(() => {
+        alert("Copiado para a área de transferência: " + text);
+    }).catch(err => {
+        alert("Erro ao copiar: " + err);
+    });
+}
