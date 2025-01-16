@@ -11,62 +11,57 @@
 }
 
 
-header{
+header {
     display: flex;
-    height: 80px;
     align-items: center;
     justify-content: space-between;
-    flex-direction: row;
-    background-color: #ffff;
+    height: 80px;
+    background-color: #fff;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
-
+    padding: 0 30px;
+    position: fixed; /* Mantém o header fixo no topo */
+    width: 96%; /* Ocupa toda a largura da tela */
+    z-index: 1000; /* Garante que o header fique acima dos outros elementos */
 }
 
-
-#headerimg img{
-    display: flex;
-    margin-left: 30px;
+#headerimg img {
     width: 67px;
 }
 
-#headerselect{
-    margin-right: 50px;
+#headerselect {
+    display: flex;
+    align-items: center;
 }
 
 #headerselect a {
     color: #FF4C4C;
-    padding: 0px 10px;
-    font-weight: 700;
+    padding: 0 15px;
+    font-weight: 600;
     font-size: 14px;
-
-    
+    transition: color 0.3s ease;
 }
 
 #headerselect a:hover {
     color: #cf2d2d;
     text-decoration: underline;
-
 }
 
-#buttonheader{
-    width: 130px;
-    height: 50px;
-    border-radius: 10px;
+#buttonheader {
+    padding: 10px 20px;
+    margin-left: 20px;
+    font-size: 14px;
+    font-weight: 600;
     color: #FF4C4C;
-    transition: all 0.4s;
-    background-color: rgb(255, 255, 255);
-    border: 2px solid;
-    border-color: #FF4C4C;
-
-
+    background-color: #fff;
+    border: 2px solid #FF4C4C;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease;
 }
 
-
-#buttonheader:hover{
-    transition: all 0.5s;
+#buttonheader:hover {
     background-color: #FF4C4C;
-    color: white;
-    width: 140px;
+    color: #fff;
 }
 
 footer{

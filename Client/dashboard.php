@@ -5,8 +5,17 @@ session_start();
 // Verificar se o usuário está logado (supondo que você tenha salvo o e-mail na sessão após o login)
 if (!isset($_SESSION['email'])) {
     // Se o usuário não estiver logado, redireciona para a página de login
-    header("Location: http://localhost/papsite/Login/login.php");
+    header("Location: ../Login/login.php");
     exit(); // Garantir que o script seja interrompido após o redirecionamento
+}
+
+
+if (isset($_SESSION['email'])) {
+    // Usuário logado, redireciona para o dashboard
+    $redirectUrl = "dashboard.php";
+} else {
+    // Usuário não logado, redireciona para o login
+    $redirectUrl = "../login/login.php";
 }
 ?>
 
@@ -25,12 +34,12 @@ if (!isset($_SESSION['email'])) {
             <img src="img/logolopes.png" alt="Logo">
         </div>
         <div id="headerselect">
-            <a href="index.html">INICIO</a>
-            <a href="index.html#container2">PRODUTOS</a>
+            <a href="../index.php">INICIO</a>
+            <a href="../index.php#container2">PRODUTOS</a>
             <a href="#">SOBRE</a>
             <a href="#">CONTATOS</a>
-            <a href="formulario.html">VIRAR CLIENTE</a>
-            <button id="buttonheader"><strong>ÁREA CLIENTE</strong></button>
+            <a href="../formulario.php">VIRAR CLIENTE</a>
+            <button id="buttonheader" onclick="window.location.href='<?php echo $redirectUrl; ?>'"><strong>ÁREA CLIENTE</strong></button>
         </div>
     </header>
 

@@ -49,11 +49,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <img src="img/logolopes.png" alt="Logo">
         </div>
         <div id="headerselect">
-            <a href="index.html">INICIO</a>
-            <a href="index.html#container2">PRODUTOS</a>
-            <a href="#">SOBRE</a>
+            <a href="../index.php">INICIO</a>
+            <a href="../index.php#container2">PRODUTOS</a>
+            <a href="..">SOBRE</a>
             <a href="#">CONTATOS</a>
-            <a href="formulario.html">VIRAR CLIENTE</a>
+            <a href="../formulario.php">VIRAR CLIENTE</a>
             <button id="buttonheader"><strong>ÁREA CLIENTE</strong></button>
         </div>
     </header>
