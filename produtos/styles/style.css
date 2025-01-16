@@ -1,0 +1,335 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;400;500;700&display=swap');
+@import url('https://fonts.cdnfonts.com/css/lufga');
+
+/* Reset geral */
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    font-family: "Roboto", sans-serif;
+}
+
+/* Layout e fundo geral */
+body {
+    background-color: #f4f4f4;
+    color: #333;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* Header */
+header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 80px;
+    background-color: #fff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    padding: 0 30px;
+}
+
+#headerimg img {
+    width: 67px;
+}
+
+#headerselect {
+    display: flex;
+    align-items: center;
+}
+
+#headerselect a {
+    color: #FF4C4C;
+    padding: 0 15px;
+    font-weight: 600;
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+#headerselect a:hover {
+    color: #cf2d2d;
+    text-decoration: underline;
+}
+
+#buttonheader {
+    padding: 10px 20px;
+    margin-left: 20px;
+    font-size: 14px;
+    font-weight: 600;
+    color: #FF4C4C;
+    background-color: #fff;
+    border: 2px solid #FF4C4C;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+#buttonheader:hover {
+    background-color: #FF4C4C;
+    color: #fff;
+}
+
+/* Main container para centralizar o formulário */
+.main-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: calc(100vh - 180px); /* Altura total menos o header e o espaçamento */
+    padding-top: 100px; /* Espaço do topo */
+}
+
+/* Formulário */
+.form-container {
+    max-width: 400px;
+    width: 100%;
+    padding: 2rem;
+    background-color: #ffffff;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+/* Estilo do título do formulário */
+.login-form h2 {
+    font-size: 1.8rem;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #FF4C4C;
+}
+
+/* Campos de entrada do formulário */
+.form-group {
+    margin-bottom: 1.5rem;
+    text-align: left;
+}
+
+.form-group label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    color: #FF4C4C;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #e2e8f0;
+    border-radius: 5px;
+    font-size: 0.95rem;
+    color: #2d3748;
+    background-color: #f7fafc;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.form-group input:focus {
+    border-color: #FF4C4C;
+    box-shadow: 0 0 0 3px rgba(255, 76, 76, 0.2);
+    outline: none;
+}
+
+/* Estilo das opções do formulário */
+.form-options {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.85rem;
+    color: #718096;
+    margin-bottom: 1.5rem;
+}
+
+.form-options a {
+    color: #FF4C4C;
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+.form-options a:hover {
+    color: #cf2d2d;
+}
+
+/* Botão de envio */
+.form-submit-btn {
+    width: 100%;
+    padding: 0.9rem;
+    background-color: #FF4C4C;
+    color: #ffffff;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.form-submit-btn:hover {
+    background-color: #cf2d2d;
+}
+
+/* Link de cadastro */
+.register-link {
+    margin-top: 1rem;
+    font-size: 0.85rem;
+    color: #4a5568;
+}
+
+.register-link a {
+    color: #FF4C4C;
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.register-link a:hover {
+    color: #cf2d2d;
+}
+
+/* Footer */
+footer{
+    background-color: #FF4C4C;
+    margin-top: 50px;
+    width: 100%;
+    height: 50px;
+    color: white;
+    display: flex;
+    text-align: center;
+    align-items: center;
+    justify-content: center;
+}
+
+
+
+/* Layout da página de loja */
+.main-container {
+    display: flex;
+    justify-content: space-between;
+    padding: 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Sidebar para os produtos */
+.sidebar {
+    width: 20%;
+    padding: 20px;
+    background-color: #fff;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    position: relative; /* ou absolute, dependendo de como você deseja posicionar */
+    top: -300px; /* Ajuste este valor para mover a sidebar mais para cima */
+}
+
+.sidebar h3 {
+    color: #FF4C4C;
+    font-size: 1.5rem;
+    margin-bottom: 20px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+}
+
+.sidebar ul li {
+    margin: 10px 0;
+}
+
+.sidebar ul li a {
+    color: #333;
+    font-size: 1rem;
+    text-decoration: none;
+}
+
+.sidebar ul li a:hover {
+    color: #FF4C4C;
+}
+
+
+/* Container de produtos */
+.product-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 produtos por linha */
+    gap: 20px;
+    width: 75%;
+}
+
+/* Container de produtos */
+.product-container2 {
+    
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 produtos por linha */
+    gap: 20px;
+    width: 75%;
+}
+
+/* Estilo dos produtos */
+.product {
+    background-color: #fff;
+    padding: 15px;
+    text-align: center;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+}
+
+.product img {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.product h4 {
+    color: #FF4C4C;
+    font-size: 1.25rem;
+    margin: 10px 0;
+}
+
+/* Botões de quantidade */
+.quantity {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px 0;
+}
+
+.quantity button {
+    background-color: #FF4C4C;
+    color: white;
+    border: none;
+    padding: 10px;
+    font-size: 1.5rem;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+.quantity button:hover {
+    background-color: #cf2d2d;
+}
+
+.quantity input {
+    width: 50px;
+    text-align: center;
+    font-size: 1.2rem;
+    margin: 0 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Botão de encomendar */
+.btn-order {
+    background-color: #FF4C4C;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.btn-order:hover {
+    background-color: #cf2d2d;
+}
+
+.product img {
+    width: 200px;  /* Ajuste a largura conforme necessário */
+    height: 200px; /* Ajuste a altura conforme necessário */
+}
