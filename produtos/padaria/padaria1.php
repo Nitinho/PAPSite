@@ -18,6 +18,7 @@ if (isset($_SESSION['email'])) {
     $redirectUrl = "../../login/login.php";
 }
 ?>
+
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -66,7 +67,7 @@ if (isset($_SESSION['email'])) {
                 </div>
                 <div class="product">
                     <img src="../../img/Bolapao.png" alt="Pão">
-                    <h4>Baguete</h4>
+                    <h4>Pão de Centeio</h4>
                     <div class="quantity">
                         <button class="btn-minus">-</button>
                         <input type="number" value="1" class="quantity-input" />
@@ -76,7 +77,7 @@ if (isset($_SESSION['email'])) {
                 </div>
                 <div class="product">
                     <img src="../../img/Bolapao.png" alt="Pão">
-                    <h4>Bolo</h4>
+                    <h4>Pão Integral</h4>
                     <div class="quantity">
                         <button class="btn-minus">-</button>
                         <input type="number" value="1" class="quantity-input" />
@@ -86,27 +87,7 @@ if (isset($_SESSION['email'])) {
                 </div>
                 <div class="product">
                     <img src="../../img/Bolapao.png" alt="Pão">
-                    <h4>Bolo</h4>
-                    <div class="quantity">
-                        <button class="btn-minus">-</button>
-                        <input type="number" value="1" class="quantity-input" />
-                        <button class="btn-plus">+</button>
-                    </div>
-                    <button class="btn-order">Encomendar</button>
-                </div>
-                <div class="product">
-                    <img src="../../img/Bolapao.png" alt="Pão">
-                    <h4>Bolo</h4>
-                    <div class="quantity">
-                        <button class="btn-minus">-</button>
-                        <input type="number" value="1" class="quantity-input" />
-                        <button class="btn-plus">+</button>
-                    </div>
-                    <button class="btn-order">Encomendar</button>
-                </div>
-                <div class="product">
-                    <img src="../../img/Bolapao.png" alt="Pão">
-                    <h4>Bolo</h4>
+                    <h4>Pão de agua</h4>
                     <div class="quantity">
                         <button class="btn-minus">-</button>
                         <input type="number" value="1" class="quantity-input" />
@@ -123,6 +104,22 @@ if (isset($_SESSION['email'])) {
         <div id="cart-container">
     <img src="../../img/carrinho-de-compras.png" alt="Carrinho" id="cart-icon">
     <div id="cart-count">0</div>
+</div>
+
+<div id="cart-modal" class="modal">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h2>Seu Carrinho</h2>
+        <div id="cart-items"></div>
+        <div class="cart-total">Total: R$ <span id="cart-total">0.00</span></div>
+        <button id="confirm-order">Confirmar Pedido</button>
+        <button id="clear-cart">Limpar Carrinho</button>
+    </div>
+</div>
+
+
+</div>
+
 </div>
 
     </main>
