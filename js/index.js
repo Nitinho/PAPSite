@@ -79,3 +79,22 @@ function copyToClipboard(text) {
         alert("Erro ao copiar: " + err);
     });
 }
+
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    menuToggle.addEventListener('click', function() {
+        this.classList.toggle('active');
+        mobileMenu.classList.toggle('active');
+    });
+
+    // Fechar o menu ao clicar em um link
+    const mobileMenuLinks = mobileMenu.getElementsByTagName('a');
+    for (let link of mobileMenuLinks) {
+        link.addEventListener('click', function() {
+            menuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+        });
+    }
+});

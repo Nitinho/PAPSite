@@ -1,27 +1,41 @@
 @import url('https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&display=swap');
 @import url('https://fonts.cdnfonts.com/css/lufga');
 
-
+/* Esconder elementos móveis em desktop */
+.mobile-menu-toggle, .mobile-menu {
+    display: none;
+}
+/* Reset e Configurações Globais */
 * {
-    padding: 0;
     margin: 0;
+    padding: 0;
     text-decoration: none;
     font-family: "Roboto", sans-serif;
     scrollbar-width: none;
+    box-sizing: border-box;
+}
+
+body {
+    font-size: 16px;
+    line-height: 1.5;
 }
 
 
+
+/* Header */
 header {
     display: flex;
     align-items: center;
     justify-content: space-between;
     height: 80px;
-    background-color: #fff;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.1);
     padding: 0 30px;
-    position: fixed; /* Mantém o header fixo no topo */
-    width: 96%; /* Ocupa toda a largura da tela */
-    z-index: 1000; /* Garante que o header fique acima dos outros elementos */
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #fff;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
 }
 
 #headerimg img {
@@ -64,124 +78,140 @@ header {
     color: #fff;
 }
 
-#container1{
+/* Container 1 */
+#container1 {
     display: flex;
-    background-color: #FF4C4C;
-    width: 100%;
-    height: 500px;
     align-items: center;
     justify-content: space-between;
-
+    height: 500px;
+    background-color: #FF4C4C;
+    padding: 0 100px;
 }
 
-#container1txt{
-    display: flex;
-    flex-direction: column;
-    margin-left: 100px;
+#container1txt {
     color: #fff;
     font-size: 20px;
 }
 
+#container1txt h1 {
+    font-size: 2em;
+    margin-bottom: 0.5em;
+}
+
 #container1txt p {
-    margin-top: 6px;
+    margin-top: 0.3em;
 }
 
-#container1img img{
+#container1img img {
     width: 300px;
-    margin-right: 150px;
-    
 }
 
-
-
-#container2{
+/* Container 2 */
+#container2 {
     display: flex;
     flex-direction: column;
-    text-align: center;
     align-items: center;
+    text-align: center;
     margin-top: 40px;
 }
 
-#container2 h1{
-    font-weight: 900;
+#container2 h1 {
     font-size: 36px;
+    font-weight: 900;
 }
 
-#produtos1{
-    margin-top: 50px;
+/* Produtos */
+#produtos1,
+#produtos2 {
     display: flex;
-    flex-direction: row;
-
-}
-
-#produtos2{
-    margin-top: 10px;
-    display: flex;
-    flex-direction: row;
-}
-
-.containerproduto{
+    justify-content: center;
     margin-top: 20px;
+    gap: 50px;
+}
+
+.containerproduto {
     display: flex;
     flex-direction: column;
-    background-color: #FF4C4C;
-    margin-left: 50px;
-    height: 230px;
+    align-items: center;
     width: 250px;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
+    height: 230px;
+    background-color: #FF4C4C;
     border-radius: 20px;
-    transition: all 0.4s;
-
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    transition: transform 0.4s;
 }
 
-
-.containerproduto:hover{
-    transition: all 0.5s;
+.containerproduto:hover {
     transform: scale(1.04);
-    transform-origin: center; /* Centraliza a transformação */
-
-    box-shadow: 0px 6px 6px rgba(0, 0, 0, 0.3); /* Aumenta um pouco a sombra para dar destaque */
-
+    box-shadow: 0 6px 6px rgba(0, 0, 0, 0.3);
 }
 
-.produtosselect{
+.produtosselect {
     display: flex;
     flex-direction: column;
     align-items: center;
     margin-top: 25px;
 }
-.produtosselect img{
+
+.produtosselect img {
     width: 165px;
     height: 132px;
 }
 
-
-.produtosselect button{
+.produtosselect button {
     width: 119px;
     height: 35px;
-    background: #FFFFFF;
-    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25);
-    border-radius: 20px;
+    background-color: #fff;
     border: none;
+    border-radius: 20px;
+    box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+    cursor: pointer;
     transition: all 0.3s;
 }
 
 .produtosselect button:hover {
-    transition: all 0.5s;
-    transform: scale(1.14);
-    transform-origin: center; /* Centraliza a transformação */
-    background-color: #ff00005d;
+    background-color: rgba(255, 0, 0, 0.36);
     color: white;
+    transform: scale(1.14);
 }
 
+/* Container 3 */
+#container3 {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 40px;
+    background-color: #FF4C4C;
+    border-radius: 20px;
+    padding: 50px;
+}
+
+#imgcontainer3 {
+    width: 50%;
+    border-radius: 20px;
+}
+
+#imgcontainer3 img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 20px;
+}
+
+#txtcontainer3 {
+    text-align: center;
+    color: white;
+    width: 50%;
+}
+
+/* Container 5 (Reabastecimentos) */
 #container5 {
     display: flex;
     flex-direction: column;
     align-items: center;
+    margin-top: 40px;
     padding: 50px;
     background-color: #ffffff;
     border-radius: 10px;
-    margin-top: 40px;
 }
 
 #container5 h1 {
@@ -193,16 +223,16 @@ header {
 
 .reabastecimento {
     display: flex;
-    justify-content: space-around;
     flex-wrap: wrap;
+    justify-content: space-around;
     gap: 30px;
 }
 
 .reabastecimento-card {
+    width: 300px;
     background-color: #FF4C4C;
     border-radius: 15px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 300px;
     padding: 20px;
     text-align: center;
     transition: transform 0.3s ease;
@@ -215,8 +245,8 @@ header {
 .reabastecimento-card img {
     width: 100%;
     height: 180px;
-    border-radius: 10px;
     margin-bottom: 15px;
+    border-radius: 10px;
 }
 
 .reabastecimento-info h2 {
@@ -231,142 +261,12 @@ header {
     margin-bottom: 5px;
 }
 
-
-footer{
-    background-color: #FF4C4C;
-    margin-top: 100px;
-    width: 100%;
-    height: 150px;
-    color: white;
-    display: flex;
-    text-align: center;
-    align-items: center;
-    justify-content: center;
-}
-
-#container3{
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    
-    margin-top: 40px;
-    background-color: #FF4C4C;
-    border-radius: 20px;
-    width: 100%;
-    height: 500px;
-}
-
-#imgcontainer3{
-    display: flex;
-    margin-left: 100px;
-    width: 70%;
-    border-radius: 20px;
-}
-
-
-#txtcontainer3{
-  text-align: center;  
-  margin-right: 100px;
-  color: white;
-}
-
-#container4 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 50px;
-    background-color: #ffffff;
-    border-radius: 10px;
-}
-
-#container4 h1 {                                        
-    font-size: 36px;
-    font-weight: 900;
-    color: black;
-    margin-bottom: 20px;
-}
-
-.step {
-    background-color: #FF4C4C;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 80%;
-    padding: 20px;
-    text-align: center;
-    margin-bottom: 20px;
-    transition: transform 0.3s ease;
-}
-
-.step h2 {
-    font-size: 24px;
-    color: white;
-    margin-bottom: 10px;
-}
-
-.step p {
-    font-size: 16px;
-    color: #ffffff;
-}
-
-.step:hover {
-    transform: scale(1.05);
-}
-
-
-
-
-
-.fade-in {
-    opacity: 0;
-    transform: translateY(20px); /* Inicia com os elementos mais baixos */
-    transition: opacity 1s ease-out, transform 1s ease-out;
-}
-
-.fade-in.visible {
-    opacity: 1;
-    transform: translateY(0); /* Move para sua posição original */
-}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-#container5 {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding: 50px;
-    background-color: #ffffff;
-    border-radius: 10px;
-    margin-top: 40px;
-}
-
-#container5 h1 {
-    font-size: 36px;
-    font-weight: 900;
-    color: black;
-    margin-bottom: 20px;
-}
-
+/* Container 5 (Perguntas Frequentes) */
 .faq-item {
+    width: 80%;
     background-color: #FF4C4C;
     border-radius: 10px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    width: 80%;
     padding: 15px 20px;
     margin-bottom: 10px;
     cursor: pointer;
@@ -388,113 +288,6 @@ footer{
     overflow: hidden;
     transition: max-height 0.4s ease;
 }
-
-.faq-answer p {
-    font-size: 16px;
-    color: #ffffff;
-    margin-top: 10px;
-}
-
-/*Formulario do cliente*/
-
-
-
-
-
-#divformulario {
-    background-color: #FF4C4C;
-    width: 800px;
-    height: 700px;
-    margin: auto;
-    position: absolute;
-    border-radius: 15px;
-    padding: 30px;
-    margin-top: 150px;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
-}
-
-#divformulario h1 {
-    color: #fff;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-.form-group {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 15px;
-}
-
-.form-group label {
-    color: #ffffff;
-    font-weight: bold;
-    margin-bottom: 5px;
-}
-
-.form-group input,
-.form-group textarea {
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    background-color: #f0f0f0;
-    color: #333;
-}
-
-.form-group input:focus,
-.form-group textarea:focus {
-    outline: none;
-    border: 2px solid #FF4C4C;
-}
-
-#submitButton {
-    background-color: #ffffff;
-    color: #FF4C4C;
-    border: none;
-    padding: 12px 20px;
-    cursor: pointer;
-    font-size: 18px;
-    border-radius: 5px;
-    transition: background-color 0.3s ease, color 0.3s ease;
-    width: 100%;
-    margin-top: 10px;
-}
-
-#submitButton:hover {
-    background-color: #f22b2b7b;
-    color: #ffffff;
-}
-
-
-
-
-@media screen and (max-width: 1020px){
-
-    #headerselect{
-        display: none;
-    }
-
-    #container1{
-        flex-direction: column;
-    }
-
-
-    #container1txt h1{
-        font-size: 30px;
-    }
-
-    #container1img{
-        display: none;
-    }
-}
-
-
-
-
 
 #container6 {
     display: flex;
@@ -571,3 +364,268 @@ footer{
 
 
 
+
+/* Footer */
+footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+    background-color: #FF4C4C;
+    color: white;
+    text-align: center;
+    margin-top: 100px;
+}
+
+/* Animação Fade-In */
+.fade-in {
+    opacity: 0;
+    transform: translateY(20px);
+    transition: opacity 1s ease-out, transform 1s ease-out;
+}
+
+.fade-in.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+
+/* Media query para dispositivos móveis */
+@media (max-width: 767px) {
+    body {
+        font-size: 14px;
+    }
+
+    header {
+        height: 60px;
+        padding: 0 15px;
+    }
+
+    #headerimg img {
+        width: 40px;
+    }
+
+    #headerselect, #buttonheader {
+        display: none;
+    }
+
+    .mobile-menu-toggle {
+        display: block;
+        cursor: pointer;
+        padding: 10px;
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+    }
+
+    .mobile-menu-toggle span {
+        display: block;
+        width: 25px;
+        height: 3px;
+        background-color: #FF4C4C;
+        margin: 5px 0;
+        transition: 0.4s;
+    }
+
+    .mobile-menu {
+        display: none;
+        position: fixed;
+        top: 60px;
+        left: 0;
+        width: 100%;
+        height: calc(100% - 60px);
+        background-color: #fff;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        overflow-y: auto;
+    }
+
+    .mobile-menu.active {
+        display: block;
+    }
+
+    .mobile-menu a {
+        display: block;
+        padding: 15px 20px;
+        color: #FF4C4C;
+        text-decoration: none;
+        border-bottom: 1px solid #eee;
+    }
+
+    .mobile-menu .mobile-area-cliente {
+        background-color: #FF4C4C;
+        color: white;
+        text-align: center;
+        padding: 12px 20px;
+        margin: 15px 20px;
+        border-radius: 8px;
+    }
+
+    /* Container 1 */
+    #container1 {
+        margin-top: 50px;
+        flex-direction: column;
+        height: auto;
+        padding: 40px 20px;
+        text-align: center;
+    }
+
+    #container1txt {
+        margin-bottom: 20px;
+    }
+
+    #container1txt h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+    }
+
+    #container1txt p {
+        font-size: 16px;
+    }
+
+    #container1img img {
+        width: 80%;
+        max-width: 250px;
+    }
+
+    /* Container 2 */
+    #container2 {
+        margin-top: 30px;
+        padding: 0 15px;
+    }
+
+    #container2 h1 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    #container6 {
+        padding: 30px 15px;
+        width: 95%;
+        margin-top: 30px;
+    }
+
+    #container6 h1 {
+        font-size: 24px;
+        margin-bottom: 15px;
+    }
+
+    .contact-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        padding: 20px 10px;
+        gap: 15px;
+    }
+
+    .contact-item img {
+        width: 40px;
+        height: 40px;
+        padding: 8px;
+    }
+
+    .contact-info h2 {
+        font-size: 18px;
+    }
+
+    .contact-info p {
+        font-size: 14px;
+    }
+
+    .contact-item button {
+        padding: 8px 16px;
+        font-size: 12px;
+        width: 100%;
+        max-width: 200px;
+    }
+
+    /* Produtos */
+    #produtos1, #produtos2 {
+        flex-direction: column;
+        align-items: center;
+        gap: 20px;
+    }
+
+    .containerproduto {
+        width: 100%;
+        max-width: 280px;
+        height: auto;
+        padding: 15px;
+    }
+
+    .produtosselect img {
+        width: 140px;
+        height: auto;
+    }
+
+    .produtosselect button {
+        width: 100px;
+        height: 30px;
+        font-size: 12px;
+        margin-top: 10px;
+    }
+
+    /* Container 3 */
+    #container3 {
+        flex-direction: column;
+        margin-top: 30px;
+        padding: 20px;
+    }
+
+    #imgcontainer3 {
+        width: 100%;
+        margin-bottom: 20px;
+    }
+
+    #txtcontainer3 {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* Container 5 (Reabastecimentos) */
+    #container5 {
+        padding: 30px 15px;
+    }
+
+    #container5 h1 {
+        font-size: 22px;
+        margin-bottom: 20px;
+    }
+
+    .reabastecimento {
+        gap: 20px;
+    }
+
+    .reabastecimento-card {
+        width: 100%;
+        max-width: 280px;
+    }
+
+    .reabastecimento-card img {
+        height: 150px;
+    }
+
+    .reabastecimento-info h2 {
+        font-size: 18px;
+    }
+
+    .reabastecimento-info p {
+        font-size: 14px;
+    }
+
+    /* FAQ */
+    .faq-item {
+        width: 100%;
+        padding: 12px 15px;
+    }
+
+    .faq-question {
+        font-size: 16px;
+    }
+
+    /* Footer */
+    footer {
+        height: auto;
+        padding: 20px 15px;
+    }
+}

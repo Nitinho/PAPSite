@@ -18,7 +18,7 @@ if (isset($_SESSION['email'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-Vindo aos Armazens Lopes     </title>
+    <title>Bem-Vindo aos Armazens Lopes </title>
     <link rel="stylesheet" href="styles/style.css">
     <script src="js/index.js"></script>
 </head>
@@ -27,17 +27,35 @@ if (isset($_SESSION['email'])) {
     <header>
 
         <div id="headerimg">
-            <a href="index.php"><img src="img/logolopes.png" alt="Logo" ></a>
+            <a href="index.php"><img src="img/logolopes.png" alt="Logo"></a>
         </div>
         <div id="headerselect">
             <a href="index.php">INICIO</a>
             <a href="#container2">PRODUTOS</a>
             <a href="">SOBRE</a>
             <a href="#container6">CONTATOS</a>
-            <a href="formulario.php">VIRAR CLIENTE</a>
+            <a href="form.php">VIRAR CLIENTE</a>
             <button id="buttonheader" onclick="window.location.href='<?php echo $redirectUrl; ?>'"><strong>ÁREA CLIENTE</strong></button>
 
         </div>
+
+        <!-- Botão de menu para mobile -->
+        <div class="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <!-- Menu para mobile -->
+        <nav class="mobile-menu">
+            <a href="index.php">INICIO</a>
+            <a href="#container2">PRODUTOS</a>
+            <a href="">SOBRE</a>
+            <a href="#container6">CONTATOS</a>
+            <a href="formulario.php">VIRAR CLIENTE</a>
+            <a href="<?php echo $redirectUrl; ?>" class="mobile-area-cliente"><strong>ÁREA CLIENTE</strong></a>
+        </nav>
+
     </header>
 
     <main>
@@ -62,7 +80,7 @@ if (isset($_SESSION['email'])) {
                     <div class="produtosselect">
                         <img src="img/pao.png" alt="">
                         <a href="produtos/padaria/padaria1.php"><button>Padaria e <br>Pastaleria</button></a>
-                        
+
                     </div>
                 </div>
                 <div class="containerproduto" class="fade-in">
@@ -122,7 +140,8 @@ if (isset($_SESSION['email'])) {
                 <h2 class="faq-question">Como posso tornar-me cliente?</h2>
                 <div class="faq-answer">
                     <p>Para se tornar cliente, basta seguir as instruções na seção "Como Virar Cliente" ou clicar aqui
-                        <a href="formulario.html">Virar cliente</a>.</p>
+                        <a href="formulario.html">Virar cliente</a>.
+                    </p>
                 </div>
             </div>
             <div class="faq-item">
@@ -195,7 +214,7 @@ if (isset($_SESSION['email'])) {
                 <button onclick="copyToClipboard('+351 21 123 4567')">Copiar</button>
             </div>
         </div>
-        
+
 
     </main>
 

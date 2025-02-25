@@ -327,3 +327,81 @@ button:hover {
     text-align: center;
   }
 }
+
+/* Esconder elementos móveis em desktop */
+.mobile-menu-toggle, .mobile-menu {
+  display: none;
+}
+/* Media query para dispositivos móveis */
+@media (max-width: 767px) {
+  body {
+      font-size: 14px;
+  }
+
+  header {
+      height: 60px;
+      padding: 0 15px;
+  }
+
+  #headerimg img {
+      width: 40px;
+  }
+
+  #headerselect, #buttonheader {
+      display: none;
+  }
+
+  .mobile-menu-toggle {
+      display: block;
+      cursor: pointer;
+      padding: 10px;
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      transform: translateY(-50%);
+  }
+
+  .mobile-menu-toggle span {
+      display: block;
+      width: 25px;
+      height: 3px;
+      background-color: #FF4C4C;
+      margin: 5px 0;
+      transition: 0.4s;
+  }
+
+  .mobile-menu {
+      display: none;
+      position: fixed;
+      top: 60px;
+      left: 0;
+      width: 100%;
+      height: calc(100% - 60px);
+      background-color: #fff;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      overflow-y: auto;
+  }
+
+  .mobile-menu.active {
+      display: block;
+  }
+
+  .mobile-menu a {
+      display: block;
+      padding: 15px 20px;
+      color: #FF4C4C;
+      text-decoration: none;
+      border-bottom: 1px solid #eee;
+  }
+
+  .mobile-menu .mobile-area-cliente {
+      background-color: #FF4C4C;
+      color: white;
+      text-align: center;
+      padding: 12px 20px;
+      margin: 15px 20px;
+      border-radius: 8px;
+  }
+}
+
+
