@@ -35,8 +35,21 @@ CREATE TABLE produtos (
 );
 
 
+
+CREATE TABLE compras (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuario_id INT NOT NULL,
+    data_compra TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    valor_compra DECIMAL(10, 2) NOT NULL,
+    pontos_ganhos INT DEFAULT 0,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+);
+
+
 INSERT INTO produtos (nome, preco, imagem) VALUES
 ('Pão', 0.50, '../../img/Bolapao.png'),
 ('Pão de Centeio', 1.00, '../../img/Bolapao.png'),
 ('Pão Integral', 1.20, '../../img/Bolapao.png'),
 ('Pão de Água', 0.80, '../../img/Bolapao.png');
+
+

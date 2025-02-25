@@ -3,8 +3,8 @@ session_start();
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['email'])) {
-  header("Location: ../Login/login.php");
-  exit();
+    header("Location: ../Login/login.php");
+    exit();
 }
 
 // Conexão ao banco de dados
@@ -12,30 +12,30 @@ $conn = new mysqli('localhost', 'root', '', 'lopesarmazem');
 
 // Verificar conexão
 if ($conn->connect_error) {
-  die("Falha na conexão: " . $conn->connect_error);
+    die("Falha na conexão: " . $conn->connect_error);
 }
 
 // Obter informações do usuário logado
 $email = $_SESSION['email'];
-$sql = "SELECT nome, email, nome_da_empresa, data_registro, telefone FROM usuarios WHERE email = ?";
+$sql = "SELECT id, nome, email, nome_da_empresa, data_registro, telefone FROM usuarios WHERE email = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
-  die("Erro na preparação da consulta: " . $conn->error);
+    die("Erro na preparação da consulta: " . $conn->error);
 }
 $stmt->bind_param("s", $email);
 if (!$stmt->execute()) {
-  die("Erro na execução da consulta: " . $stmt->error);
+    die("Erro na execução da consulta: " . $stmt->error);
 }
 $result = $stmt->get_result();
 if ($result === false) {
-  die("Erro ao obter resultado da consulta: " . $stmt->error);
+    die("Erro ao obter resultado da consulta: " . $stmt->error);
 }
 $user = $result->fetch_assoc();
 if ($user === null) {
-  die("Usuário não encontrado.");
+    die("Usuário não encontrado.");
 }
 
-
+$usuario_id = $user['id']; // Obter o ID do usuário
 $nomeUsuario = $user['nome'] ?? "Usuário";
 $emailUsuario = $user['email'] ?? $email;
 $nomeDaEmpresa = $user['nome_da_empresa'] ?? "Não informado";
@@ -47,136 +47,201 @@ $dataFormatada = $dataRegistro ? date("d/m/Y", strtotime($dataRegistro)) : "Data
 
 // Processar formulários de atualização
 if ($_SERVER["REQUEST_METHOD"] == "POST") {
-  if (isset($_POST['action'])) {
-    switch ($_POST['action']) {
-      case 'change_password':
-        changePassword($conn, $email);
-        break;
-      case 'change_email':
-        changeEmail($conn, $email);
-        break;
-      case 'change_name':
-        changeName($conn, $email);
-        break;
-      case 'add_address':
-        addAddress($conn, $email);
-        break;
-      case 'add_phone':
-        addPhone($conn, $email);
-        break;
+    if (isset($_POST['action'])) {
+        switch ($_POST['action']) {
+            case 'change_password':
+                changePassword($conn, $email);
+                break;
+            case 'change_email':
+                changeEmail($conn, $email);
+                break;
+            case 'change_name':
+                changeName($conn, $email);
+                break;
+            case 'add_address':
+                addAddress($conn, $email);
+                break;
+            case 'add_phone':
+                addPhone($conn, $email);
+                break;
+                // Novo caso para adicionar a compra de teste
+            case 'add_test_purchase':
+                addTestPurchase($conn, $usuario_id);
+                break;
+        }
     }
-  }
+}
+
+// Funções para obter dados de compras (colocar antes do processamento do formulário)
+function getTotalCompras($conn, $usuario_id)
+{
+    $stmt = $conn->prepare("SELECT COUNT(*) FROM compras WHERE usuario_id = ?");
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_row();
+    return $row[0] ?? 0; // Retorna o número total de compras
+}
+
+function getTotalGasto($conn, $usuario_id)
+{
+    $stmt = $conn->prepare("SELECT SUM(valor_compra) FROM compras WHERE usuario_id = ?");
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_row();
+    return $row[0] ?? 0; // Retorna o total gasto ou 0 se não houver compras
+}
+
+function getTotalPontos($conn, $usuario_id)
+{
+    $stmt = $conn->prepare("SELECT SUM(pontos_ganhos) FROM compras WHERE usuario_id = ?");
+    $stmt->bind_param("i", $usuario_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $row = $result->fetch_row();
+    return $row[0] ?? 0; // Retorna o total de pontos ou 0 se não houver compras
+}
+// Obter informações de compras
+$totalCompras = getTotalCompras($conn, $usuario_id);
+$totalGasto = getTotalGasto($conn, $usuario_id);
+$totalPontos = getTotalPontos($conn, $usuario_id);
+
+// Função para registrar a compra
+function registrarCompra($conn, $usuario_id, $valor_compra, $pontos_ganhos)
+{
+    $stmt = $conn->prepare("INSERT INTO compras (usuario_id, valor_compra, pontos_ganhos) VALUES (?, ?, ?)");
+    $stmt->bind_param("idd", $usuario_id, $valor_compra, $pontos_ganhos);
+    $stmt->execute();
+}
+
+// Função para adicionar a compra de teste
+function addTestPurchase($conn, $usuario_id)
+{
+    // Valores da compra de teste
+    $valor_compra = 2500.00;
+    $pontos_ganhos = floor($valor_compra / 10); // 1 ponto por cada 10 euros
+
+    // Inserir a compra de teste no banco de dados
+    registrarCompra($conn, $usuario_id, $valor_compra, $pontos_ganhos);
+
+    //Redireciona para o painel
+    header("Location: dashboard.php");
+    exit();
+
 }
 
 function changePassword($conn, $email)
 {
-  $current_password = $_POST['current_password'];
-  $new_password = $_POST['new_password'];
-  $confirm_password = $_POST['confirm_password'];
+    $current_password = $_POST['current_password'];
+    $new_password = $_POST['new_password'];
+    $confirm_password = $_POST['confirm_password'];
 
-  if ($new_password !== $confirm_password) {
-    echo json_encode(['status' => 'error', 'message' => 'As senhas não coincidem.']);
-    return;
-  }
+    if ($new_password !== $confirm_password) {
+        echo json_encode(['status' => 'error', 'message' => 'As senhas não coincidem.']);
+        return;
+    }
 
-  $stmt = $conn->prepare("SELECT senha FROM usuarios WHERE email = ?");
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $user = $result->fetch_assoc();
+    $stmt = $conn->prepare("SELECT senha FROM usuarios WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
-  if (!password_verify($current_password, $user['senha'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Senha atual incorreta.']);
-    return;
-  }
+    if (!password_verify($current_password, $user['senha'])) {
+        echo json_encode(['status' => 'error', 'message' => 'Senha atual incorreta.']);
+        return;
+    }
 
-  $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-  $update_stmt = $conn->prepare("UPDATE usuarios SET senha = ? WHERE email = ?");
-  $update_stmt->bind_param("ss", $hashed_password, $email);
+    $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+    $update_stmt = $conn->prepare("UPDATE usuarios SET senha = ? WHERE email = ?");
+    $update_stmt->bind_param("ss", $hashed_password, $email);
 
-  if ($update_stmt->execute()) {
-    echo json_encode(['status' => 'success', 'message' => 'Senha alterada com sucesso!']);
-  } else {
-    echo json_encode(['status' => 'error', 'message' => 'Erro ao alterar a senha.']);
-  }
+    if ($update_stmt->execute()) {
+        echo json_encode(['status' => 'success', 'message' => 'Senha alterada com sucesso!']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Erro ao alterar a senha.']);
+    }
 }
 
 function changeEmail($conn, $email)
 {
-  $new_email = $_POST['new_email'];
-  $password = $_POST['password'];
+    $new_email = $_POST['new_email'];
+    $password = $_POST['password'];
 
-  $stmt = $conn->prepare("SELECT senha FROM usuarios WHERE email = ?");
-  $stmt->bind_param("s", $email);
-  $stmt->execute();
-  $result = $stmt->get_result();
-  $user = $result->fetch_assoc();
+    $stmt = $conn->prepare("SELECT senha FROM usuarios WHERE email = ?");
+    $stmt->bind_param("s", $email);
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $user = $result->fetch_assoc();
 
-  if (!password_verify($password, $user['senha'])) {
-    echo json_encode(['status' => 'error', 'message' => 'Senha incorreta.']);
-    return;
-  }
+    if (!password_verify($password, $user['senha'])) {
+        echo json_encode(['status' => 'error', 'message' => 'Senha incorreta.']);
+        return;
+    }
 
-  $update_stmt = $conn->prepare("UPDATE usuarios SET email = ? WHERE email = ?");
-  $update_stmt->bind_param("ss", $new_email, $email);
+    $update_stmt = $conn->prepare("UPDATE usuarios SET email = ? WHERE email = ?");
+    $update_stmt->bind_param("ss", $new_email, $email);
 
-  if ($update_stmt->execute()) {
-    $_SESSION['email'] = $new_email;
-    echo json_encode(['status' => 'success', 'message' => 'Email alterado com sucesso!']);
-  } else {
-    echo json_encode(['status' => 'error', 'message' => 'Erro ao alterar o email.']);
-  }
+    if ($update_stmt->execute()) {
+        $_SESSION['email'] = $new_email;
+        echo json_encode(['status' => 'success', 'message' => 'Email alterado com sucesso!']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Erro ao alterar o email.']);
+    }
 }
 
 function changeName($conn, $email)
 {
-  $new_name = $_POST['new_name'];
+    $new_name = $_POST['new_name'];
 
-  $update_stmt = $conn->prepare("UPDATE usuarios SET nome = ? WHERE email = ?");
-  $update_stmt->bind_param("ss", $new_name, $email);
+    $update_stmt = $conn->prepare("UPDATE usuarios SET nome = ? WHERE email = ?");
+    $update_stmt->bind_param("ss", $new_name, $email);
 
-  if ($update_stmt->execute()) {
-    echo json_encode(['status' => 'success', 'message' => 'Nome alterado com sucesso!']);
-  } else {
-    echo json_encode(['status' => 'error', 'message' => 'Erro ao alterar o nome.']);
-  }
+    if ($update_stmt->execute()) {
+        echo json_encode(['status' => 'success', 'message' => 'Nome alterado com sucesso!']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Erro ao alterar o nome.']);
+    }
 }
 
 function addAddress($conn, $email)
 {
-  $rua = $_POST['rua'];
-  $numero = $_POST['numero'];
-  $cidade = $_POST['cidade'];
-  $codigo_postal = $_POST['codigo_postal'];
+    $rua = $_POST['rua'];
+    $numero = $_POST['numero'];
+    $cidade = $_POST['cidade'];
+    $codigo_postal = $_POST['codigo_postal'];
 
-  $insert_stmt = $conn->prepare("INSERT INTO enderecos (email, rua, numero, cidade, codigo_postal) VALUES (?, ?, ?, ?, ?, ?)");
-  $insert_stmt->bind_param("ssssss", $email, $rua, $numero, $cidade, $codigo_postal);
+    $insert_stmt = $conn->prepare("INSERT INTO enderecos (email, rua, numero, cidade, codigo_postal) VALUES (?, ?, ?, ?, ?, ?)");
+    $insert_stmt->bind_param("ssssss", $email, $rua, $numero, $cidade, $codigo_postal);
 
-  if ($insert_stmt->execute()) {
-    echo json_encode(['status' => 'success', 'message' => 'Endereço adicionado com sucesso!']);
-  } else {
-    echo json_encode(['status' => 'error', 'message' => 'Erro ao adicionar o endereço.']);
-  }
+    if ($insert_stmt->execute()) {
+        echo json_encode(['status' => 'success', 'message' => 'Endereço adicionado com sucesso!']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Erro ao adicionar o endereço.']);
+    }
 }
 
 function addPhone($conn, $email)
 {
-  $phone = $_POST['phone'];
+    $phone = $_POST['phone'];
 
-  $update_stmt = $conn->prepare("UPDATE usuarios SET telefone = ? WHERE email = ?");
-  $update_stmt->bind_param("ss", $phone, $email);
+    $update_stmt = $conn->prepare("UPDATE usuarios SET telefone = ? WHERE email = ?");
+    $update_stmt->bind_param("ss", $phone, $email);
 
-  if ($update_stmt->execute()) {
-    echo json_encode(['status' => 'success', 'message' => 'Telefone adicionado com sucesso!']);
-  } else {
-    echo json_encode(['status' => 'error', 'message' => 'Erro ao adicionar o telefone.']);
-  }
+    if ($update_stmt->execute()) {
+        echo json_encode(['status' => 'success', 'message' => 'Telefone adicionado com sucesso!']);
+    } else {
+        echo json_encode(['status' => 'error', 'message' => 'Erro ao adicionar o telefone.']);
+    }
 }
 
 // Fechar a conexão com o banco de dados
 $stmt->close();
 $conn->close();
 ?>
+
+
 
 
 <!DOCTYPE html>
@@ -223,18 +288,36 @@ $conn->close();
 
       <div class="dashboard-grid">
         <div class="stats-section">
+
+                           <!-- Adicionar Compra Teste -->
+                           <form action="" method="post">
+            <input type="hidden" name="action" value="add_test_purchase">
+            <button type="submit" style="
+                background-color: #4CAF50; /* Green */
+                border: none;
+                color: white;
+                padding: 10px 20px;
+                text-align: center;
+                text-decoration: none;
+                display: inline-block;
+                font-size: 16px;
+                margin: 4px 2px;
+                cursor: pointer;">Adicionar Compra de Teste</button>
+        </form>
+          <!-- Exibir os dados no HTML -->
           <div class="stat-card">
             <h3>Total de Compras</h3>
-            <p class="stat-number">€1,234</p>
+            <p class="stat-number"><?php echo htmlspecialchars($totalCompras); ?></p>
           </div>
           <div class="stat-card">
-            <h3>Pedidos</h3>
-            <p class="stat-number">12</p>
+            <h3>Total Gasto</h3>
+            <p class="stat-number">€ <?php echo htmlspecialchars(number_format($totalGasto, 2, ',', '.')); ?></p>
           </div>
           <div class="stat-card">
-            <h3>Pontos</h3>
-            <p class="stat-number">350</p>
+            <h3>Total de Pontos</h3>
+            <p class="stat-number"><?php echo htmlspecialchars($totalPontos); ?></p>
           </div>
+
         </div>
 
         <div class="section-title">
@@ -297,13 +380,6 @@ $conn->close();
             </div>
             <div class="purchase-status processing">Em Processamento</div>
           </div>
-          <div class="purchase-card">
-            <div class="purchase-icon">📚</div>
-            <div class="purchase-details">
-              <h4>Livros (3 items)</h4>
-              <p>€45.97 - 01/05/2023</p>
-            </div>
-            <div class="purchase-status delivered">Entregue</div>
           </div>
         </div>
       </div>
