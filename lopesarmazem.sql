@@ -26,16 +26,6 @@ CREATE TABLE enderecos (
 );
 
 
--- Cria a tabela "produtos"
-CREATE TABLE produtos (
-    id INT AUTO_INCREMENT PRIMARY KEY, -- ID único para cada produto
-    nome VARCHAR(100) NOT NULL,        -- Nome do produto
-    preco DECIMAL(10, 2) NOT NULL,     -- Preço do produto (com 2 casas decimais)
-    imagem VARCHAR(255) NOT NULL      -- Caminho da imagem do produto
-);
-
-
-
 CREATE TABLE compras (
     id INT AUTO_INCREMENT PRIMARY KEY,
     usuario_id INT NOT NULL,
@@ -46,10 +36,21 @@ CREATE TABLE compras (
 );
 
 
-INSERT INTO produtos (nome, preco, imagem) VALUES
-('Pão', 0.50, '../../img/Bolapao.png'),
-('Pão de Centeio', 1.00, '../../img/Bolapao.png'),
-('Pão Integral', 1.20, '../../img/Bolapao.png'),
-('Pão de Água', 0.80, '../../img/Bolapao.png');
+CREATE TABLE produtos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    nome VARCHAR(100) NOT NULL,
+    descricao TEXT,
+    preco DECIMAL(10, 2) NOT NULL,
+    imagem VARCHAR(255),
+    categoria VARCHAR(50)
+);
 
+
+INSERT INTO produtos (nome, descricao, preco, imagem, categoria) VALUES
+('Pão de Centeio', 'Pão tradicional', 0.50, '../../img/Bolapao.png', 'pao'),
+('Pão Integral', 'Feito com farinha integral', 0.60, '../../img/Bolapao.png', 'pao'),
+('Pão de Milho', 'Sabor leve de milho', 0.55, '../../img/Bolapao.png', 'pao'),
+('Pão de Forma', 'Macio e perfeito para sanduíches', 0.80, '../../img/Bolapao.png', 'pao'),
+('Pão Francês', 'Crocante por fora e macio por dentro', 0.40, '../../img/Bolapao.png', 'pao'),
+('Pão de Queijo', 'Feito com queijo derretido', 0.70, '../../img/Bolapao.png', 'pao');
 

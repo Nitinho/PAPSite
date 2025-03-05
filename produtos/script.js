@@ -14,22 +14,23 @@ document.addEventListener("DOMContentLoaded", function () {
     orderButtons.forEach(button => {
         button.addEventListener("click", function () {
             const product = this.closest('.product');
+            const productId = this.getAttribute('data-id');
             const productName = product.querySelector('h4').textContent;
             const quantity = parseInt(product.querySelector('.quantity-input').value);
             const productImage = product.querySelector('img').src;
-            const price = productName === 'Pão' ? 0.50 : 1.00; // Exemplo de preço
+            const price = parseFloat(this.getAttribute('data-price'));
 
-            addToCart(productName, quantity, productImage, price);
+            addToCart(productId, productName, quantity, productImage, price);
             updateCartCount();
         });
     });
 
-    function addToCart(name, quantity, image, price) {
-        const existingItem = cart.find(item => item.name === name);
+    function addToCart(id, name, quantity, image, price) {
+        const existingItem = cart.find(item => item.id === id);
         if (existingItem) {
             existingItem.quantity += quantity;
         } else {
-            cart.push({ name, quantity, image, price });
+            cart.push({ id, name, quantity, image, price });
         }
     }
 
@@ -54,7 +55,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     <p>Preço: R$ ${item.price.toFixed(2)}</p>
                     <p>Total: R$ ${itemTotal.toFixed(2)}</p>
                 </div>
-                <button class="remove-item" data-name="${item.name}">Remover</button>
+                <button class="remove-item" data-id="${item.id}">Remover</button>
             `;
             cartItems.appendChild(itemElement);
         });
@@ -63,8 +64,8 @@ document.addEventListener("DOMContentLoaded", function () {
 
         document.querySelectorAll('.remove-item').forEach(button => {
             button.addEventListener('click', function() {
-                const nameToRemove = this.getAttribute('data-name');
-                cart = cart.filter(item => item.name !== nameToRemove);
+                const idToRemove = this.getAttribute('data-id');
+                cart = cart.filter(item => item.id !== idToRemove);
                 updateCartCount();
                 displayCart();
             });
@@ -87,11 +88,31 @@ document.addEventListener("DOMContentLoaded", function () {
     }
 
     confirmOrderButton.addEventListener('click', function() {
-        // Aqui você pode adicionar a lógica para enviar o pedido para o servidor
-        alert('Pedido confirmado! Total: R$ ' + cartTotal.textContent);
-        cart = [];
-        updateCartCount();
-        cartModal.style.display = "none";
+        const cartData = JSON.stringify(cart);
+        
+        fetch('../process_order.php', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: cartData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('Pedido confirmado! Número do pedido: ' + data.orderId);
+                cart = [];
+                updateCartCount();
+                displayCart();
+                cartModal.style.display = "none";
+            } else {
+                alert('Erro ao processar o pedido: ' + data.message);
+            }
+        })
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Erro ao processar o pedido.');
+        });
     });
 
     clearCartButton.addEventListener('click', function() {

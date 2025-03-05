@@ -1,5 +1,6 @@
 <?php
 session_start();
+include('../db_connect.php');
 
 // Verificar se o usuário está logado
 if (!isset($_SESSION['email'])) {
@@ -7,7 +8,6 @@ if (!isset($_SESSION['email'])) {
     header("Location: ../../login/login.php");
     exit();
 }
-
 
 // Verifica se o usuário está logado
 if (isset($_SESSION['email'])) {
@@ -17,6 +17,11 @@ if (isset($_SESSION['email'])) {
     // Usuário não logado, redireciona para o login
     $redirectUrl = "../../login/login.php";
 }
+
+// Buscar produtos do banco de dados
+$categoria = "pao"; // Ajuste conforme necessário
+$sql = "SELECT * FROM produtos WHERE categoria = '$categoria'";
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -27,7 +32,6 @@ if (isset($_SESSION['email'])) {
     <title>Loja de Pães</title>
     <link rel="stylesheet" href="../styles/style.css">
     <script src="../script.js"></script>
-
 </head>
 <body>
     <header>
@@ -55,73 +59,43 @@ if (isset($_SESSION['email'])) {
                 </ul>
             </div>
             <div class="product-container">
-                <div class="product">
-                    <img src="../../img/Bolapao.png" alt="Pão">
-                    <h4>Pão</h4>
-                    <div class="quantity">
-                        <button class="btn-minus">-</button>
-                        <input type="number" value="1" class="quantity-input" />
-                        <button class="btn-plus">+</button>
-                    </div>
-                    <button class="btn-order">Encomendar</button>
-                </div>
-                <div class="product">
-                    <img src="../../img/Bolapao.png" alt="Pão">
-                    <h4>Pão de Centeio</h4>
-                    <div class="quantity">
-                        <button class="btn-minus">-</button>
-                        <input type="number" value="1" class="quantity-input" />
-                        <button class="btn-plus">+</button>
-                    </div>
-                    <button class="btn-order">Encomendar</button>
-                </div>
-                <div class="product">
-                    <img src="../../img/Bolapao.png" alt="Pão">
-                    <h4>Pão Integral</h4>
-                    <div class="quantity">
-                        <button class="btn-minus">-</button>
-                        <input type="number" value="1" class="quantity-input" />
-                        <button class="btn-plus">+</button>
-                    </div>
-                    <button class="btn-order">Encomendar</button>
-                </div>
-                <div class="product">
-                    <img src="../../img/Bolapao.png" alt="Pão">
-                    <h4>Pão de agua</h4>
-                    <div class="quantity">
-                        <button class="btn-minus">-</button>
-                        <input type="number" value="1" class="quantity-input" />
-                        <button class="btn-plus">+</button>
-                    </div>
-                    <button class="btn-order">Encomendar</button>
-                </div>
-                
-                <!-- Adicionar mais produtos conforme necessário -->
+                <?php
+                if ($result->num_rows > 0) {
+                    while($row = $result->fetch_assoc()) {
+                        echo "<div class='product'>";
+                        echo "<img src='" . $row["imagem"] . "' alt='" . $row["nome"] . "'>";
+                        echo "<h4>" . $row["nome"] . "</h4>";
+                        echo "<p>R$ " . number_format($row["preco"], 2, ',', '.') . "</p>";
+                        echo "<div class='quantity'>";
+                        echo "<button class='btn-minus'>-</button>";
+                        echo "<input type='number' value='1' class='quantity-input' />";
+                        echo "<button class='btn-plus'>+</button>";
+                        echo "</div>";
+                        echo "<button class='btn-order' data-id='" . $row["id"] . "' data-price='" . $row["preco"] . "'>Encomendar</button>";
+                        echo "</div>";
+                    }
+                } else {
+                    echo "<p>Nenhum produto encontrado</p>";
+                }
+                ?>
             </div>
-
         </div>
 
         <div id="cart-container">
-    <img src="../../img/carrinho-de-compras.png" alt="Carrinho" id="cart-icon">
-    <div id="cart-count">0</div>
-</div>
+            <img src="../../img/carrinho-de-compras.png" alt="Carrinho" id="cart-icon">
+            <div id="cart-count">0</div>
+        </div>
 
-<div id="cart-modal" class="modal">
-    <div class="modal-content">
-        <span class="close">&times;</span>
-        <h2>Seu Carrinho</h2>
-        <div id="cart-items"></div>
-        <div class="cart-total">Total: R$ <span id="cart-total">0.00</span></div>
-        <button id="confirm-order">Confirmar Pedido</button>
-        <button id="clear-cart">Limpar Carrinho</button>
-    </div>
-</div>
-
-
-</div>
-
-</div>
-
+        <div id="cart-modal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Seu Carrinho</h2>
+                <div id="cart-items"></div>
+                <div class="cart-total">Total: R$ <span id="cart-total">0.00</span></div>
+                <button id="confirm-order">Confirmar Pedido</button>
+                <button id="clear-cart">Limpar Carrinho</button>
+            </div>
+        </div>
     </main>
 
     <footer>
@@ -131,3 +105,7 @@ if (isset($_SESSION['email'])) {
     <script src="script.js"></script>
 </body>
 </html>
+
+<?php
+$conn->close();
+?>
