@@ -8,6 +8,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const cartContainer = document.getElementById("cart-container");
     const closeBtn = document.getElementsByClassName("close")[0];
     const cartTotal = document.getElementById("cart-total");
+
     let cart = [];
 
     orderButtons.forEach(button => {
@@ -18,6 +19,7 @@ document.addEventListener("DOMContentLoaded", function () {
             const quantity = parseInt(product.querySelector('.quantity-input').value);
             const productImage = product.querySelector('img').src;
             const price = parseFloat(this.getAttribute('data-price'));
+
             addToCart(productId, productName, quantity, productImage, price);
             updateCartCount();
         });
@@ -47,49 +49,75 @@ document.addEventListener("DOMContentLoaded", function () {
             itemElement.className = 'cart-item';
             itemElement.innerHTML = `
                 <img src="${item.image}" alt="${item.name}">
-                <span>${item.name}</span>
-                <span>Quantidade: ${item.quantity}</span>
-                <span>Preço: R$ ${item.price.toFixed(2)}</span>
-                <span>Total: R$ ${itemTotal.toFixed(2)}</span>
+                <div class="cart-item-details">
+                    <h3>${item.name}</h3>
+                    <p>Quantidade: ${item.quantity}</p>
+                    <p>Preço: R$ ${item.price.toFixed(2)}</p>
+                    <p>Total: R$ ${itemTotal.toFixed(2)}</p>
+                </div>
+                <button class="remove-item" data-id="${item.id}">Remover</button>
             `;
             cartItems.appendChild(itemElement);
         });
-        cartTotal.textContent = `Total: R$ ${total.toFixed(2)}`;
+
+        cartTotal.textContent = total.toFixed(2);
+
+        document.querySelectorAll('.remove-item').forEach(button => {
+            button.addEventListener('click', function() {
+                const idToRemove = this.getAttribute('data-id');
+                cart = cart.filter(item => item.id !== idToRemove);
+                updateCartCount();
+                displayCart();
+            });
+        });
     }
 
-    confirmOrderButton.addEventListener('click', function () {
-        if (cart.length === 0) {
-            alert('Carrinho vazio!');
-            return;
-        }
+    cartContainer.addEventListener("click", function () {
+        displayCart();
+        cartModal.style.display = "block";
+    });
 
-        const data = cart.map(item => ({ id: item.id, quantity: item.quantity, price: item.price }));
-        fetch('process_order.php', {
+    closeBtn.onclick = function() {
+        cartModal.style.display = "none";
+    }
+
+    window.onclick = function(event) {
+        if (event.target == cartModal) {
+            cartModal.style.display = "none";
+        }
+    }
+
+    confirmOrderButton.addEventListener('click', function() {
+        const cartData = JSON.stringify(cart);
+        
+        fetch('../process_order.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
             },
-            body: JSON.stringify(data)
+            body: cartData
         })
-        .then(response => {
-            if (!response.ok) {
-                throw new Error('Erro ao processar a requisição');
-            }
-            return response.json();
-        })
+        .then(response => response.json())
         .then(data => {
             if (data.success) {
-                alert(data.message);
-                // Limpar o carrinho
+                alert('Pedido confirmado! Número do pedido: ' + data.orderId);
                 cart = [];
                 updateCartCount();
                 displayCart();
+                cartModal.style.display = "none";
             } else {
-                alert(data.message);
+                alert('Erro ao processar o pedido: ' + data.message);
             }
         })
-        .catch(error => console.error('Erro:', error));
+        .catch((error) => {
+            console.error('Error:', error);
+            alert('Erro ao processar o pedido.');
+        });
     });
 
-    displayCart();
+    clearCartButton.addEventListener('click', function() {
+        cart = [];
+        updateCartCount();
+        displayCart();
+    });
 });

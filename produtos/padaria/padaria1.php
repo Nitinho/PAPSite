@@ -1,32 +1,28 @@
 <?php
-require_once 'db_connect.php';
+session_start();
+include('../db_connect.php');
 
-if ($conn->connect_error) {
-    die("Conexão falhou: " . $conn->connect_error);
+// Verificar se o usuário está logado
+if (!isset($_SESSION['email'])) {
+    // Redirecionar para a página de login
+    header("Location: ../../login/login.php");
+    exit();
 }
 
-$sql = "SELECT * FROM produtos";
-$result = $conn->query($sql);
-
-if ($result->num_rows > 0) {
-    while($row = $result->fetch_assoc()) {
-        echo "
-            <div class='product'>
-                <h4>$row[nome]</h4>
-                <img src='$row[imagem]' alt='$row[nome]'>
-                <span>R$ " . number_format($row['preco'], 2, ',', '.') . "</span>
-                <input type='number' class='quantity-input' value='1'>
-                <button class='btn-order' data-id='$row[id]' data-price='$row[preco]'>Adicionar ao Carrinho</button>
-            </div>
-        ";
-    }
+// Verifica se o usuário está logado
+if (isset($_SESSION['email'])) {
+    // Usuário logado, redireciona para o dashboard
+    $redirectUrl = "../../client/dashboard.php";
 } else {
-    echo "Nenhum produto encontrado";
+    // Usuário não logado, redireciona para o login
+    $redirectUrl = "../../login/login.php";
 }
 
-$conn->close();
+// Buscar produtos do banco de dados
+$categoria = "pao"; // Ajuste conforme necessário
+$sql = "SELECT * FROM produtos WHERE categoria = '$categoria'";
+$result = $conn->query($sql);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="pt-BR">
