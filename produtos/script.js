@@ -8,7 +8,6 @@ document.addEventListener("DOMContentLoaded", function () {
     const cartContainer = document.getElementById("cart-container");
     const closeBtn = document.getElementsByClassName("close")[0];
     const cartTotal = document.getElementById("cart-total");
-
     let cart = [];
 
     orderButtons.forEach(button => {
@@ -19,7 +18,6 @@ document.addEventListener("DOMContentLoaded", function () {
             const quantity = parseInt(product.querySelector('.quantity-input').value);
             const productImage = product.querySelector('img').src;
             const price = parseFloat(this.getAttribute('data-price'));
-
             addToCart(productId, productName, quantity, productImage, price);
             updateCartCount();
         });
@@ -49,75 +47,49 @@ document.addEventListener("DOMContentLoaded", function () {
             itemElement.className = 'cart-item';
             itemElement.innerHTML = `
                 <img src="${item.image}" alt="${item.name}">
-                <div class="cart-item-details">
-                    <h3>${item.name}</h3>
-                    <p>Quantidade: ${item.quantity}</p>
-                    <p>Preço: R$ ${item.price.toFixed(2)}</p>
-                    <p>Total: R$ ${itemTotal.toFixed(2)}</p>
-                </div>
-                <button class="remove-item" data-id="${item.id}">Remover</button>
+                <span>${item.name}</span>
+                <span>Quantidade: ${item.quantity}</span>
+                <span>Preço: R$ ${item.price.toFixed(2)}</span>
+                <span>Total: R$ ${itemTotal.toFixed(2)}</span>
             `;
             cartItems.appendChild(itemElement);
         });
-
-        cartTotal.textContent = total.toFixed(2);
-
-        document.querySelectorAll('.remove-item').forEach(button => {
-            button.addEventListener('click', function() {
-                const idToRemove = this.getAttribute('data-id');
-                cart = cart.filter(item => item.id !== idToRemove);
-                updateCartCount();
-                displayCart();
-            });
-        });
+        cartTotal.textContent = `Total: R$ ${total.toFixed(2)}`;
     }
 
-    cartContainer.addEventListener("click", function () {
-        displayCart();
-        cartModal.style.display = "block";
-    });
-
-    closeBtn.onclick = function() {
-        cartModal.style.display = "none";
-    }
-
-    window.onclick = function(event) {
-        if (event.target == cartModal) {
-            cartModal.style.display = "none";
+    confirmOrderButton.addEventListener('click', function () {
+        if (cart.length === 0) {
+            alert('Carrinho vazio!');
+            return;
         }
-    }
 
-    confirmOrderButton.addEventListener('click', function() {
-        const cartData = JSON.stringify(cart);
-        
-        fetch('../process_order.php', {
+        const data = cart.map(item => ({ id: item.id, quantity: item.quantity, price: item.price }));
+        fetch('process_order.php', {
             method: 'POST',
             headers: {
-                'Content-Type': 'application/json',
+                'Content-Type': 'application/json'
             },
-            body: cartData
+            body: JSON.stringify(data)
         })
-        .then(response => response.json())
+        .then(response => {
+            if (!response.ok) {
+                throw new Error('Erro ao processar a requisição');
+            }
+            return response.json();
+        })
         .then(data => {
             if (data.success) {
-                alert('Pedido confirmado! Número do pedido: ' + data.orderId);
+                alert(data.message);
+                // Limpar o carrinho
                 cart = [];
                 updateCartCount();
                 displayCart();
-                cartModal.style.display = "none";
             } else {
-                alert('Erro ao processar o pedido: ' + data.message);
+                alert(data.message);
             }
         })
-        .catch((error) => {
-            console.error('Error:', error);
-            alert('Erro ao processar o pedido.');
-        });
+        .catch(error => console.error('Erro:', error));
     });
 
-    clearCartButton.addEventListener('click', function() {
-        cart = [];
-        updateCartCount();
-        displayCart();
-    });
+    displayCart();
 });
