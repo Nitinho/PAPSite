@@ -98,3 +98,65 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     }
 });
+
+
+    /* JavaScript para ativação de elementos */
+    document.addEventListener('DOMContentLoaded', function() {
+        // Ativar menu mobile
+        const menuToggle = document.querySelector('.mobile-menu-toggle');
+        const mobileMenu = document.querySelector('.mobile-menu');
+        
+        if (menuToggle && mobileMenu) {
+            menuToggle.addEventListener('click', function() {
+                mobileMenu.classList.toggle('active');
+                
+                const spans = menuToggle.querySelectorAll('span');
+                spans[0].classList.toggle('rotate-down');
+                spans[1].classList.toggle('fade-out');
+                spans[2].classList.toggle('rotate-up');
+            });
+        }
+        
+        // Ativar animações de fade-in
+        const fadeElements = document.querySelectorAll('.fade-in');
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.1 });
+        
+        fadeElements.forEach(element => {
+            observer.observe(element);
+        });
+        
+        // Ativar perguntas frequentes
+        const faqItems = document.querySelectorAll('.faq-item');
+        
+        faqItems.forEach(item => {
+            item.addEventListener('click', function() {
+                this.classList.toggle('active');
+                
+                const answer = this.querySelector('.faq-answer');
+                if (this.classList.contains('active')) {
+                    answer.style.maxHeight = answer.scrollHeight + 'px';
+                    answer.style.paddingTop = '15px';
+                } else {
+                    answer.style.maxHeight = 0;
+                    answer.style.paddingTop = 0;
+                }
+            });
+        });
+        
+        // Função para copiar para área de transferência
+        window.copyToClipboard = function(text) {
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Copiado para a área de transferência!');
+            }).catch(err => {
+                console.error('Erro ao copiar: ', err);
+            });
+        };
+    });
+    

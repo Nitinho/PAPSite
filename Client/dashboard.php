@@ -291,21 +291,6 @@ $conn->close();
 
       <div class="dashboard-grid">
         <div class="stats-section">
-
-                           <!-- Adicionar Compra Teste -->
-                           <form action="" method="post">
-            <input type="hidden" name="action" value="add_test_purchase">
-            <button type="submit" style="
-                background-color: #4CAF50; /* Green */
-                border: none;
-                color: white;
-                padding: 10px 20px;
-                text-align: center;
-                text-decoration: none;
-                display: inline-block;
-                font-size: 16px;
-                margin: 4px 2px;
-                cursor: pointer;">Adicionar Compra de Teste</button>
         </form>
           <!-- Exibir os dados no HTML -->
           <div class="stat-card">
