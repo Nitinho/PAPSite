@@ -311,146 +311,344 @@ $conn->close();
 ?>
 
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-PT">
 
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dashboard Completo</title>
+  <title>Área do Cliente | Armazéns Lopes</title>
   <link rel="stylesheet" href="style/style.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
   <header>
     <div id="headerimg">
-      <a href="index.php"><img src="../img/logolopes.png" alt="Logo"></a>
+      <a href="../index.php"><img src="../img/logolopes.png" alt="Logo Armazéns Lopes"></a>
     </div>
     <div id="headerselect">
-      <a href="../index.php">INICIO</a>
+      <a href="../index.php">INÍCIO</a>
       <a href="../index.php#container2">PRODUTOS</a>
-      <a href="#">SOBRE</a>
-      <a href="#">CONTATOS</a>
-      <a href="../Login/logout.php">Sair</a>
+      <a href="../index.php#sobre">SOBRE</a>
+      <a href="../index.php#container6">CONTACTOS</a>
+      <a href="../Login/logout.php">SAIR</a>
     </div>
+
+    <div class="mobile-menu-toggle">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+
+    <nav class="mobile-menu">
+      <a href="../index.php">INÍCIO</a>
+      <a href="../index.php#container2">PRODUTOS</a>
+      <a href="../index.php#sobre">SOBRE</a>
+      <a href="../index.php#container6">CONTACTOS</a>
+      <a href="../Login/logout.php">SAIR</a>
+    </nav>
   </header>
+
   <main>
-    <div class="dashboard">
-      <div class="profile-section">
-        <div class="profile-header">
+    <div class="dashboard-container">
+      <div class="dashboard-sidebar">
+        <div class="user-profile">
           <div class="profile-avatar">
-            <svg viewBox="0 0 24 24" class="avatar-icon">
-              <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
-            </svg>
+            <i class="fas fa-user"></i>
           </div>
-          <div class="profile-info">
-            <h2><?php echo htmlspecialchars($nomeUsuario); ?></h2>
-            <p><?php echo htmlspecialchars($emailUsuario); ?></p>
-            <p class="member-since">Nome da empresa: <?php echo htmlspecialchars($nomeDaEmpresa); ?></p>
-            <p class="member-since">Membro desde: <?php echo htmlspecialchars($dataFormatada); ?></p>
-            <p class="member-since">Telefone: <?php echo htmlspecialchars($telefone); ?></p>
-          </div>
+          <h3><?php echo htmlspecialchars($nomeUsuario); ?></h3>
+          <p><?php echo htmlspecialchars($emailUsuario); ?></p>
+        </div>
+
+        <nav class="sidebar-nav">
+          <ul>
+            <li class="active"><a href="#overview"><i class="fas fa-home"></i> Visão Geral</a></li>
+            <li><a href="#purchases"><i class="fas fa-shopping-cart"></i> Compras</a></li>
+            <li><a href="#settings"><i class="fas fa-cog"></i> Configurações</a></li>
+            <li><a href="../index.php#container2"><i class="fas fa-store"></i> Loja</a></li>
+          </ul>
+        </nav>
+
+        <div class="sidebar-footer">
+          <p>Membro desde: <?php echo htmlspecialchars($dataFormatada); ?></p>
         </div>
       </div>
 
-      <div class="dashboard-grid">
-        <div class="stats-section">
-          <!-- Exibir os dados no HTML -->
-          <div class="stat-card">
-            <h3>Total de Compras</h3>
-            <p class="stat-number"><?php echo htmlspecialchars($totalCompras); ?></p>
-          </div>
-          <div class="stat-card">
-            <h3>Total Gasto</h3>
-            <p class="stat-number">€ <?php echo htmlspecialchars(number_format($totalGasto, 2, ',', '.')); ?></p>
-          </div>
-          <div class="stat-card">
-            <h3>Total de Pontos</h3>
-            <p class="stat-number"><?php echo htmlspecialchars($totalPontos); ?></p>
-          </div>
-        </div>
-
-        <div class="section-title">
-          <h2>Configurações</h2>
-        </div>
-        <div class="settings-grid">
-          <div class="card" onclick="showModal('password')">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M12,17A2,2 0 0,0 14,15C14,13.89 13.1,13 12,13A2,2 0 0,0 10,15A2,2 0 0,0 12,17M18,8A2,2 0 0,1 20,10V20A2,2 0 0,1 18,22H6A2,2 0 0,1 4,20V10C4,8.89 4.9,8 6,8H7V6A5,5 0 0,1 12,1A5,5 0 0,1 17,6V8H18M12,3A3,3 0 0,0 9,6V8H15V6A3,3 0 0,0 12,3Z" />
-            </svg>
-            <h3>Mudar Senha</h3>
+      <div class="dashboard-content">
+        <section id="overview" class="dashboard-section active">
+          <div class="section-header">
+            <h2><i class="fas fa-chart-line"></i> Visão Geral</h2>
+            <p>Bem-vindo de volta, <?php echo htmlspecialchars($nomeUsuario); ?>!</p>
           </div>
 
-          <div class="card" onclick="showModal('email')">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M20,8L12,13L4,8V6L12,11L20,6M20,4H4C2.89,4 2,4.89 2,6V18A2,2 0 0,0 4,20H20A2,2 0 0,0 22,18V6C22,4.89 21.1,4 20,4Z" />
-            </svg>
-            <h3>Alterar Email</h3>
-          </div>
-
-          <div class="card" onclick="showModal('name')">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M12,4A4,4 0 0,1 16,8A4,4 0 0,1 12,12A4,4 0 0,1 8,8A4,4 0 0,1 12,4M12,14C16.42,14 20,15.79 20,18V20H4V18C4,15.79 7.58,14 12,14Z" />
-            </svg>
-            <h3>Alterar Nome</h3>
-          </div>
-
-          <div class="card" onclick="showModal('address')">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M12,11.5A2.5,2.5 0 0,1 9.5,9A2.5,2.5 0 0,1 12,6.5A2.5,2.5 0 0,1 14.5,9A2.5,2.5 0 0,1 12,11.5M12,2A7,7 0 0,0 5,9C5,14.25 12,22 12,22C12,22 19,14.25 19,9A7,7 0 0,0 12,2Z" />
-            </svg>
-            <h3>Adicionar Morada</h3>
-          </div>
-
-          <div class="card" onclick="showModal('phone')">
-            <svg class="icon" viewBox="0 0 24 24">
-              <path d="M6.62,10.79C8.06,13.62 10.38,15.94 13.21,17.38L15.41,15.18C15.69,14.9 16.08,14.82 16.43,14.93C17.55,15.3 18.75,15.5 20,15.5A1,1 0 0,1 21,16.5V20A1,1 0 0,1 20,21A17,17 0 0,1 3,4A1,1 0 0,1 4,3H7.5A1,1 0 0,1 8.5,4C8.5,5.25 8.7,6.45 9.07,7.57C9.18,7.92 9.1,8.31 8.82,8.59L6.62,10.79Z" />
-            </svg>
-            <h3>Telefone</h3>
-          </div>
-        </div>
-
-        <div class="section-title">
-          <h2>Histórico de Compras</h2>
-        </div>
-        <div class="purchases-section">
-          <?php if (empty($historicoCompras)): ?>
-            <div class="empty-purchases">
-              <p>Você ainda não realizou nenhuma compra.</p>
-            </div>
-          <?php else: ?>
-            <?php foreach ($historicoCompras as $compra): ?>
-              <div class="purchase-card">
-                <div class="purchase-icon">🛍️</div>
-                <div class="purchase-details">
-                  <h4>Compra #<?php echo htmlspecialchars($compra['id']); ?></h4>
-                  <p>€<?php echo htmlspecialchars(number_format($compra['valor_compra'], 2, ',', '.')); ?> - <?php echo date('d/m/Y', strtotime($compra['data_compra'])); ?></p>
-                  <p>Pontos ganhos: <?php echo htmlspecialchars($compra['pontos_ganhos']); ?></p>
-                  <button class="view-details-btn" onclick="showOrderDetails(<?php echo $compra['id']; ?>)">Ver Detalhes</button>
-                </div>
-                <?php
-                $statusClass = '';
-                $statusText = '';
-
-                switch ($compra['status']) {
-                  case 'pendente':
-                    $statusClass = 'pending';
-                    $statusText = 'Pendente';
-                    break;
-                  case 'enviado':
-                    $statusClass = 'processing';
-                    $statusText = 'Enviado';
-                    break;
-                  case 'recebido':
-                    $statusClass = 'delivered';
-                    $statusText = 'Recebido';
-                    break;
-                }
-                ?>
-                <div class="purchase-status <?php echo $statusClass; ?>"><?php echo $statusText; ?></div>
+          <div class="stats-cards">
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-shopping-bag"></i>
               </div>
-            <?php endforeach; ?>
-          <?php endif; ?>
-        </div>
+              <div class="stat-info">
+                <h3>Total de Compras</h3>
+                <p class="stat-number"><?php echo htmlspecialchars($totalCompras); ?></p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-euro-sign"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Total Gasto</h3>
+                <p class="stat-number">€ <?php echo htmlspecialchars(number_format($totalGasto, 2, ',', '.')); ?></p>
+              </div>
+            </div>
+
+            <div class="stat-card">
+              <div class="stat-icon">
+                <i class="fas fa-star"></i>
+              </div>
+              <div class="stat-info">
+                <h3>Pontos Acumulados</h3>
+                <p class="stat-number"><?php echo htmlspecialchars($totalPontos); ?></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="user-info-card">
+            <h3>Informações da Conta</h3>
+            <div class="info-grid">
+              <div class="info-item">
+                <span class="info-label">Nome:</span>
+                <span class="info-value"><?php echo htmlspecialchars($nomeUsuario); ?></span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Email:</span>
+                <span class="info-value"><?php echo htmlspecialchars($emailUsuario); ?></span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Empresa:</span>
+                <span class="info-value"><?php echo htmlspecialchars($nomeDaEmpresa); ?></span>
+              </div>
+              <div class="info-item">
+                <span class="info-label">Telefone:</span>
+                <span class="info-value"><?php echo htmlspecialchars($telefone); ?></span>
+              </div>
+            </div>
+            <div class="recent-purchases">
+              <div class="section-header-small">
+                <h3>Compras Recentes</h3>
+                <a href="#purchases" class="view-all">Ver Todas</a>
+              </div>
+
+              <div class="purchases-list">
+                <?php if (empty($historicoCompras)): ?>
+                  <div class="empty-state">
+                    <i class="fas fa-shopping-cart"></i>
+                    <p>Você ainda não realizou nenhuma compra.</p>
+                    <a href="../index.php#container2" class="btn-primary">Ir às Compras</a>
+                  </div>
+                <?php else: ?>
+                  <?php
+                  $recentPurchases = array_slice($historicoCompras, 0, 3); // Mostrar apenas as 3 mais recentes
+                  foreach ($recentPurchases as $compra):
+                  ?>
+                    <div class="purchase-item">
+                      <div class="purchase-icon">
+                        <i class="fas fa-shopping-bag"></i>
+                      </div>
+                      <div class="purchase-details">
+                        <h4>Compra #<?php echo htmlspecialchars($compra['id']); ?></h4>
+                        <p class="purchase-date"><?php echo date('d/m/Y', strtotime($compra['data_compra'])); ?></p>
+                        <p class="purchase-amount">€ <?php echo htmlspecialchars(number_format($compra['valor_compra'], 2, ',', '.')); ?></p>
+                      </div>
+                      <?php
+                      $statusClass = '';
+                      $statusText = '';
+
+                      switch ($compra['status']) {
+                        case 'pendente':
+                          $statusClass = 'status-pending';
+                          $statusText = 'Pendente';
+                          break;
+                        case 'enviado':
+                          $statusClass = 'status-processing';
+                          $statusText = 'Enviado';
+                          break;
+                        case 'recebido':
+                          $statusClass = 'status-delivered';
+                          $statusText = 'Recebido';
+                          break;
+                      }
+                      ?>
+                      <div class="purchase-status <?php echo $statusClass; ?>">
+                        <?php echo $statusText; ?>
+                      </div>
+                    </div>
+                  <?php endforeach; ?>
+                <?php endif; ?>
+              </div>
+            </div>
+        </section>
+
+        <section id="purchases" class="dashboard-section">
+          <div class="section-header">
+            <h2><i class="fas fa-shopping-cart"></i> Histórico de Compras</h2>
+            <p>Visualize todas as suas compras e acompanhe o status dos seus pedidos.</p>
+          </div>
+
+          <div class="purchases-filters">
+            <div class="search-box">
+              <input type="text" id="search-purchases" placeholder="Pesquisar compras...">
+              <button><i class="fas fa-search"></i></button>
+            </div>
+
+            <div class="filter-box">
+              <select id="filter-status">
+                <option value="all">Todos os Status</option>
+                <option value="pendente">Pendente</option>
+                <option value="enviado">Enviado</option>
+                <option value="recebido">Recebido</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="purchases-table-container">
+            <?php if (empty($historicoCompras)): ?>
+              <div class="empty-state">
+                <i class="fas fa-shopping-cart"></i>
+                <p>Você ainda não realizou nenhuma compra.</p>
+                <a href="../index.php#container2" class="btn-primary">Ir às Compras</a>
+              </div>
+            <?php else: ?>
+              <table class="purchases-table">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Data</th>
+                    <th>Valor</th>
+                    <th>Pontos</th>
+                    <th>Status</th>
+                    <th>Ações</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <?php foreach ($historicoCompras as $compra): ?>
+                    <tr data-id="<?php echo $compra['id']; ?>" data-status="<?php echo $compra['status']; ?>">
+                      <td>#<?php echo htmlspecialchars($compra['id']); ?></td>
+                      <td><?php echo date('d/m/Y', strtotime($compra['data_compra'])); ?></td>
+                      <td>€ <?php echo htmlspecialchars(number_format($compra['valor_compra'], 2, ',', '.')); ?></td>
+                      <td><?php echo htmlspecialchars($compra['pontos_ganhos']); ?></td>
+                      <td>
+                        <?php
+                        $statusClass = '';
+                        $statusText = '';
+
+                        switch ($compra['status']) {
+                          case 'pendente':
+                            $statusClass = 'status-pending';
+                            $statusText = 'Pendente';
+                            break;
+                          case 'enviado':
+                            $statusClass = 'status-processing';
+                            $statusText = 'Enviado';
+                            break;
+                          case 'recebido':
+                            $statusClass = 'status-delivered';
+                            $statusText = 'Recebido';
+                            break;
+                        }
+                        ?>
+                        <span class="status-badge <?php echo $statusClass; ?>"><?php echo $statusText; ?></span>
+                      </td>
+                      <td>
+                        <button class="btn-icon" onclick="showOrderDetails(<?php echo $compra['id']; ?>)">
+                          <i class="fas fa-eye"></i>
+                        </button>
+                        <button class="btn-icon" onclick="generateInvoice(<?php echo $compra['id']; ?>)">
+                          <i class="fas fa-file-invoice"></i>
+                        </button>
+                      </td>
+                    </tr>
+                  <?php endforeach; ?>
+                </tbody>
+              </table>
+            <?php endif; ?>
+          </div>
+        </section>
+
+        <section id="settings" class="dashboard-section">
+          <div class="section-header">
+            <h2><i class="fas fa-cog"></i> Configurações da Conta</h2>
+            <p>Atualize suas informações pessoais e preferências.</p>
+          </div>
+
+          <div class="settings-grid">
+            <div class="settings-card" onclick="showModal('password')">
+              <div class="settings-icon">
+                <i class="fas fa-lock"></i>
+              </div>
+              <div class="settings-info">
+                <h3>Alterar Senha</h3>
+                <p>Atualize sua senha para manter sua conta segura</p>
+              </div>
+              <div class="settings-action">
+                <i class="fas fa-chevron-right"></i>
+              </div>
+            </div>
+
+            <div class="settings-card" onclick="showModal('email')">
+              <div class="settings-icon">
+                <i class="fas fa-envelope"></i>
+              </div>
+              <div class="settings-info">
+                <h3>Alterar Email</h3>
+                <p>Atualize seu endereço de email</p>
+              </div>
+              <div class="settings-action">
+                <i class="fas fa-chevron-right"></i>
+              </div>
+            </div>
+
+            <div class="settings-card" onclick="showModal('name')">
+              <div class="settings-icon">
+                <i class="fas fa-user"></i>
+              </div>
+              <div class="settings-info">
+                <h3>Alterar Nome</h3>
+                <p>Atualize seu nome de usuário</p>
+              </div>
+              <div class="settings-action">
+                <i class="fas fa-chevron-right"></i>
+              </div>
+            </div>
+
+            <div class="settings-card" onclick="showModal('address')">
+              <div class="settings-icon">
+                <i class="fas fa-map-marker-alt"></i>
+              </div>
+              <div class="settings-info">
+                <h3>Adicionar Morada</h3>
+                <p>Adicione ou atualize seu endereço de entrega</p>
+              </div>
+              <div class="settings-action">
+                <i class="fas fa-chevron-right"></i>
+              </div>
+            </div>
+
+            <div class="settings-card" onclick="showModal('phone')">
+              <div class="settings-icon">
+                <i class="fas fa-phone"></i>
+              </div>
+              <div class="settings-info">
+                <h3>Adicionar Telefone</h3>
+                <p>Adicione ou atualize seu número de telefone</p>
+              </div>
+              <div class="settings-action">
+                <i class="fas fa-chevron-right"></i>
+              </div>
+            </div>
+          </div>
+        </section>
       </div>
     </div>
 
@@ -461,7 +659,7 @@ $conn->close();
         <h2 id="modal-title"></h2>
         <form id="modal-form">
           <div id="modal-fields"></div>
-          <button type="submit">Salvar</button>
+          <button type="submit" class="btn-primary">Salvar Alterações</button>
         </form>
       </div>
     </div>
@@ -474,209 +672,18 @@ $conn->close();
         <div id="order-details-content"></div>
       </div>
     </div>
-
   </main>
   <footer>
-    <!-- Adicione o conteúdo do footer aqui -->
+    <div class="footer-content">
+      <div class="footer-logo"> <img src="../img/logolopes.png" alt="Logo Armazéns Lopes" width="50"> </div>
+      <div class="footer-links"> <a href="../index.php">Início</a> <a href="../index.php#container2">Produtos</a> <a href="../index.php#sobre">Sobre</a> <a href="../index.php#container6">Contactos</a> </div>
+      <div class="footer-social"> <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-instagram"></i></a> <a href="#"><i class="fab fa-linkedin"></i></a> </div>
+    </div>
+    <div class="footer-bottom">
+      <p><strong>© 2024 ARMAZÉNS LOPES. TODOS OS DIREITOS RESERVADOS.</strong></p>
+    </div>
   </footer>
-
-  <script>
-    function showModal(type) {
-      const modal = document.getElementById('modal');
-      const modalTitle = document.getElementById('modal-title');
-      const modalFields = document.getElementById('modal-fields');
-      const modalForm = document.getElementById('modal-form');
-
-      // Clear previous fields
-      modalFields.innerHTML = '';
-
-      // Configure modal based on type
-      switch (type) {
-        case 'password':
-          modalTitle.textContent = 'Mudar Senha';
-          modalFields.innerHTML = `
-                    <input type="password" name="current_password" placeholder="Senha atual" required>
-                    <input type="password" name="new_password" placeholder="Nova senha" required>
-                    <input type="password" name="confirm_password" placeholder="Confirmar nova senha" required>
-                    <input type="hidden" name="action" value="change_password">
-                `;
-          break;
-        case 'email':
-          modalTitle.textContent = 'Alterar Email';
-          modalFields.innerHTML = `
-                    <input type="email" name="new_email" placeholder="Novo email" required>
-                    <input type="password" name="password" placeholder="Confirmar senha" required>
-                    <input type="hidden" name="action" value="change_email">
-                `;
-          break;
-        case 'name':
-          modalTitle.textContent = 'Alterar Nome';
-          modalFields.innerHTML = `
-                    <input type="text" name="new_name" placeholder="Novo nome" required>
-                    <input type="hidden" name="action" value="change_name">
-                `;
-          break;
-        case 'address':
-          modalTitle.textContent = 'Adicionar Morada';
-          modalFields.innerHTML = `
-                    <input type="text" name="rua" placeholder="Rua" required>
-                    <input type="text" name="numero" placeholder="Número" required>
-                    <input type="text" name="cidade" placeholder="Cidade" required>
-                    <input type="text" name="codigo_postal" placeholder="Código Postal" required>
-                    <input type="hidden" name="action" value="add_address">
-                `;
-          break;
-        case 'phone':
-          modalTitle.textContent = 'Telefone';
-          modalFields.innerHTML = `
-                    <input type="tel" name="phone" placeholder="Novo número de telefone" required>
-                    <input type="hidden" name="action" value="add_phone">
-                `;
-          break;
-      }
-
-      modal.style.display = 'block';
-
-      modalForm.onsubmit = (e) => {
-        e.preventDefault();
-        const formData = new FormData(modalForm);
-        fetch(window.location.href, {
-            method: 'POST',
-            body: formData
-          })
-          .then(response => {
-            if (!response.ok) {
-              throw new Error('Erro na resposta do servidor');
-            }
-            return response.json();
-          })
-          .then(data => {
-            if (data.status === 'success') {
-              alert(data.message);
-              closeModal();
-              location.reload();
-            } else {
-              throw new Error(data.message);
-            }
-          })
-          .catch(error => {
-            console.error('Erro:', error);
-            alert('Erro: ' + error.message);
-          });
-      };
-    }
-
-    function closeModal() {
-      const modal = document.getElementById('modal');
-      modal.style.display = 'none';
-    }
-
-    // Função para mostrar os detalhes do pedido
-    function showOrderDetails(orderId) {
-  fetch(`get_order_details.php?order_id=${orderId}`)
-    .then(response => response.json())
-    .then(data => {
-      if (data.error) {
-        alert(data.error);
-        return;
-      }
-
-      const modalContent = document.getElementById('order-details-content');
-      modalContent.style.maxHeight = '400px';
-      modalContent.style.overflowY = 'auto';
-
-      // Construir o HTML para os itens do pedido
-      let html = '<div class="order-items">';
-
-      data.items.forEach(item => {
-        html += `
-          <div class="order-item">
-            <img src="${item.imagem}" alt="${item.nome}">
-            <div class="order-item-details">
-              <h4>${item.nome}</h4>
-              <p>Quantidade: ${item.quantidade}</p>
-              <p>Preço unitário: €${parseFloat(item.preco_unitario).toFixed(2)}</p>
-              <p>Subtotal: €${parseFloat(item.subtotal).toFixed(2)}</p>
-            </div>
-          </div>
-        `;
-      });
-
-      html += '</div>';
-
-      // Adicionar o resumo do pedido
-      html += `
-        <div class="order-summary">
-          <p>Total: €${parseFloat(data.order.valor_compra).toFixed(2)}</p>
-          <p>Status: ${data.order.status}</p>
-          <p>Data: ${new Date(data.order.data_compra).toLocaleDateString()}</p>
-          <button class="invoice-btn" onclick="generateInvoice(${orderId})">Fatura</button>
-        </div>
-      `;
-
-      modalContent.innerHTML = html;
-
-      // Mostrar o modal
-      document.getElementById('order-details-modal').style.display = 'block';
-    })
-    .catch(error => {
-      console.error('Erro ao buscar detalhes do pedido:', error);
-      alert('Ocorreu um erro ao buscar os detalhes do pedido.');
-    });
-}
-
-function generateInvoice(orderId) {
-  window.location.href = `generate_invoice.php?order_id=${orderId}`;
-}
-
-    // Função para fechar o modal de detalhes do pedido
-    function closeOrderDetailsModal() {
-      document.getElementById('order-details-modal').style.display = 'none';
-    }
-
-    // Close modal when clicking outside
-    window.onclick = (event) => {
-      const modal = document.getElementById('modal');
-      const orderDetailsModal = document.getElementById('order-details-modal');
-      if (event.target === modal) {
-        closeModal();
-      }
-      if (event.target === orderDetailsModal) {
-        closeOrderDetailsModal();
-      }
-    }
-
-    // Animate stats on page load
-    document.addEventListener('DOMContentLoaded', () => {
-      const statNumbers = document.querySelectorAll('.stat-number');
-      statNumbers.forEach(stat => {
-        const finalValue = stat.textContent;
-        stat.textContent = '0';
-        setTimeout(() => {
-          animateNumber(stat, finalValue);
-        }, 500);
-      });
-    });
-
-    function animateNumber(element, finalValue) {
-      const value = parseFloat(finalValue.replace(/[^0-9.-]+/g, ""));
-      const prefix = finalValue.replace(/[0-9.-]+/g, "");
-      let currentValue = 0;
-      const duration = 1000;
-      const steps = 20;
-      const increment = value / steps;
-
-      const interval = setInterval(() => {
-        currentValue += increment;
-        if (currentValue >= value) {
-          element.textContent = finalValue;
-          clearInterval(interval);
-        } else {
-          element.textContent = prefix + Math.floor(currentValue);
-        }
-      }, duration / steps);
-    }
-  </script>
+  <script src="js/script.js"></script>
 </body>
 
 </html>

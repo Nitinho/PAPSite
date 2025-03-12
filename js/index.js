@@ -1,162 +1,203 @@
-
-
-const images = [
-    "img/polvo.jpg",
-    "img/bacalhau.jpg"
-];
-
-let currentIndex = 0;
-
-function changeImage() {
-    // Obtém o elemento da imagem pelo ID
-    const imgElement = document.getElementById('imgcontainer3');
-    // Alterna o índice da imagem
-    currentIndex = (currentIndex + 1) % images.length;
-    // Define o novo caminho da imagem
-    imgElement.src = images[currentIndex];
-}
-
-// Alterna a imagem a cada 10 segundos
-setInterval(changeImage, 10000);
-
-// Função para abrir um novo HTML em uma nova aba ao clicar na imagem
-function openNewPage() {
-    // Aqui você pode redirecionar para diferentes páginas com base na imagem atual
-    if (currentIndex === 0) {
-        window.open("receitas/polvo.html", "_blank"); // Abre polvo.html em uma nova aba
-    } else if (currentIndex === 1) {
-        window.open("receitas/bacalhau.html", "_blank"); // Abre bacalhau.html em uma nova aba
-    }
-}
-
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function() {
+    // Animação de fade-in
     const fadeElements = document.querySelectorAll('.fade-in');
-
     const observer = new IntersectionObserver((entries) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
                 entry.target.classList.add('visible');
-            } else {
-                entry.target.classList.remove('visible'); // Se quiser que o efeito reverta ao rolar para cima
             }
         });
-    });
+    }, { threshold: 0.1 });
 
     fadeElements.forEach(element => {
         observer.observe(element);
     });
-});
 
-document.addEventListener('DOMContentLoaded', function () {
-    // Adiciona o evento de clique a cada pergunta
-    document.querySelectorAll('.faq-question').forEach((question) => {
+    // Header scroll effect
+    const header = document.querySelector('header');
+    window.addEventListener('scroll', function() {
+        if (window.scrollY > 50) {
+            header.classList.add('scrolled');
+        } else {
+            header.classList.remove('scrolled');
+        }
+    });
+
+    // Perguntas frequentes
+    const faqItems = document.querySelectorAll('.faq-item');
+    faqItems.forEach(item => {
+        const question = item.querySelector('.faq-question');
         question.addEventListener('click', () => {
-            const answer = question.nextElementSibling;
-
-            // Fecha outras respostas abertas
-            document.querySelectorAll('.faq-answer').forEach((ans) => {
-                if (ans !== answer) {
-                    ans.style.maxHeight = null;
+            // Close other items
+            faqItems.forEach(otherItem => {
+                if (otherItem !== item && otherItem.classList.contains('active')) {
+                    otherItem.classList.remove('active');
                 }
             });
+            
+            // Toggle current item
+            item.classList.toggle('active');
+        });
+    });
 
-            // Alterna entre abrir e fechar a resposta clicada
-            if (answer.style.maxHeight) {
-                answer.style.maxHeight = null; // Fecha se já estiver aberta
+    // Menu móvel
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', function() {
+            menuToggle.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            
+            // Animação do ícone do menu
+            const spans = menuToggle.querySelectorAll('span');
+            if (menuToggle.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
             } else {
-                answer.style.maxHeight = answer.scrollHeight + "px"; // Abre a resposta
+                spans[0].style.transform = 'none';
+                spans[1].style.opacity = '1';
+                spans[2].style.transform = 'none';
+            }
+        });
+    }
+
+    // Fechar o menu ao clicar em um link
+    const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            menuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            
+            // Reset menu icon
+            const spans = menuToggle.querySelectorAll('span');
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        });
+    });
+
+    // Função para copiar texto para a área de transferência
+    window.copyToClipboard = function(text) {
+        navigator.clipboard.writeText(text).then(() => {
+            // Feedback visual
+            const notification = document.createElement('div');
+            notification.textContent = 'Copiado com sucesso!';
+            notification.style.position = 'fixed';
+            notification.style.bottom = '20px';
+            notification.style.left = '50%';
+            notification.style.transform = 'translateX(-50%)';
+            notification.style.padding = '10px 20px';
+            notification.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+            notification.style.color = 'white';
+            notification.style.borderRadius = '5px';
+            notification.style.zIndex = '9999';
+            
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                notification.style.opacity = '0';
+                notification.style.transition = 'opacity 0.5s ease';
+                setTimeout(() => {
+                    document.body.removeChild(notification);
+                }, 500);
+            }, 2000);
+        }).catch(err => {
+            console.error('Erro ao copiar: ', err);
+        });
+    };
+
+    // Botão de Voltar ao Topo
+    const backToTopButton = document.getElementById('back-to-top');
+
+    if (backToTopButton) {
+        window.addEventListener('scroll', function() {
+            if (window.scrollY > 300) {
+                backToTopButton.classList.add('visible');
+            } else {
+                backToTopButton.classList.remove('visible');
+            }
+        });
+
+        backToTopButton.addEventListener('click', function() {
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        });
+    }
+
+    // Links de ancoragem suaves
+    document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+        anchor.addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const targetId = this.getAttribute('href');
+            if (targetId === '#') return;
+            
+            const targetElement = document.querySelector(targetId);
+            if (targetElement) {
+                const headerHeight = document.querySelector('header').offsetHeight;
+                const targetPosition = targetElement.getBoundingClientRect().top + window.pageYOffset - headerHeight;
+                
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
             }
         });
     });
+
+    // Animação para cards de produtos
+    const produtoCards = document.querySelectorAll('.containerproduto');
+    produtoCards.forEach((card, index) => {
+        card.style.animationDelay = `${index * 0.1}s`;
+        card.addEventListener('mouseenter', function() {
+            this.style.transform = 'translateY(-10px)';
+        });
+        card.addEventListener('mouseleave', function() {
+            this.style.transform = 'translateY(0)';
+        });
+    });
+
+    // Preloader
+    const preloader = document.createElement('div');
+    preloader.className = 'preloader';
+    preloader.innerHTML = `
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    `;
+    document.body.appendChild(preloader);
+
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                document.body.removeChild(preloader);
+            }, 500);
+        }, 500);
+    });
 });
 
-
-
-function copyToClipboard(text) {
-    navigator.clipboard.writeText(text).then(() => {
-        alert("Copiado para a área de transferência: " + text);
-    }).catch(err => {
-        alert("Erro ao copiar: " + err);
-    });
-}
 
 document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const mobileMenu = document.querySelector('.mobile-menu');
 
     menuToggle.addEventListener('click', function() {
-        this.classList.toggle('active');
         mobileMenu.classList.toggle('active');
-    });
-
-    // Fechar o menu ao clicar em um link
-    const mobileMenuLinks = mobileMenu.getElementsByTagName('a');
-    for (let link of mobileMenuLinks) {
-        link.addEventListener('click', function() {
-            menuToggle.classList.remove('active');
-            mobileMenu.classList.remove('active');
-        });
-    }
-});
-
-
-    /* JavaScript para ativação de elementos */
-    document.addEventListener('DOMContentLoaded', function() {
-        // Ativar menu mobile
-        const menuToggle = document.querySelector('.mobile-menu-toggle');
-        const mobileMenu = document.querySelector('.mobile-menu');
         
-        if (menuToggle && mobileMenu) {
-            menuToggle.addEventListener('click', function() {
-                mobileMenu.classList.toggle('active');
-                
-                const spans = menuToggle.querySelectorAll('span');
-                spans[0].classList.toggle('rotate-down');
-                spans[1].classList.toggle('fade-out');
-                spans[2].classList.toggle('rotate-up');
-            });
+        // Animação do ícone do menu (opcional)
+        const spans = menuToggle.querySelectorAll('span');
+        if (mobileMenu.classList.contains('active')) {
+            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+            spans[1].style.opacity = '0';
+            spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+        } else {
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
         }
-        
-        // Ativar animações de fade-in
-        const fadeElements = document.querySelectorAll('.fade-in');
-        
-        const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('visible');
-                }
-            });
-        }, { threshold: 0.1 });
-        
-        fadeElements.forEach(element => {
-            observer.observe(element);
-        });
-        
-        // Ativar perguntas frequentes
-        const faqItems = document.querySelectorAll('.faq-item');
-        
-        faqItems.forEach(item => {
-            item.addEventListener('click', function() {
-                this.classList.toggle('active');
-                
-                const answer = this.querySelector('.faq-answer');
-                if (this.classList.contains('active')) {
-                    answer.style.maxHeight = answer.scrollHeight + 'px';
-                    answer.style.paddingTop = '15px';
-                } else {
-                    answer.style.maxHeight = 0;
-                    answer.style.paddingTop = 0;
-                }
-            });
-        });
-        
-        // Função para copiar para área de transferência
-        window.copyToClipboard = function(text) {
-            navigator.clipboard.writeText(text).then(() => {
-                alert('Copiado para a área de transferência!');
-            }).catch(err => {
-                console.error('Erro ao copiar: ', err);
-            });
-        };
     });
-    
+});

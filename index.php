@@ -18,210 +18,227 @@ if (isset($_SESSION['email'])) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bem-Vindo aos Armazens Lopes </title>
+    <title>Armazéns Lopes | Fornecedor Premium para Supermercados</title>
     <link rel="stylesheet" href="styles/style.css">
-    <script src="js/index.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="js/index.js" defer></script>
+    <meta name="description" content="Armazéns Lopes - Fornecedor premium de produtos para supermercados em Portugal">
 </head>
 
 <body>
     <header>
-
         <div id="headerimg">
-            <a href="index.php"><img src="img/logolopes.png" alt="Logo"></a>
+            <a href="index.php"><img src="img/logolopes.png" alt="Logo Armazéns Lopes"></a>
         </div>
         <div id="headerselect">
-            <a href="index.php">INICIO</a>
+            <a href="index.php">INÍCIO</a>
             <a href="#container2">PRODUTOS</a>
-            <a href="">SOBRE</a>
-            <a href="#container6">CONTATOS</a>
+            <a href="#sobre">SOBRE</a>
+            <a href="#container6">CONTACTOS</a>
             <a href="form.php">VIRAR CLIENTE</a>
             <button id="buttonheader" onclick="window.location.href='<?php echo $redirectUrl; ?>'"><strong>ÁREA CLIENTE</strong></button>
-
         </div>
 
-        <!-- Botão de menu para mobile -->
         <div class="mobile-menu-toggle">
             <span></span>
             <span></span>
             <span></span>
         </div>
 
-        <!-- Menu para mobile -->
         <nav class="mobile-menu">
-            <a href="index.php">INICIO</a>
+            <a href="index.php">INÍCIO</a>
             <a href="#container2">PRODUTOS</a>
-            <a href="">SOBRE</a>
-            <a href="#container6">CONTATOS</a>
-            <a href="formulario.php">VIRAR CLIENTE</a>
+            <a href="#sobre">SOBRE</a>
+            <a href="#container6">CONTACTOS</a>
+            <a href="form.php">VIRAR CLIENTE</a>
             <a href="<?php echo $redirectUrl; ?>" class="mobile-area-cliente"><strong>ÁREA CLIENTE</strong></a>
         </nav>
-
     </header>
 
     <main>
-        <div id="container1" class="fade-in">
+        <section id="container1" class="fade-in">
             <div id="container1txt">
-                <h1>Armazém Lopes, onde a qualidade é <br>
-                    prioridade e encontrar o que precia é
-                    <br>simples.
-                </h1>
-                <p>Nos Armazéns Lopes, encontra tudo o que precisa para o seu supermercado. <br>
-                    Desde os básicos como arroz e frutas frescas, até especiarias exóticas e <br>
-                    produtos de charcutaria</p>
+                <h1>Qualidade Premium para o seu Negócio</h1>
+                <p>Nos Armazéns Lopes, encontra tudo o que precisa para o seu supermercado. Desde produtos básicos e frescos até especialidades gourmet e internacionais.</p>
+                <a href="form.php" class="cta-button">Torne-se Cliente</a>
             </div>
             <div id="container1img">
-                <img src="img/carrinhop.png" alt="">
+                <img src="img/carrinhop.png" alt="Carrinho de Compras">
             </div>
-        </div>
-        <div id="container2" class="fade-in">
-            <h1>CONHEÇA OS NOSSOS PRODUTOS</h1>
-            <div id="produtos1">
-                <div class="containerproduto" class="fade-in">
-                    <div class="produtosselect">
-                        <img src="img/pao.png" alt="">
-                        <a href="produtos/padaria/padaria1.php"><button>Padaria e <br>Pastaleria</button></a>
+        </section>
 
+        <section id="container2" class="fade-in">
+            <h2 class="section-title">NOSSOS PRODUTOS</h2>
+            <div class="produtos-grid">
+                <div class="containerproduto">
+                    <div class="produtosselect">
+                        <img src="img/pao.png" alt="Padaria e Pastelaria">
+                        <a href="produtos/padaria/padaria1.php"><button>Padaria e Pastelaria</button></a>
                     </div>
                 </div>
-                <div class="containerproduto" class="fade-in">
+                <div class="containerproduto">
                     <div class="produtosselect">
-                        <img src="img/image.png" alt="">
+                        <img src="img/image.png" alt="Bebidas">
                         <button>Bebidas</button>
                     </div>
                 </div>
-                <div class="containerproduto" class="fade-in">
+                <div class="containerproduto">
                     <div class="produtosselect">
-                        <img src="img/gelado.png" alt="">
+                        <img src="img/gelado.png" alt="Congelados">
                         <button>Congelados</button>
                     </div>
                 </div>
-                <div class="containerproduto" class="fade-in">
+                <div class="containerproduto">
                     <div class="produtosselect">
-                        <img src="img/pao.png" alt="">
-                        <button>Merceria</button>
+                        <img src="img/pao.png" alt="Mercearia">
+                        <button>Mercearia</button>
                     </div>
                 </div>
-            </div>
-            <div id="produtos2" class="fade-in">
-                <div class="containerproduto" class="fade-in">
+                <div class="containerproduto">
                     <div class="produtosselect">
-                        <img src="img/pao.png" alt="">
+                        <img src="img/pao.png" alt="Laticínios">
                         <button>Laticínios</button>
                     </div>
                 </div>
-                <div class="containerproduto" class="fade-in">
+                <div class="containerproduto">
                     <div class="produtosselect">
-                        <img src="img/pao.png" alt="">
+                        <img src="img/pao.png" alt="Frescos">
                         <button>Frescos</button>
                     </div>
                 </div>
             </div>
-        </div>
-        <div id="container3" class="fade-in">
-            <div id="imgcontaner3">
-                <img id="imgcontainer3" src="img/polvo.jpg" alt="Polvo" onclick="openNewPage()">
-            </div>
-            <div id="txtcontainer3">
-                <h1>ALGUMAS RECEITAS NOSSAS</h1>
-                <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque alias consectetur itaque odio at nihil
-                    vero vel nobis quod tempora.</p>
-            </div>
-        </div>
-        <div id="container5" class="fade-in">
-            <h1>PERGUNTAS FREQUENTES</h1>
-            <div class="faq-item">
-                <h2 class="faq-question">O que é o Armazém Lopes?</h2>
-                <div class="faq-answer">
-                    <p>O Armazém Lopes é uma loja especializada em fornecer produtos de alta qualidade para
-                        supermercados e comércios.</p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <h2 class="faq-question">Como posso tornar-me cliente?</h2>
-                <div class="faq-answer">
-                    <p>Para se tornar cliente, basta seguir as instruções na seção "Como Virar Cliente" ou clicar aqui
-                        <a href="formulario.html">Virar cliente</a>.
-                    </p>
-                </div>
-            </div>
-            <div class="faq-item">
-                <h2 class="faq-question">Quais são as formas de pagamento aceites?</h2>
-                <div class="faq-answer">
-                    <p>Aceitamos cartões de crédito, débito e pagamentos por transferência bancária.</p>
-                </div>
-            </div>
-        </div>
+        </section>
 
-        <div id="container5">
-            <h1>Locais de Reabastecimentos</h1>
+        <section id="sobre" class="fade-in">
+            <div class="sobre-content">
+                <h2 class="section-title">SOBRE NÓS</h2>
+                <p>Os Armazéns Lopes são líderes no fornecimento de produtos de qualidade para supermercados em Portugal há mais de 30 anos. Comprometemo-nos com a excelência, oferecendo produtos frescos e de qualidade premium aos nossos clientes.</p>
+                <p>A nossa missão é ser o parceiro de confiança para o seu negócio, garantindo entregas pontuais e produtos que satisfazem as necessidades dos seus clientes.</p>
+            </div>
+        </section>
+
+        <section id="container5" class="fade-in">
+            <h2 class="section-title">PERGUNTAS FREQUENTES</h2>
+            <div class="faq-container">
+                <div class="faq-item">
+                    <h3 class="faq-question">O que é o Armazém Lopes?</h3>
+                    <div class="faq-answer">
+                        <p>O Armazém Lopes é uma empresa especializada em fornecer produtos de alta qualidade para supermercados e comércios em todo Portugal, com mais de 30 anos de experiência no mercado.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Como posso tornar-me cliente?</h3>
+                    <div class="faq-answer">
+                        <p>Para se tornar cliente, basta preencher o formulário na secção "Virar Cliente" ou contactar-nos diretamente. A nossa equipa entrará em contacto para finalizar o processo de registo.</p>
+                    </div>
+                </div>
+                <div class="faq-item">
+                    <h3 class="faq-question">Quais são as formas de pagamento aceites?</h3>
+                    <div class="faq-answer">
+                        <p>Aceitamos múltiplas formas de pagamento, incluindo cartões de crédito, débito, transferência bancária e pagamentos a prazo para clientes registados com histórico aprovado.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="locais" class="fade-in">
+            <h2 class="section-title">LOCAIS DE REABASTECIMENTO</h2>
             <div class="reabastecimento">
                 <div class="reabastecimento-card">
-                    <img src="https://mecaluxpt.cdnwm.com/video-background-image-cister.1.0.jpg?e=jpg"
-                        alt="Armazém Lisboa">
+                    <div class="card-image">
+                        <img src="https://mecaluxpt.cdnwm.com/video-background-image-cister.1.0.jpg?e=jpg" alt="Armazém Lisboa">
+                    </div>
                     <div class="reabastecimento-info">
-                        <h2>Armazém Lisboa</h2>
-                        <p>Horário: 08:00 - 18:00</p>
-                        <p>Coordenadas GPS: 38.7169° N, 9.1399° W</p>
-                        <p>Morada: Rua do Comércio, 1250-096, Lisboa</p>
-                        <p>Telefone: +351 21 123 4567</p>
+                        <h3>Armazém Lisboa</h3>
+                        <ul>
+                            <li><i class="fas fa-clock"></i> 08:00 - 18:00</li>
+                            <li><i class="fas fa-map-marker-alt"></i> Rua do Comércio, 1250-096, Lisboa</li>
+                            <li><i class="fas fa-phone"></i> +351 21 123 4567</li>
+                        </ul>
                     </div>
                 </div>
 
                 <div class="reabastecimento-card">
-                    <img src="https://mecaluxpt.cdnwm.com/video-background-image-cister.1.0.jpg?e=jpg"
-                        alt="Armazém Porto">
+                    <div class="card-image">
+                        <img src="https://mecaluxpt.cdnwm.com/video-background-image-cister.1.0.jpg?e=jpg" alt="Armazém Porto">
+                    </div>
                     <div class="reabastecimento-info">
-                        <h2>Armazém Porto</h2>
-                        <p>Horário: 07:00 - 19:00</p>
-                        <p>Coordenadas GPS: 41.1496° N, 8.6110° W</p>
-                        <p>Morada: Avenida dos Aliados, 4000-064, Porto</p>
-                        <p>Telefone: +351 22 987 6543</p>
+                        <h3>Armazém Porto</h3>
+                        <ul>
+                            <li><i class="fas fa-clock"></i> 07:00 - 19:00</li>
+                            <li><i class="fas fa-map-marker-alt"></i> Avenida dos Aliados, 4000-064, Porto</li>
+                            <li><i class="fas fa-phone"></i> +351 22 987 6543</li>
+                        </ul>
                     </div>
                 </div>
 
                 <div class="reabastecimento-card">
-                    <img src="https://mecaluxpt.cdnwm.com/video-background-image-cister.1.0.jpg?e=jpg"
-                        alt="Armazém Faro">
+                    <div class="card-image">
+                        <img src="https://mecaluxpt.cdnwm.com/video-background-image-cister.1.0.jpg?e=jpg" alt="Armazém Faro">
+                    </div>
                     <div class="reabastecimento-info">
-                        <h2>Armazém Faro</h2>
-                        <p>Horário: 09:00 - 17:00</p>
-                        <p>Coordenadas GPS: 37.0179° N, 7.9308° W</p>
-                        <p>Morada: Estrada Nacional 125, 8000-123, Faro</p>
-                        <p>Telefone: +351 28 765 4321</p>
+                        <h3>Armazém Faro</h3>
+                        <ul>
+                            <li><i class="fas fa-clock"></i> 09:00 - 17:00</li>
+                            <li><i class="fas fa-map-marker-alt"></i> Estrada Nacional 125, 8000-123, Faro</li>
+                            <li><i class="fas fa-phone"></i> +351 28 765 4321</li>
+                        </ul>
                     </div>
                 </div>
-
-
             </div>
-        </div>
+        </section>
 
-        <div id="container6">
-            <h1>Contactos</h1>
-            <div class="contact-item">
-                <img src="https://cdn-icons-png.flaticon.com/512/732/732200.png" alt="Email Icon">
-                <div class="contact-info">
-                    <h2>Email</h2>
-                    <p>contacto@lopesmarket.com</p>
+        <section id="container6" class="fade-in">
+            <h2 class="section-title">CONTACTOS</h2>
+            <div class="contact-container">
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-envelope"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>Email</h3>
+                        <p>contacto@lopesmarket.com</p>
+                    </div>
+                    <button onclick="copyToClipboard('contacto@lopesmarket.com')">Copiar</button>
                 </div>
-                <button onclick="copyToClipboard('contacto@lopesmarket.com')">Copiar</button>
-            </div>
-            <div class="contact-item">
-                <img src="https://cdn-icons-png.flaticon.com/512/724/724664.png" alt="Telefone Icon">
-                <div class="contact-info">
-                    <h2>Telefone</h2>
-                    <p>+351 21 123 4567</p>
+                <div class="contact-item">
+                    <div class="contact-icon">
+                        <i class="fas fa-phone-alt"></i>
+                    </div>
+                    <div class="contact-info">
+                        <h3>Telefone</h3>
+                        <p>+351 21 123 4567</p>
+                    </div>
+                    <button onclick="copyToClipboard('+351 21 123 4567')">Copiar</button>
                 </div>
-                <button onclick="copyToClipboard('+351 21 123 4567')">Copiar</button>
             </div>
-        </div>
-
-
+        </section>
     </main>
 
     <footer>
-        <p><strong>TODOS OS DIREITOS RESERVADOS NA LOPESMARKET 2024 ©</strong></p>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="img/logolopes.png" alt="Logo Armazéns Lopes" width="50">
+            </div>
+            <div class="footer-links">
+                <a href="index.php">Início</a>
+                <a href="#container2">Produtos</a>
+                <a href="#sobre">Sobre</a>
+                <a href="#container6">Contactos</a>
+                <a href="form.php">Virar Cliente</a>
+            </div>
+            <div class="footer-social">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p><strong>© 2024 ARMAZÉNS LOPES. TODOS OS DIREITOS RESERVADOS.</strong></p>
+        </div>
     </footer>
 
+    <button id="back-to-top" title="Voltar ao Topo"><i class="fas fa-arrow-up"></i></button>
 </body>
 
 </html>
