@@ -47,10 +47,22 @@ CREATE TABLE produtos (
 
 
 INSERT INTO produtos (nome, descricao, preco, imagem, categoria) VALUES
-('Pão de Centeio', 'Pão tradicional', 0.50, '../../img/Bolapao.png', 'pao'),
-('Pão Integral', 'Feito com farinha integral', 0.60, '../../img/Bolapao.png', 'pao'),
-('Pão de Milho', 'Sabor leve de milho', 0.55, '../../img/Bolapao.png', 'pao'),
-('Pão de Forma', 'Macio e perfeito para sanduíches', 0.80, '../../img/Bolapao.png', 'pao'),
-('Pão Francês', 'Crocante por fora e macio por dentro', 0.40, '../../img/Bolapao.png', 'pao'),
-('Pão de Queijo', 'Feito com queijo derretido', 0.70, '../../img/Bolapao.png', 'pao');
+('Pão de Centeio', 'Pão tradicional', 0.50, '/PAPSite/img/Bolapao.png', 'pao'),
+('Pão Integral', 'Feito com farinha integral', 0.60, '/PAPSite/img/Bolapao.png', 'pao'),
+('Pão de Milho', 'Sabor leve de milho', 0.55, '/PAPSite/img/Bolapao.png', 'pao'),
+('Pão de Forma', 'Macio e perfeito para sanduíches', 0.80, '/PAPSite/img/Bolapao.png', 'pao'),
+('Pão Francês', 'Crocante por fora e macio por dentro', 0.40, '/PAPSite/img/Bolapao.png', 'pao'),
+('Pão de Queijo', 'Feito com queijo derretido', 0.70, '/PAPSite/img/Bolapao.png', 'pao');
 
+CREATE TABLE itens_compra (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    compra_id INT NOT NULL,
+    produto_id INT NOT NULL,
+    quantidade INT NOT NULL,
+    preco_unitario DECIMAL(10, 2) NOT NULL,
+    subtotal DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (compra_id) REFERENCES compras(id),
+    FOREIGN KEY (produto_id) REFERENCES produtos(id)
+);
+
+ALTER TABLE compras ADD COLUMN status ENUM('pendente', 'enviado', 'recebido') NOT NULL DEFAULT 'pendente';

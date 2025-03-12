@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="pt-PT">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FitStore - Roupas Desportivas e Suplementos</title>
+    <style>
+        /* Reset e Estilos Globais */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f5f5;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+            color: inherit;
+        }
+
+        ul {
+            list-style: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .btn {
+            display: inline-block;
+            background-color: #ff4757;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            font-weight: 600;
+            transition: background-color 0.3s;
+            border: none;
+            cursor: pointer;
+        }
+
+        .btn:hover {
+            background-color: #ff6b81;
+        }
+
+        .section-title {
+            text-align: center;
+            margin: 40px 0 30px;
+            font-size: 32px;
+            color: #2f3542;
+            position: relative;
+        }
+
+        .section-title::after {
+            content: "";
+            display: block;
+            width: 80px;
+            height: 4px;
+            background-color: #ff4757;
+            margin: 10px auto;
+        }
+
+        /* Header */
+        header {
+            background-color: #2f3542;
+            color: white;
+            padding: 15px 0;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+
+        .header-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .logo span {
+            color: #ff4757;
+        }
+
+        .nav-menu {
+            display: flex;
+        }
+
+        .nav-menu li {
+            margin-left: 25px;
+            position: relative;
+        }
+
+        .nav-menu li a {
+            font-weight: 500;
+            padding: 10px 0;
+            transition: color 0.3s;
+        }
+
+        .nav-menu li a:hover {
+            color: #ff4757;
+        }
+
+        .header-icons {
+            display: flex;
+            align-items: center;
+        }
+
+        .header-icons a {
+            margin-left: 20px;
+            font-size: 20px;
+            transition: color 0.3s;
+        }
+
+        .header-icons a:hover {
+            color: #ff4757;
+        }
+
+        .search-bar {
+            display: flex;
+            background-color: white;
+            border-radius: 5px;
+            overflow: hidden;
+            margin-right: 20px;
+        }
+
+        .search-bar input {
+            border: none;
+            padding: 10px 15px;
+            width: 250px;
+            outline: none;
+        }
+
+        .search-bar button {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        /* Hero Banner */
+        .hero {
+            background: linear-gradient(rgba(0, 0, 0, 0.7), rgba(0, 0, 0, 0.7)), url('https://images.unsplash.com/photo-1517836357463-d25dfeac3438?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80');
+            background-size: cover;
+            background-position: center;
+            color: white;
+            text-align: center;
+            padding: 120px 0;
+        }
+
+        .hero h1 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .hero p {
+            font-size: 18px;
+            max-width: 600px;
+            margin: 0 auto 30px;
+        }
+
+        /* Categorias */
+        .categories {
+            padding: 60px 0;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .category-card {
+            position: relative;
+            height: 250px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s;
+        }
+
+        .category-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .category-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .category-card:hover img {
+            transform: scale(1.1);
+        }
+
+        .category-content {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .category-content h3 {
+            font-size: 22px;
+            margin-bottom: 10px;
+        }
+
+        /* Produtos */
+        .products {
+            padding: 60px 0;
+            background-color: white;
+        }
+
+        .product-filter {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 30px;
+        }
+
+        .filter-btn {
+            background-color: transparent;
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .filter-btn.active, .filter-btn:hover {
+            color: #ff4757;
+            border-bottom: 2px solid #ff4757;
+        }
+
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .product-card {
+            background-color: #f9f9f9;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .product-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+        }
+
+        .product-image {
+            height: 250px;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .product-card:hover .product-image img {
+            transform: scale(1.1);
+        }
+
+        .product-tag {
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            background-color: #ff4757;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        .product-wishlist {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background-color: white;
+            color: #ff4757;
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+
+        .product-card:hover .product-wishlist {
+            opacity: 1;
+        }
+
+        .product-info {
+            padding: 20px;
+        }
+
+        .product-category {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 5px;
+        }
+
+        .product-title {
+            font-size: 18px;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .product-price {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .current-price {
+            font-size: 20px;
+            font-weight: 700;
+            color: #ff4757;
+            margin-right: 10px;
+        }
+
+        .old-price {
+            font-size: 16px;
+            color: #999;
+            text-decoration: line-through;
+        }
+
+        .product-rating {
+            color: #ffc107;
+            margin-bottom: 15px;
+        }
+
+        .product-actions {
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .add-to-cart {
+            flex: 1;
+            margin-right: 10px;
+        }
+
+        .quick-view {
+            width: 45px;
+            height: 45px;
+            background-color: #f0f0f0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .quick-view:hover {
+            background-color: #e0e0e0;
+        }
+
+        /* Banner Promocional */
+        .promo-banner {
+            background: linear-gradient(to right, #ff4757, #ff6b81);
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .promo-content {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .promo-content h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+        }
+
+        .promo-content p {
+            font-size: 18px;
+            margin-bottom: 30px;
+        }
+
+        .promo-btn {
+            background-color: white;
+            color: #ff4757;
+            border: 2px solid white;
+        }
+
+        .promo-btn:hover {
+            background-color: transparent;
+            color: white;
+        }
+
+        /* Blog */
+        .blog {
+            padding: 60px 0;
+        }
+
+        .blog-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+        }
+
+        .blog-card {
+            background-color: white;
+            border-radius: 10px;
+            overflow: hidden;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s;
+        }
+
+        .blog-card:hover {
+            transform: translateY(-10px);
+        }
+
+        .blog-image {
+            height: 200px;
+            overflow: hidden;
+        }
+
+        .blog-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s;
+        }
+
+        .blog-card:hover .blog-image img {
+            transform: scale(1.1);
+        }
+
+        .blog-content {
+            padding: 20px;
+        }
+
+        .blog-date {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .blog-title {
+            font-size: 20px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+
+        .blog-excerpt {
+            color: #666;
+            margin-bottom: 15px;
+        }
+
+        .read-more {
+            color: #ff4757;
+            font-weight: 600;
+            display: inline-block;
+            transition: color 0.3s;
+        }
+
+        .read-more:hover {
+            color: #ff6b81;
+        }
+
+        /* Newsletter */
+        .newsletter {
+            background-color: #2f3542;
+            color: white;
+            padding: 60px 0;
+            text-align: center;
+        }
+
+        .newsletter-content {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .newsletter h2 {
+            font-size: 32px;
+            margin-bottom: 20px;
+        }
+
+        .newsletter p {
+            margin-bottom: 30px;
+        }
+
+        .newsletter-form {
+            display: flex;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .newsletter-form input {
+            flex: 1;
+            padding: 15px;
+            border: none;
+            border-radius: 5px 0 0 5px;
+            outline: none;
+        }
+
+        .newsletter-form button {
+            background-color: #ff4757;
+            color: white;
+            border: none;
+            padding: 15px 25px;
+            border-radius: 0 5px 5px 0;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .newsletter-form button:hover {
+            background-color: #ff6b81;
+        }
+
+        /* Footer */
+        footer {
+            background-color: #1e2433;
+            color: white;
+            padding: 60px 0 0;
+        }
+
+        .footer-container {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+
+        .footer-col h3 {
+            font-size: 20px;
+            margin-bottom: 20px;
+            position: relative;
+            padding-bottom: 10px;
+        }
+
+        .footer-col h3::after {
+            content: "";
+            position: absolute;
+            left: 0;
+            bottom: 0;
+            width: 50px;
+            height: 3px;
+            background-color: #ff4757;
+        }
+
+        .footer-col p {
+            margin-bottom: 20px;
+            color: #bbb;
+        }
+
+        .footer-links li {
+            margin-bottom: 15px;
+        }
+
+        .footer-links a {
+            color: #bbb;
+            transition: color 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: #ff4757;
+        }
+
+        .footer-social {
+            display: flex;
+            margin-top: 20px;
+        }
+
+        .footer-social a {
+            width: 40px;
+            height: 40px;
+            background-color: #2f3542;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 10px;
+            transition: background-color 0.3s;
+        }
+
+        .footer-social a:hover {
+            background-color: #ff4757;
+        }
+
+        .footer-contact li {
+            display: flex;
+            margin-bottom: 15px;
+            color: #bbb;
+        }
+
+        .footer-contact li i {
+            margin-right: 10px;
+            color: #ff4757;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            padding: 20px 0;
+            margin-top: 40px;
+            border-top: 1px solid #3a3a3a;
+            color: #bbb;
+        }
+
+        /* Responsividade */
+        @media (max-width: 1200px) {
+            .product-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 992px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .product-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .blog-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-container {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 768px) {
+            .header-container {
+                flex-direction: column;
+            }
+            
+            .nav-menu {
+                margin: 20px 0;
+            }
+            
+            .search-bar {
+                margin: 20px 0;
+                width: 100%;
+            }
+            
+            .search-bar input {
+                width: 100%;
+            }
+            
+            .hero h1 {
+                font-size: 36px;
+            }
+            
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .product-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .blog-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-container {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <div class="logo">Fit<span>Store</span></div>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#">Início</a></li>
+                    <li><a href="#">Roupas Masculinas</a></li>
+                    <li><a href="#">Roupas Femininas</a></li>
+                    <li><a href="#">Suplementos</a></li>
+                    <li><a href="#">Acessórios</a></li>
+                    <li><a href="#">Blog</a></li>
+                    <li><a href="#">Contacto</a></li>
+                </ul>
+            </nav>
+            <div class="search-bar">
+                <input type="text" placeholder="Pesquisar produtos...">
+                <button>🔍</button>
+            </div>
+            <div class="header-icons">
+                <a href="#" title="Favoritos">❤️</a>
+                <a href="#" title="Carrinho">🛒</a>
+                <a href="#" title="Minha Conta">👤</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Banner -->
+    <section class="hero">
+        <div class="container">
+            <h1>Potencialize o Seu Treino</h1>
+            <p>Descubra a nossa coleção exclusiva de roupas desportivas e suplementos de alta qualidade para maximizar o seu desempenho.</p>
+            <a href="#" class="btn">Comprar Agora</a>
+        </div>
+    </section>
+
+    <!-- Categorias -->
+    <section class="categories">
+        <div class="container">
+            <h2 class="section-title">Categorias Principais</h2>
+            <div class="category-grid">
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Roupas Masculinas">
+                    <div class="category-content">
+                        <h3>Roupas Masculinas</h3>
+                        <a href="#" class="btn">Ver Produtos</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1518310383802-640c2de311b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Roupas Femininas">
+                    <div class="category-content">
+                        <h3>Roupas Femininas</h3>
+                        <a href="#" class="btn">Ver Produtos</a>
+                    </div>
+                </div>
+                <div class="category-card">
+                    <img src="https://images.unsplash.com/photo-1579722820308-d74e571900a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Suplementos">
+                    <div class="category-content">
+                        <h3>Suplementos</h3>
+                        <a href="#" class="btn">Ver Produtos</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Produtos -->
+    <section class="products">
+        <div class="container">
+            <h2 class="section-title">Produtos em Destaque</h2>
+            <div class="product-filter">
+                <button class="filter-btn active">Todos</button>
+                <button class="filter-btn">Roupas Masculinas</button>
+                <button class="filter-btn">Roupas Femininas</button>
+                <button class="filter-btn">Suplementos</button>
+                <button class="filter-btn">Acessórios</button>
+            </div>
+            <div class="product-grid">
+                <!-- Produto 1 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1576185850227-1f72b7f0a5b6?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Camiseta Fitness">
+                        <span class="product-tag">Novo</span>
+                        <div class="product-wishlist">❤️</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Roupas Masculinas</div>
+                        <h3 class="product-title">Camiseta Dry-Fit Performance</h3>
+                        <div class="product-price">
+                            <span class="current-price">€29.99</span>
+                            <span class="old-price">€39.99</span>
+                        </div>
+                        <div class="product-rating">★★★★★</div>
+                        <div class="product-actions">
+                            <button class="btn add-to-cart">Adicionar ao Carrinho</button>
+                            <a href="#" class="quick-view">👁️</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Produto 2 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1581344549415-e3d4fcdc7464?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Leggings Fitness">
+                        <span class="product-tag">-20%</span>
+                        <div class="product-wishlist">❤️</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Roupas Femininas</div>
+                        <h3 class="product-title">Leggings Compressão Pro</h3>
+                        <div class="product-price">
+                            <span class="current-price">€34.99</span>
+                            <span class="old-price">€44.99</span>
+                        </div>
+                        <div class="product-rating">★★★★☆</div>
+                        <div class="product-actions">
+                            <button class="btn add-to-cart">Adicionar ao Carrinho</button>
+                            <a href="#" class="quick-view">👁️</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Produto 3 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1579722821273-0f6c1b5be9a5?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Whey Protein">
+                        <span class="product-tag">Bestseller</span>
+                        <div class="product-wishlist">❤️</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Suplementos</div>
+                        <h3 class="product-title">Whey Protein Isolado Premium</h3>
+                        <div class="product-price">
+                            <span class="current-price">€49.99</span>
+                            <span class="old-price">€59.99</span>
+                        </div>
+                        <div class="product-rating">★★★★★</div>
+                        <div class="product-actions">
+                            <button class="btn add-to-cart">Adicionar ao Carrinho</button>
+                            <a href="#" class="quick-view">👁️</a>
+                        </div>
+                    </div>
+                </div>
+                <!-- Produto 4 -->
+                <div class="product-card">
+                    <div class="product-image">
+                        <img src="https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Luvas de Treino">
+                        <div class="product-wishlist">❤️</div>
+                    </div>
+                    <div class="product-info">
+                        <div class="product-category">Acessórios</div>
+                        <h3 class="product-title">Luvas de Treino Profissionais</h3>
+                        <div class="product-price">
+                            <span class="current-price">€19.99</span>
+                            <span class="old-price">€24.99</span>
+                        </div>
+                        <div class="product-rating">★★★★☆</div>
+                        <div class="product-actions">
+                            <button class="btn add-to-cart">Adicionar ao Carrinho</button>
+                            <a href="#" class="quick-view">👁️</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Banner Promocional -->
+    <section class="promo-banner">
+        <div class="container">
+            <div class="promo-content">
+                <h2>Oferta Especial</h2>
+                <p>Utilize o código FITBOOST para obter 15% de desconto em toda a loja. Oferta válida até ao final do mês!</p>
+                <a href="#" class="btn promo-btn">Aproveitar Agora</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Blog -->
+    <section class="blog">
+        <div class="container">
+            <h2 class="section-title">Dicas & Artigos</h2>
+            <div class="blog-grid">
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1517838277536-f5f99be501cd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Treino de Força">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">12 Junho, 2023</div>
+                        <h3 class="blog-title">10 Exercícios Essenciais para Ganho de Massa Muscular</h3>
+                        <p class="blog-excerpt">Descubra os exercícios mais eficazes para aumentar a sua massa muscular e melhorar a sua força física.</p>
+                        <a href="#" class="read-more">Ler Mais</a>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Nutrição">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">5 Junho, 2023</div>
+                        <h3 class="blog-title">Guia Completo de Nutrição para Atletas</h3>
+                        <p class="blog-excerpt">Aprenda a otimizar a sua alimentação para maximizar os resultados dos seus treinos e melhorar a recuperação.</p>
+                        <a href="#" class="read-more">Ler Mais</a>
+                    </div>
+                </div>
+                <div class="blog-card">
+                    <div class="blog-image">
+                        <img src="https://images.unsplash.com/photo-1574680178050-55c6a6a96e0a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Suplementação">
+                    </div>
+                    <div class="blog-content">
+                        <div class="blog-date">28 Maio, 2023</div>
+                        <h3 class="blog-title">Suplementos: Quais Realmente Funcionam?</h3>
+                        <p class="blog-excerpt">Uma análise baseada em evidências sobre os suplementos mais populares e a sua eficácia real.</p>
+                        <a href="#" class="read-more">Ler Mais</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Newsletter -->
+    <section class="newsletter">
+        <div class="container">
+            <div class="newsletter-content">
+                <h2>Subscreva a Nossa Newsletter</h2>
+                <p>Receba as últimas novidades, promoções exclusivas e dicas de fitness diretamente no seu email.</p>
+                <form class="newsletter-form">
+                    <input type="email" placeholder="O seu endereço de email">
+                    <button type="submit">Subscrever</button>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-container">
+                <div class="footer-col">
+                    <h3>Sobre Nós</h3>
+                    <p>A FitStore é a sua loja online especializada em roupas desportivas e suplementos de alta qualidade para ajudá-lo a alcançar os seus objetivos fitness.</p>
+                    <div class="footer-social">
+                        <a href="#">📱</a>
+                        <a href="#">📘</a>
+                        <a href="#">📷</a>
+                        <a href="#">📺</a>
+                    </div>
+                </div>
+                <div class="footer-col">
+                    <h3>Links Úteis</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Sobre Nós</a></li>
+                        <li><a href="#">Política de Privacidade</a></li>
+                        <li><a href="#">Termos e Condições</a></li>
+                        <li><a href="#">FAQ</a></li>
+                        <li><a href="#">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Categorias</h3>
+                    <ul class="footer-links">
+                        <li><a href="#">Roupas Masculinas</a></li>
+                        <li><a href="#">Roupas Femininas</a></li>
+                        <li><a href="#">Suplementos</a></li>
+                        <li><a href="#">Acessórios</a></li>
+                        <li><a href="#">Equipamentos</a></li>
+                    </ul>
+                </div>
+                <div class="footer-col">
+                    <h3>Contacto</h3>
+                    <ul class="footer-contact">
+                        <li>📍 Rua da Fitness, 123, Lisboa</li>
+                        <li>📞 +351 123 456 789</li>
+                        <li>✉️ info@fitstore.pt</li>
+                        <li>🕒 Seg-Sex: 9h-18h | Sáb: 10h-15h</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 FitStore. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // JavaScript para funcionalidade da página
+        document.addEventListener('DOMContentLoaded', function() {
+            // Filtros de produtos
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    // Remove active class from all buttons
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Aqui você adicionaria a lógica para filtrar os produtos
+                    // Por exemplo: filterProducts(this.textContent);
+                });
+            });
+            
+            // Adicionar ao carrinho
+            const addToCartButtons = document.querySelectorAll('.add-to-cart');
+            
+            addToCartButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    alert('Produto adicionado ao carrinho!');
+                    // Aqui você adicionaria a lógica para adicionar ao carrinho
+                });
+            });
+            
+            // Adicionar aos favoritos
+            const wishlistButtons = document.querySelectorAll('.product-wishlist');
+            
+            wishlistButtons.forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    alert('Produto adicionado aos favoritos!');
+                    // Aqui você adicionaria a lógica para adicionar aos favoritos
+                });
+            });
+            
+            // Formulário da newsletter
+            const newsletterForm = document.querySelector('.newsletter-form');
+            
+            if (newsletterForm) {
+                newsletterForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+                    const email = this.querySelector('input[type="email"]').value;
+                    
+                    if (email) {
+                        alert(`Obrigado por subscrever com o email: ${email}`);
+                        this.reset();
+                    } else {
+                        alert('Por favor, insira um email válido.');
+                    }
+                });
+            }
+            
+            // Menu responsivo (para dispositivos móveis)
+            const menuToggle = document.createElement('div');
+            menuToggle.className = 'menu-toggle';
+            menuToggle.innerHTML = '☰';
+            menuToggle.style.display = 'none';
+            menuToggle.style.fontSize = '24px';
+            menuToggle.style.cursor = 'pointer';
+            
+            const header = document.querySelector('header');
+            const nav = document.querySelector('nav');
+            const logo = document.querySelector('.logo');
+            
+            if (header && nav && logo) {
+                header.insertBefore(menuToggle, logo.nextSibling);
+                
+                menuToggle.addEventListener('click', function() {
+                    nav.style.display = nav.style.display === 'block' ? 'none' : 'block';
+                });
+                
+                // Ajustar visualização do menu em telas pequenas
+                function adjustMenu() {
+                    if (window.innerWidth <= 768) {
+                        menuToggle.style.display = 'block';
+                        nav.style.display = 'none';
+                    } else {
+                        menuToggle.style.display = 'none';
+                        nav.style.display = 'block';
+                    }
+                }
+                
+                // Inicializar e adicionar evento de redimensionamento
+                adjustMenu();
+                window.addEventListener('resize', adjustMenu);
+            }
+        });
+    </script>
+</body>
+</html>
