@@ -656,3 +656,38 @@ document.addEventListener('DOMContentLoaded', function() {
       }
   });
 });
+
+// Função para processar o resgate de pontos
+function redeemPoints(points, rewardName) {
+  if (confirm(`Deseja resgatar "${rewardName}" por ${points} pontos?`)) {
+    // Enviar requisição AJAX para processar o resgate
+    $.ajax({
+      url: 'process_redemption.php',
+      type: 'POST',
+      data: {
+        action: 'redeem_points',
+        points: points,
+        reward: rewardName
+      },
+      success: function(response) {
+        try {
+          const data = JSON.parse(response);
+          if (data.status === 'success') {
+            alert('Resgate realizado com sucesso! Nossa equipe entrará em contato para providenciar sua recompensa.');
+            // Atualizar a página para mostrar os pontos atualizados
+            location.reload();
+          } else {
+            alert('Erro ao resgatar pontos: ' + data.message);
+          }
+        } catch (e) {
+          alert('Ocorreu um erro ao processar sua solicitação.');
+          console.error(e);
+        }
+      },
+      error: function() {
+        alert('Ocorreu um erro ao conectar com o servidor.');
+      }
+    });
+  }
+}
+

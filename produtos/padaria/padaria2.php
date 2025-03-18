@@ -52,7 +52,6 @@ $result = $conn->query($sql);
             <a href="../../index.php#container2">PRODUTOS</a>
             <a href="../../index.php#sobre">SOBRE</a>
             <a href="../../index.php#container6">CONTACTOS</a>
-            <a href="../../form.php">VIRAR CLIENTE</a>
             <button id="buttonheader" onclick="window.location.href='<?php echo $redirectUrl; ?>'"><strong>ÁREA CLIENTE</strong></button>
         </div>
 
@@ -67,7 +66,6 @@ $result = $conn->query($sql);
             <a href="../../index.php#container2">PRODUTOS</a>
             <a href="../../index.php#sobre">SOBRE</a>
             <a href="../../index.php#container6">CONTACTOS</a>
-            <a href="../../form.php">VIRAR CLIENTE</a>
             <a href="<?php echo $redirectUrl; ?>" class="mobile-area-cliente"><strong>ÁREA CLIENTE</strong></a>
         </nav>
     </header>
@@ -84,11 +82,9 @@ $result = $conn->query($sql);
             <div class="sidebar">
                 <h3>Categorias</h3>
                 <ul>
-                    <li><a href="padaria1.php" class="active"><i class="fas fa-bread-slice"></i> Pão</a></li>
-                    <li><a href="padaria2.php"><i class="fas fa-baguette"></i> Baguete</a></li>
+                    <li><a href="padaria1.php"><i class="fas fa-bread-slice"></i> Pão</a></li>
+                    <li><a href="padaria2.php"class="active"><i class="fas fa-bread-slice"></i> Baguete</a></li>
                     <li><a href="padaria3.php"><i class="fas fa-birthday-cake"></i> Bolos</a></li>
-                    <li><a href="#"><i class="fas fa-cookie"></i> Biscoitos</a></li>
-                    <li><a href="#"><i class="fas fa-croissant"></i> Croissants</a></li>
                 </ul>
                 
                 <div class="sidebar-info">
@@ -220,7 +216,6 @@ $result = $conn->query($sql);
                 <a href="../../index.php#container2">Produtos</a>
                 <a href="../../index.php#sobre">Sobre</a>
                 <a href="../../index.php#container6">Contactos</a>
-                <a href="../../form.php">Virar Cliente</a>
             </div>
             <div class="footer-social">
                 <a href="#"><i class="fab fa-facebook"></i></a>

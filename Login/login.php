@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Conectando ao banco de dados
     $conn = getDBConnection();
-    
+
     // Verifique se o usuário existe no banco de dados
     $sql = "SELECT * FROM usuarios WHERE email = :email";
     $stmt = $conn->prepare($sql);
@@ -17,7 +17,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if ($stmt->rowCount() > 0) {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
-        
+
         // Comparando a senha informada com o hash da senha no banco de dados
         if (password_verify($password, $user['senha'])) {
             // Se a senha for válida, inicia a sessão do usuário
@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
 <!DOCTYPE html>
 <html lang="pt-PT">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -45,6 +46,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
 </head>
+
 <body>
     <header>
         <div id="headerimg">
@@ -55,10 +57,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <a href="../index.php#container2">PRODUTOS</a>
             <a href="../index.php#sobre">SOBRE</a>
             <a href="../index.php#container6">CONTACTOS</a>
-            <a href="../formulario.php">VIRAR CLIENTE</a>
             <button id="buttonheader"><strong>ÁREA CLIENTE</strong></button>
         </div>
-        
+
         <div class="mobile-menu-toggle">
             <span></span>
             <span></span>
@@ -84,28 +85,28 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                     <p>Aceda à sua conta para gerir os seus pedidos e aproveitar ofertas exclusivas.</p>
                 </div>
             </div>
-            
+
             <div class="login-form-container">
                 <div class="login-form-wrapper">
                     <div class="login-header">
-                        
+
                         <h1>Acesso à Área de Cliente</h1>
                         <p>Introduza os seus dados para aceder</p>
                     </div>
-                    
+
                     <?php if (isset($error_message)): ?>
                         <div class="error-message">
                             <i class="fas fa-exclamation-circle"></i>
                             <?php echo $error_message; ?>
                         </div>
                     <?php endif; ?>
-                    
+
                     <form method="POST" action="login.php" class="login-form">
                         <div class="form-group">
                             <label for="email"><i class="fas fa-envelope"></i> Email</label>
                             <input type="email" id="email" name="email" placeholder="exemplo@email.com" required>
                         </div>
-                        
+
                         <div class="form-group">
                             <label for="password"><i class="fas fa-lock"></i> Senha</label>
                             <div class="password-input-container">
@@ -116,12 +117,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                             </div>
                         </div>
 
-                        
                         <button type="submit" class="login-button">
                             <span>Entrar</span>
                             <i class="fas fa-arrow-right"></i>
                         </button>
+
+                        <div class="register-link">
+                            <p>Ainda não é cliente? <a href="registrar.php">Faça o seu registo.</a></p>
+                        </div>
                     </form>
+
                 </div>
             </div>
         </div>
@@ -130,7 +135,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
-                
+
             </div>
             <div class="footer-links">
                 <a href="../index.php">Início</a>
@@ -154,7 +159,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         document.getElementById('toggle-password').addEventListener('click', function() {
             const passwordInput = document.getElementById('password');
             const icon = this.querySelector('i');
-            
+
             if (passwordInput.type === 'password') {
                 passwordInput.type = 'text';
                 icon.classList.remove('fa-eye');
@@ -165,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 icon.classList.add('fa-eye');
             }
         });
-        
+
         // Mobile menu toggle
         const menuToggle = document.querySelector('.mobile-menu-toggle');
         const mobileMenu = document.querySelector('.mobile-menu');
@@ -174,7 +179,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             menuToggle.addEventListener('click', function() {
                 menuToggle.classList.toggle('active');
                 mobileMenu.classList.toggle('active');
-                
+
                 // Animação do ícone do menu
                 const spans = menuToggle.querySelectorAll('span');
                 if (menuToggle.classList.contains('active')) {
@@ -190,4 +195,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     </script>
 </body>
+
 </html>

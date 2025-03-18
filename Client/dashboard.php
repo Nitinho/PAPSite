@@ -366,7 +366,6 @@ $conn->close();
             <li class="active"><a href="#overview"><i class="fas fa-home"></i> Visão Geral</a></li>
             <li><a href="#purchases"><i class="fas fa-shopping-cart"></i> Compras</a></li>
             <li><a href="#settings"><i class="fas fa-cog"></i> Configurações</a></li>
-            <li><a href="../index.php#container2"><i class="fas fa-store"></i> Loja</a></li>
           </ul>
         </nav>
 
@@ -575,6 +574,135 @@ $conn->close();
             <?php endif; ?>
           </div>
         </section>
+        <section id="points" class="dashboard-section">
+          <div class="section-header">
+            <h2><i class="fas fa-star"></i> Programa de Pontos</h2>
+            <p>Troque seus pontos acumulados por recompensas exclusivas.</p>
+          </div>
+
+          <div class="points-overview">
+            <div class="points-card">
+              <div class="points-icon">
+                <i class="fas fa-award"></i>
+              </div>
+              <div class="points-info">
+                <h3>Seus Pontos Disponíveis</h3>
+                <p class="points-number"><?php echo htmlspecialchars($totalPontos); ?></p>
+              </div>
+            </div>
+          </div>
+
+          <div class="rewards-container">
+            <h3>Recompensas Disponíveis</h3>
+
+            <div class="rewards-grid">
+              <div class="reward-card <?php echo $totalPontos >= 1000 ? 'available' : 'unavailable'; ?>">
+                <div class="reward-image">
+                  <img src="../img/gift.png" alt="Produto Presente">
+                </div>
+                <div class="reward-info">
+                  <h4>Produto Presente</h4>
+                  <p>Ganhe um produto surpresa da nossa seleção especial.</p>
+                  <div class="reward-points">1000 pontos</div>
+                </div>
+                <button class="btn-redeem" <?php echo $totalPontos >= 1000 ? '' : 'disabled'; ?>
+                  onclick="redeemPoints(1000, 'Produto Presente')">
+                  <?php echo $totalPontos >= 1000 ? 'Resgatar' : 'Pontos Insuficientes'; ?>
+                </button>
+              </div>
+
+              <div class="reward-card <?php echo $totalPontos >= 2000 ? 'available' : 'unavailable'; ?>">
+                <div class="reward-image">
+                  <img src="../img/coca-cola.png" alt="Pack de Coca-Cola">
+                </div>
+                <div class="reward-info">
+                  <h4>Pack de Coca-Cola</h4>
+                  <p>Um pack completo com 24 latas de Coca-Cola.</p>
+                  <div class="reward-points">2000 pontos</div>
+                </div>
+                <button class="btn-redeem" <?php echo $totalPontos >= 2000 ? '' : 'disabled'; ?>
+                  onclick="redeemPoints(2000, 'Pack de Coca-Cola')">
+                  <?php echo $totalPontos >= 2000 ? 'Resgatar' : 'Pontos Insuficientes'; ?>
+                </button>
+              </div>
+
+              <div class="reward-card <?php echo $totalPontos >= 3500 ? 'available' : 'unavailable'; ?>">
+                <div class="reward-image">
+                  <img src="../img/wine.png" alt="Garrafa de Vinho Premium">
+                </div>
+                <div class="reward-info">
+                  <h4>Vinho Premium</h4>
+                  <p>Uma garrafa de vinho tinto premium da região do Douro.</p>
+                  <div class="reward-points">3500 pontos</div>
+                </div>
+                <button class="btn-redeem" <?php echo $totalPontos >= 3500 ? '' : 'disabled'; ?>
+                  onclick="redeemPoints(3500, 'Vinho Premium')">
+                  <?php echo $totalPontos >= 3500 ? 'Resgatar' : 'Pontos Insuficientes'; ?>
+                </button>
+              </div>
+
+              <div class="reward-card <?php echo $totalPontos >= 5000 ? 'available' : 'unavailable'; ?>">
+                <div class="reward-image">
+                  <img src="../img/voucher.png" alt="Vale de Desconto">
+                </div>
+                <div class="reward-info">
+                  <h4>Vale de 50€</h4>
+                  <p>Vale de desconto de 50€ na sua próxima compra.</p>
+                  <div class="reward-points">5000 pontos</div>
+                </div>
+                <button class="btn-redeem" <?php echo $totalPontos >= 5000 ? '' : 'disabled'; ?>
+                  onclick="redeemPoints(5000, 'Vale de 50€')">
+                  <?php echo $totalPontos >= 5000 ? 'Resgatar' : 'Pontos Insuficientes'; ?>
+                </button>
+              </div>
+
+              <div class="reward-card <?php echo $totalPontos >= 10000 ? 'available' : 'unavailable'; ?>">
+                <div class="reward-image">
+                  <img src="../img/basket.png" alt="Cesta de Produtos">
+                </div>
+                <div class="reward-info">
+                  <h4>Cesta de Produtos</h4>
+                  <p>Uma cesta com produtos selecionados da nossa loja.</p>
+                  <div class="reward-points">10000 pontos</div>
+                </div>
+                <button class="btn-redeem" <?php echo $totalPontos >= 10000 ? '' : 'disabled'; ?>
+                  onclick="redeemPoints(10000, 'Cesta de Produtos')">
+                  <?php echo $totalPontos >= 10000 ? 'Resgatar' : 'Pontos Insuficientes'; ?>
+                </button>
+              </div>
+
+              <div class="reward-card <?php echo $totalPontos >= 50000 ? 'available' : 'unavailable'; ?>">
+                <div class="reward-image">
+                  <img src="../img/discount.png" alt="Desconto de 200€">
+                </div>
+                <div class="reward-info">
+                  <h4>Desconto de 200€</h4>
+                  <p>Desconto de 200€ aplicado manualmente após sua próxima compra.</p>
+                  <div class="reward-points">50000 pontos</div>
+                </div>
+                <button class="btn-redeem" <?php echo $totalPontos >= 50000 ? '' : 'disabled'; ?>
+                  onclick="redeemPoints(50000, 'Desconto de 200€')">
+                  <?php echo $totalPontos >= 50000 ? 'Resgatar' : 'Pontos Insuficientes'; ?>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <div class="points-history">
+            <h3>Histórico de Resgates</h3>
+            <div id="redemption-history">
+              <?php
+              // Aqui você pode adicionar código para buscar e exibir o histórico de resgates
+              // Por enquanto, vamos mostrar uma mensagem padrão
+              ?>
+              <div class="empty-history">
+                <i class="fas fa-history"></i>
+                <p>Você ainda não resgatou nenhuma recompensa.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
 
         <section id="settings" class="dashboard-section">
           <div class="section-header">
@@ -663,6 +791,7 @@ $conn->close();
         </form>
       </div>
     </div>
+
 
     <!-- Modal para detalhes do pedido -->
     <div id="order-details-modal" class="modal">

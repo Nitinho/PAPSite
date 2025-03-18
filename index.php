@@ -35,7 +35,6 @@ if (isset($_SESSION['email'])) {
             <a href="#container2">PRODUTOS</a>
             <a href="#sobre">SOBRE</a>
             <a href="#container6">CONTACTOS</a>
-            <a href="form.php">VIRAR CLIENTE</a>
             <button id="buttonheader" onclick="window.location.href='<?php echo $redirectUrl; ?>'"><strong>ÁREA CLIENTE</strong></button>
         </div>
 
@@ -50,7 +49,6 @@ if (isset($_SESSION['email'])) {
             <a href="#container2">PRODUTOS</a>
             <a href="#sobre">SOBRE</a>
             <a href="#container6">CONTACTOS</a>
-            <a href="form.php">VIRAR CLIENTE</a>
             <a href="<?php echo $redirectUrl; ?>" class="mobile-area-cliente"><strong>ÁREA CLIENTE</strong></a>
         </nav>
     </header>
@@ -225,7 +223,6 @@ if (isset($_SESSION['email'])) {
                 <a href="#container2">Produtos</a>
                 <a href="#sobre">Sobre</a>
                 <a href="#container6">Contactos</a>
-                <a href="form.php">Virar Cliente</a>
             </div>
             <div class="footer-social">
                 <a href="#"><i class="fab fa-facebook"></i></a>

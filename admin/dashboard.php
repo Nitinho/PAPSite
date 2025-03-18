@@ -52,6 +52,7 @@ verificarLogin();
                 <a href="funcionarios.php"><i class="fas fa-users mr-2"></i> Adicionar Funcionários</a>
                 <a href="registrar.php"><i class="fas fa-user-plus mr-2"></i> Registrar Pessoas</a>
                 <a href="produtosg.php"><i class="fas fa-box mr-2"></i> Gerenciar Produtos</a>
+                <a href="suporte.php"><i class="fas fa-box mr-2"></i> Suporte</a>
                 <a href="logout.php"><i class="fas fa-sign-out-alt mr-2"></i> Sair</a>
             </div>
             

@@ -611,3 +611,205 @@ footer {
 .mobile-menu.active {
     display: block;
 }
+
+
+/* Estilo para o formulário de registro */
+.register-container {
+    display: flex;
+    max-width: 1000px;
+    margin: 40px auto;
+    background-color: var(--white);
+    border-radius: var(--border-radius);
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .register-form-container {
+    width: 100%;
+    padding: 40px;
+  }
+  
+  .register-form-wrapper {
+    width: 100%;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+  
+  .register-header {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+  
+  .register-header h1 {
+    font-size: 2rem;
+    color: var(--primary-color);
+    margin-bottom: 10px;
+    font-weight: 700;
+  }
+  
+  .register-header p {
+    color: #777;
+    font-size: 1rem;
+  }
+  
+  .register-form h3 {
+    color: var(--primary-color);
+    margin: 25px 0 15px;
+    font-size: 1.2rem;
+    border-bottom: 1px solid var(--medium-gray);
+    padding-bottom: 8px;
+  }
+  
+  .form-group {
+    margin-bottom: 20px;
+    position: relative;
+  }
+  
+  .form-group label {
+    display: block;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+    color: var(--text-color);
+    font-weight: 500;
+    transition: all 0.3s ease;
+  }
+  
+  .form-group label i {
+    margin-right: 8px;
+    color: var(--primary-color);
+  }
+  
+  .form-group input {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid var(--medium-gray);
+    border-radius: 5px;
+    font-size: 0.95rem;
+    transition: all 0.3s ease;
+    background-color: #f9f9f9;
+  }
+  
+  .form-group input:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(255, 76, 76, 0.1);
+    outline: none;
+    background-color: var(--white);
+  }
+  
+  /* Usando o mesmo estilo do botão de login */
+  .register-button {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
+    color: var(--white);
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: var(--transition);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+  }
+  
+  .register-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(255, 76, 76, 0.3);
+  }
+  
+  .register-button i {
+    transition: transform 0.3s ease;
+  }
+  
+  .register-button:hover i {
+    transform: translateX(5px);
+  }
+  
+  /* Estilo para checkbox de termos */
+  .terms-checkbox {
+    display: flex;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .terms-checkbox input[type="checkbox"] {
+    width: auto;
+    margin-right: 10px;
+  }
+  
+  .terms-checkbox label {
+    font-size: 0.9rem;
+    color: #666;
+  }
+  
+  .terms-checkbox a {
+    color: var(--primary-color);
+    text-decoration: none;
+    font-weight: 500;
+  }
+  
+  .terms-checkbox a:hover {
+    text-decoration: underline;
+  }
+  
+  /* Estilo para mensagens de erro/sucesso */
+  .error-message, .success-message {
+    padding: 12px;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+  }
+  
+  .error-message {
+    background-color: #fff3cd;
+    color: #856404;
+  }
+  
+  .success-message {
+    background-color: #d4edda;
+    color: #155724;
+  }
+  
+  .error-message i, .success-message i {
+    margin-right: 10px;
+  }
+  
+  /* Link para login */
+  .login-link {
+    margin-top: 20px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: #777;
+  }
+  
+  .login-link a {
+    color: var(--primary-color);
+    font-weight: 600;
+    transition: var(--transition);
+  }
+  
+  .login-link a:hover {
+    color: var(--primary-dark);
+    text-decoration: underline;
+  }
+  
+  /* Responsividade */
+  @media (max-width: 768px) {
+    .register-container {
+      margin: 20px;
+      flex-direction: column;
+    }
+    
+    .register-form-container {
+      padding: 20px;
+    }
+    
+    .register-header h1 {
+      font-size: 1.5rem;
+    }
+  }
+  
