@@ -1,6 +1,13 @@
 <?php
+// Iniciar a sessão administrativa
+session_name('admin_session');
+session_start();
+
+// Incluir arquivo de configuração
 require_once 'config.php';
-verificarLogin();
+
+// Verificar login administrativo
+verificarLoginAdmin();
 
 // Processar atualização de status
 if(isset($_POST['update_status']) && isset($_POST['compra_id']) && isset($_POST['status'])) {
@@ -94,7 +101,6 @@ if(isset($_GET['compra_id'])) {
                 <h4 class="text-center mb-4">Admin Panel</h4>
                 <a href="dashboard.php"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a>
                 <a href="encomendas.php" class="active"><i class="fas fa-shopping-cart mr-2"></i> Encomendas</a>
-                <a href="funcionarios.php"><i class="fas fa-users mr-2"></i> Adicionar Funcionários</a>
                 <a href="registrar.php"><i class="fas fa-user-plus mr-2"></i> Registrar Pessoas</a>
                 <a href="produtosg.php"><i class="fas fa-box mr-2"></i> Gerenciar Produtos</a>
                 <a href="logout.php"><i class="fas fa-sign-out-alt mr-2"></i> Sair</a>
@@ -132,8 +138,6 @@ if(isset($_GET['compra_id'])) {
                                             <td>€<?php echo number_format($compra['valor_compra'], 2, ',', '.'); ?></td>
                                         </tr>
                                         <tr>
-                                            <th>Pontos Ganhos:</th>
-                                            <td><?php echo $compra['pontos_ganhos']; ?></td>
                                         </tr>
                                         <tr>
                                             <th>Status Atual:</th>

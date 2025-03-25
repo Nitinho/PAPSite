@@ -1,10 +1,18 @@
 <?php
+// Iniciar a sessão administrativa
+session_name('admin_session');
+session_start();
+
+// Incluir arquivo de configuração
 require_once 'config.php';
-verificarLogin();
+
+// Verificar login administrativo
+verificarLoginAdmin();
 
 $mensagem = '';
 
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+// Processar o registro de novo usuário
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'registrar') {
     // Dados do usuário
     $nome = $_POST['nome'];
     $email = $_POST['email'];
@@ -47,6 +55,55 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $mensagem = '<div class="alert alert-danger">Erro ao registrar usuário: ' . $e->getMessage() . '</div>';
     }
 }
+
+// Processar exclusão de usuário
+if ($_SERVER["REQUEST_METHOD"] == "POST" && isset($_POST['action']) && $_POST['action'] == 'apagar') {
+    $usuario_id = $_POST['usuario_id'];
+    $senha_admin = $_POST['senha_admin'];
+    
+    // Verificar senha admin
+    if ($senha_admin == "admin@admin") {
+        try {
+            // Iniciar transação
+            $conn->begin_transaction();
+            
+            // Excluir endereços do usuário
+            $stmt = $conn->prepare("DELETE FROM enderecos WHERE usuario_id = ?");
+            $stmt->bind_param("i", $usuario_id);
+            $stmt->execute();
+            
+            // Excluir usuário
+            $stmt = $conn->prepare("DELETE FROM usuarios WHERE id = ?");
+            $stmt->bind_param("i", $usuario_id);
+            $stmt->execute();
+            
+            // Confirmar transação
+            $conn->commit();
+            
+            $mensagem = '<div class="alert alert-success">Usuário excluído com sucesso!</div>';
+        } catch (Exception $e) {
+            // Reverter transação em caso de erro
+            $conn->rollback();
+            $mensagem = '<div class="alert alert-danger">Erro ao excluir usuário: ' . $e->getMessage() . '</div>';
+        }
+    } else {
+        $mensagem = '<div class="alert alert-danger">Senha de administrador incorreta!</div>';
+    }
+}
+
+// Buscar todos os usuários
+$usuarios = [];
+$query = "SELECT u.*, e.rua, e.numero, e.cidade, e.codigo_postal 
+          FROM usuarios u 
+          LEFT JOIN enderecos e ON u.id = e.usuario_id
+          ORDER BY u.nome";
+$result = $conn->query($query);
+
+if ($result) {
+    while ($row = $result->fetch_assoc()) {
+        $usuarios[] = $row;
+    }
+}
 ?>
 
 <!DOCTYPE html>
@@ -81,6 +138,9 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         .content {
             padding: 20px;
         }
+        .table-responsive {
+            margin-top: 30px;
+        }
     </style>
 </head>
 <body>
@@ -91,7 +151,6 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <h4 class="text-center mb-4">Admin Panel</h4>
                 <a href="dashboard.php"><i class="fas fa-tachometer-alt mr-2"></i> Dashboard</a>
                 <a href="encomendas.php"><i class="fas fa-shopping-cart mr-2"></i> Encomendas</a>
-                <a href="funcionarios.php"><i class="fas fa-users mr-2"></i> Adicionar Funcionários</a>
                 <a href="registrar.php" class="active"><i class="fas fa-user-plus mr-2"></i> Registrar Pessoas</a>
                 <a href="produtosg.php"><i class="fas fa-box mr-2"></i> Gerenciar Produtos</a>
                 <a href="logout.php"><i class="fas fa-sign-out-alt mr-2"></i> Sair</a>
@@ -106,6 +165,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                 <div class="card">
                     <div class="card-body">
                         <form method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                            <input type="hidden" name="action" value="registrar">
                             <h4>Dados Pessoais</h4>
                             <div class="row">
                                 <div class="col-md-6">
@@ -194,6 +254,101 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
                         </form>
                     </div>
                 </div>
+                
+                <!-- Lista de Utilizadores -->
+                <div class="card mt-4">
+                    <div class="card-header bg-primary text-white">
+                        <h4 class="mb-0">Utilizadores</h4>
+                    </div>
+                    <div class="card-body">
+                        <div class="table-responsive">
+                            <table class="table table-striped table-hover">
+                                <thead>
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Nome</th>
+                                        <th>Email</th>
+                                        <th>NIF</th>
+                                        <th>Telefone</th>
+                                        <th>Empresa</th>
+                                        <th>Endereço</th>
+                                        <th>Ações</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php foreach ($usuarios as $usuario): ?>
+                                    <tr>
+                                        <td><?php echo $usuario['id']; ?></td>
+                                        <td><?php echo htmlspecialchars($usuario['nome']); ?></td>
+                                        <td><?php echo htmlspecialchars($usuario['email']); ?></td>
+                                        <td><?php echo htmlspecialchars($usuario['nif']); ?></td>
+                                        <td><?php echo htmlspecialchars($usuario['telefone'] ?? '-'); ?></td>
+                                        <td>
+                                            <?php 
+                                            if (!empty($usuario['nome_da_empresa'])) {
+                                                echo htmlspecialchars($usuario['nome_da_empresa']) . '<br>';
+                                                echo 'NIF: ' . htmlspecialchars($usuario['nif_da_empresa']);
+                                            } else {
+                                                echo '-';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <?php 
+                                            if (!empty($usuario['rua'])) {
+                                                echo htmlspecialchars($usuario['rua']) . ', ' . htmlspecialchars($usuario['numero']) . '<br>';
+                                                echo htmlspecialchars($usuario['cidade']) . ', ' . htmlspecialchars($usuario['codigo_postal']);
+                                            } else {
+                                                echo '-';
+                                            }
+                                            ?>
+                                        </td>
+                                        <td>
+                                            <button type="button" class="btn btn-danger btn-sm" 
+                                                    data-toggle="modal" 
+                                                    data-target="#confirmarExclusao" 
+                                                    data-id="<?php echo $usuario['id']; ?>"
+                                                    data-nome="<?php echo htmlspecialchars($usuario['nome']); ?>">
+                                                <i class="fas fa-trash"></i> Apagar
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <?php endforeach; ?>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal de Confirmação de Exclusão -->
+    <div class="modal fade" id="confirmarExclusao" tabindex="-1" role="dialog" aria-labelledby="confirmarExclusaoLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header bg-danger text-white">
+                    <h5 class="modal-title" id="confirmarExclusaoLabel">Confirmar Exclusão</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Fechar">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <p>Tem certeza que deseja excluir o usuário <strong id="nomeUsuario"></strong>?</p>
+                    <p class="text-danger">Esta ação não pode ser desfeita!</p>
+                    <form id="formExcluir" method="post" action="<?php echo htmlspecialchars($_SERVER["PHP_SELF"]); ?>">
+                        <input type="hidden" name="action" value="apagar">
+                        <input type="hidden" name="usuario_id" id="usuarioId">
+                        <div class="form-group">
+                            <label for="senha_admin">Digite a senha de administrador para confirmar:</label>
+                            <input type="password" class="form-control" id="senha_admin" name="senha_admin" required>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="button" class="btn btn-danger" onclick="document.getElementById('formExcluir').submit();">Confirmar Exclusão</button>
+                </div>
             </div>
         </div>
     </div>
@@ -201,5 +356,16 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        $('#confirmarExclusao').on('show.bs.modal', function (event) {
+            var button = $(event.relatedTarget);
+            var id = button.data('id');
+            var nome = button.data('nome');
+            
+            var modal = $(this);
+            modal.find('#nomeUsuario').text(nome);
+            modal.find('#usuarioId').val(id);
+        });
+    </script>
 </body>
 </html>

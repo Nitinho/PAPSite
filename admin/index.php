@@ -1,8 +1,10 @@
 <?php
-require_once 'config.php';
+// Iniciar uma sessão específica para admin
+session_name('admin_session');
+session_start();
 
-// Verificar se já está logado
-if (isset($_SESSION['logado']) && $_SESSION['logado'] === true) {
+// Verificar se já está logado como admin
+if (isset($_SESSION['admin_logado']) && $_SESSION['admin_logado'] === true) {
     header("Location: dashboard.php");
     exit;
 }
@@ -14,10 +16,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     $email = $_POST['email'];
     $senha = $_POST['senha'];
     
-    // Verificar credenciais (admin@admin / admin@admin)
-    if ($email === "admin@admin" && $senha === "admin@admin") {
-        $_SESSION['logado'] = true;
-        $_SESSION['email'] = $email;
+    // Verificar credenciais fixas para admin
+    if ($email === "admingeral@admingeral" && $senha === "admingeral@admingeral") {
+        $_SESSION['admin_logado'] = true;
+        $_SESSION['admin_email'] = $email;
+        $_SESSION['admin_role'] = 'admin';
         header("Location: dashboard.php");
         exit;
     } else {
@@ -25,6 +28,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
     }
 }
 ?>
+
 
 <!DOCTYPE html>
 <html lang="pt">

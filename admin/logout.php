@@ -1,7 +1,11 @@
 <?php
 require_once 'config.php';
 
-// Destruir todas as variáveis de sessão
+// Iniciar a sessão administrativa
+session_name('admin_session');
+session_start();
+
+// Destruir todas as variáveis da sessão administrativa
 $_SESSION = array();
 
 // Se deseja destruir a sessão completamente, apague também o cookie da sessão
@@ -13,10 +17,10 @@ if (ini_get("session.use_cookies")) {
     );
 }
 
-// Finalmente, destruir a sessão
+// Finalmente, destruir a sessão administrativa
 session_destroy();
 
-// Redirecionar para a página de login
+// Redirecionar para a página de login administrativa
 header("Location: index.php");
 exit;
 ?>

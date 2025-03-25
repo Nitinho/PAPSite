@@ -83,17 +83,30 @@ $result = $conn->query($sql);
                 <h3>Categorias</h3>
                 <ul>
                     <li><a href="padaria1.php"><i class="fas fa-bread-slice"></i> Pão</a></li>
-                    <li><a href="padaria2.php"class="active"><i class="fas fa-bread-slice"></i> Baguete</a></li>
+                    <li><a href="padaria2.php" class="active"><i class="fas fa-bread-slice"></i> Baguete</a></li>
                     <li><a href="padaria3.php"><i class="fas fa-birthday-cake"></i> Bolos</a></li>
                 </ul>
-                
+
                 <div class="sidebar-info">
                     <h4>Informações</h4>
                     <p>Todos os nossos produtos são frescos e preparados diariamente.</p>
                     <p>Para encomendas especiais, entre em contacto connosco.</p>
                 </div>
+
+                <div style="margin-top: 30px;"></div>
+
+                <h3>Outras Categorias</h3>
+                <ul>
+                    <li><a href="../padaria/padaria1.php"><i class="fas fa-bread-slice"></i>Padaria</a></li>
+                    <li><a href="../bebidas/bebidas.php"><i class="fas fa-wine-bottle"></i>Bebidas</a></li>
+                    <li><a href="../congelados/congelados.php"><i class="fas fa-snowflake"></i>Congelados</a></li>
+                    <li><a href="../mercearia/mercearia.php"><i class="fas fa-shopping-basket"></i>Mercearia</a></li>
+                    <li><a href="../laticinios/laticinios.php"><i class="fas fa-cheese"></i>Laticínios</a></li>
+                    <li><a href="../frescos/frescos.php"><i class="fas fa-carrot"></i>Frescos</a></li>
+
+                </ul>F
             </div>
-            
+
             <div class="content-wrapper">
                 <div class="product-filters">
                     <div class="filter-group">
@@ -110,11 +123,11 @@ $result = $conn->query($sql);
                         <button id="search-btn"><i class="fas fa-search"></i></button>
                     </div>
                 </div>
-                
+
                 <div class="product-container">
                     <?php
                     if ($result->num_rows > 0) {
-                        while($row = $result->fetch_assoc()) {
+                        while ($row = $result->fetch_assoc()) {
                             echo "<div class='product' data-id='" . $row["id"] . "' data-name='" . $row["nome"] . "' data-price='" . $row["preco"] . "'>";
                             echo "<div class='product-badge'>Fresco</div>";
                             echo "<div class='img-container'>";
@@ -150,7 +163,7 @@ $result = $conn->query($sql);
                     }
                     ?>
                 </div>
-                
+
                 <div class="cart-container">
                     <div class="cart-header">
                         <h3><i class="fas fa-shopping-cart"></i> Meu Carrinho</h3>

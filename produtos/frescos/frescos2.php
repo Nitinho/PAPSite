@@ -24,7 +24,7 @@ if (!isset($_SESSION['carrinho'])) {
 }
 
 // Buscar produtos do banco de dados
-$categoria = "bolos"; // Ajuste conforme necessário
+$categoria = "peixe"; // Ajuste conforme necessário
 $sql = "SELECT * FROM produtos WHERE categoria = '$categoria'";
 $result = $conn->query($sql);
 ?>
@@ -35,7 +35,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Padaria e Pastelaria | Armazéns Lopes</title>
+    <title>Bebidas não Alcoólicas | Alcoólicas</title>
     <meta name="description" content="Produtos de padaria e pastelaria de alta qualidade dos Armazéns Lopes">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -72,8 +72,7 @@ $result = $conn->query($sql);
 
     <div class="page-banner">
         <div class="banner-content">
-            <h1>Padaria e Pastelaria</h1>
-            <p>Descubra nossa seleção de produtos frescos e de qualidade</p>
+            <h1>Peixe</h1>
         </div>
     </div>
 
@@ -82,18 +81,17 @@ $result = $conn->query($sql);
             <div class="sidebar">
                 <h3>Categorias</h3>
                 <ul>
-                    <li><a href="padaria1.php"><i class="fas fa-bread-slice"></i> Pão</a></li>
-                    <li><a href="padaria2.php"><i class="fas fa-bread-slice"></i> Baguete</a></li>
-                    <li><a href="padaria3.php" class="active"><i class="fas fa-birthday-cake"></i> Bolos</a></li>
+                    <li><a href="frescos.php" ><i class="fas fa-drumstick-bite" aria-hidden="true"></i>Talho</a></li>
+                    <li><a href="frescos2.php" class="active"><i class="fas fa-fish" aria-hidden="true"></i>Peixe e Marisco</a></li>
+                    <li><a href="frescos3.php"><i class="fas fa-carrot" aria-hidden="true"></i>Legumes</a></li>
+                    <li><a href="frescos4.php"><i class="fas fa-apple-alt" aria-hidden="true"></i>Frutas</a></li>
 
                 </ul>
 
                 <div class="sidebar-info">
-                    <h4>Informações</h4>
-                    <p>Todos os nossos produtos são frescos e preparados diariamente.</p>
-                    <p>Para encomendas especiais, entre em contacto connosco.</p>
+                    <h4>Bebidas</h4>
+                    <p>Aqui você acha os melhores sumos, refrigerantes com gás, águas minerais e bebidas energéticas para o seu supermercado.</p>
                 </div>
-
 
                 <div style="margin-top: 30px;"></div>
 
@@ -107,7 +105,11 @@ $result = $conn->query($sql);
                     <li><a href="../frescos/frescos.php"><i class="fas fa-carrot"></i>Frescos</a></li>
 
                 </ul>
+
             </div>
+
+
+
 
             <div class="content-wrapper">
                 <div class="product-filters">
@@ -131,7 +133,7 @@ $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo "<div class='product' data-id='" . $row["id"] . "' data-name='" . $row["nome"] . "' data-price='" . $row["preco"] . "'>";
-                            echo "<div class='product-badge'>Fresco</div>";
+
                             echo "<div class='img-container'>";
                             echo "<img src='" . $row["imagem"] . "' alt='" . $row["nome"] . "'>";
                             echo "</div>";
@@ -191,6 +193,7 @@ $result = $conn->query($sql);
         </div>
     </main>
 
+
     <!-- Modal de confirmação -->
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
@@ -205,6 +208,7 @@ $result = $conn->query($sql);
                 <button id="cancel-order">Cancelar</button>
             </div>
         </div>
+
     </div>
 
     <!-- Modal de sucesso -->

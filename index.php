@@ -77,31 +77,33 @@ if (isset($_SESSION['email'])) {
                 <div class="containerproduto">
                     <div class="produtosselect">
                         <img src="img/image.png" alt="Bebidas">
-                        <button>Bebidas</button>
+                        <a href="produtos/bebidas/bebidas.php"><button>Bebidas</button></a>
                     </div>
                 </div>
+
                 <div class="containerproduto">
                     <div class="produtosselect">
                         <img src="img/gelado.png" alt="Congelados">
-                        <button>Congelados</button>
+                        <a href="produtos/congelados/congelados.php"><button>Congelados</button></a>
                     </div>
                 </div>
                 <div class="containerproduto">
                     <div class="produtosselect">
-                        <img src="img/pao.png" alt="Mercearia">
+                        <img src="img/marceria.png" alt="Mercearia">
                         <button>Mercearia</button>
                     </div>
                 </div>
                 <div class="containerproduto">
                     <div class="produtosselect">
-                        <img src="img/pao.png" alt="Laticínios">
-                        <button>Laticínios</button>
+                        <img src="img/laticinios.png" alt="Laticínios">
+                        <a href="produtos/laticinios/laticinios.php"><button>Laticínios</button></a>
+
                     </div>
                 </div>
                 <div class="containerproduto">
                     <div class="produtosselect">
-                        <img src="img/pao.png" alt="Frescos">
-                        <button>Frescos</button>
+                        <img src="img/fresco.png" alt="Frescos">
+                        <a href="produtos/frescos/frescos.php"><button>Frescos</button></a>
                     </div>
                 </div>
             </div>

@@ -24,7 +24,7 @@ if (!isset($_SESSION['carrinho'])) {
 }
 
 // Buscar produtos do banco de dados
-$categoria = "bolos"; // Ajuste conforme necessário
+$categoria = "docescongelado"; // Ajuste conforme necessário
 $sql = "SELECT * FROM produtos WHERE categoria = '$categoria'";
 $result = $conn->query($sql);
 ?>
@@ -35,7 +35,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Padaria e Pastelaria | Armazéns Lopes</title>
+    <title>Bebidas não Alcoólicas | Alcoólicas</title>
     <meta name="description" content="Produtos de padaria e pastelaria de alta qualidade dos Armazéns Lopes">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -72,8 +72,8 @@ $result = $conn->query($sql);
 
     <div class="page-banner">
         <div class="banner-content">
-            <h1>Padaria e Pastelaria</h1>
-            <p>Descubra nossa seleção de produtos frescos e de qualidade</p>
+            <h1>Congelados</h1>
+            <p>Descubra nossa seleção de congelados</p>
         </div>
     </div>
 
@@ -82,29 +82,9 @@ $result = $conn->query($sql);
             <div class="sidebar">
                 <h3>Categorias</h3>
                 <ul>
-                    <li><a href="padaria1.php"><i class="fas fa-bread-slice"></i> Pão</a></li>
-                    <li><a href="padaria2.php"><i class="fas fa-bread-slice"></i> Baguete</a></li>
-                    <li><a href="padaria3.php" class="active"><i class="fas fa-birthday-cake"></i> Bolos</a></li>
-
-                </ul>
-
-                <div class="sidebar-info">
-                    <h4>Informações</h4>
-                    <p>Todos os nossos produtos são frescos e preparados diariamente.</p>
-                    <p>Para encomendas especiais, entre em contacto connosco.</p>
-                </div>
-
-
-                <div style="margin-top: 30px;"></div>
-
-                <h3>Outras Categorias</h3>
-                <ul>
-                    <li><a href="../padaria/padaria1.php"><i class="fas fa-bread-slice"></i>Padaria</a></li>
-                    <li><a href="../bebidas/bebidas.php"><i class="fas fa-wine-bottle"></i>Bebidas</a></li>
-                    <li><a href="../congelados/congelados.php"><i class="fas fa-snowflake"></i>Congelados</a></li>
-                    <li><a href="../mercearia/mercearia.php"><i class="fas fa-shopping-basket"></i>Mercearia</a></li>
-                    <li><a href="../laticinios/laticinios.php"><i class="fas fa-cheese"></i>Laticínios</a></li>
-                    <li><a href="../frescos/frescos.php"><i class="fas fa-carrot"></i>Frescos</a></li>
+                <li><a href="congelados.php" class="active"><i class="fas fa-ice-cream"></i>Doces</a></li>
+                <li><a href="congelados2.php"><i class="fas fa-snowflake"></i>Carnes e Peixes</a></li>
+                <li><a href="congelados3.php"><i class="fas fa-box-open"></i>Outros</a></li>
 
                 </ul>
             </div>
@@ -131,7 +111,7 @@ $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo "<div class='product' data-id='" . $row["id"] . "' data-name='" . $row["nome"] . "' data-price='" . $row["preco"] . "'>";
-                            echo "<div class='product-badge'>Fresco</div>";
+
                             echo "<div class='img-container'>";
                             echo "<img src='" . $row["imagem"] . "' alt='" . $row["nome"] . "'>";
                             echo "</div>";
@@ -191,6 +171,7 @@ $result = $conn->query($sql);
         </div>
     </main>
 
+
     <!-- Modal de confirmação -->
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
@@ -205,6 +186,7 @@ $result = $conn->query($sql);
                 <button id="cancel-order">Cancelar</button>
             </div>
         </div>
+
     </div>
 
     <!-- Modal de sucesso -->

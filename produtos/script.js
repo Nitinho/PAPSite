@@ -513,3 +513,5 @@ document.addEventListener('DOMContentLoaded', function() {
     // Inicializar a exibição do carrinho
     updateCartDisplay();
 });
+
+
