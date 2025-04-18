@@ -87,6 +87,18 @@ $result = $conn->query($sql);
                 <li><a href="congelados3.php" class="active"><i class="fas fa-box-open"></i>Outros</a></li>
 
                 </ul>
+                <div style="margin-top: 30px;"></div>
+
+                <h3>Outras Categorias</h3>
+                <ul>
+                    <li><a href="../padaria/padaria1.php"><i class="fas fa-bread-slice"></i>Padaria</a></li>
+                    <li><a href="../bebidas/bebidas.php"><i class="fas fa-wine-bottle"></i>Bebidas</a></li>
+                    <li><a href="../congelados/congelados.php"><i class="fas fa-snowflake"></i>Congelados</a></li>
+                    <li><a href="../mercearia/mercearia.php"><i class="fas fa-shopping-basket"></i>Mercearia</a></li>
+                    <li><a href="../laticinios/laticinios.php"><i class="fas fa-cheese"></i>Laticínios</a></li>
+                    <li><a href="../frescos/frescos.php"><i class="fas fa-carrot"></i>Frescos</a></li>
+
+                </ul>
             </div>
 
             <div class="content-wrapper">

@@ -184,20 +184,17 @@ document.addEventListener('DOMContentLoaded', function() {
 document.addEventListener('DOMContentLoaded', function() {
     const menuToggle = document.querySelector('.mobile-menu-toggle');
     const mobileMenu = document.querySelector('.mobile-menu');
-
-    menuToggle.addEventListener('click', function() {
-        mobileMenu.classList.toggle('active');
-        
-        // Animação do ícone do menu (opcional)
-        const spans = menuToggle.querySelectorAll('span');
-        if (mobileMenu.classList.contains('active')) {
-            spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
-            spans[1].style.opacity = '0';
-            spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
-        } else {
-            spans[0].style.transform = 'none';
-            spans[1].style.opacity = '1';
-            spans[2].style.transform = 'none';
-        }
-    });
+    
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', function() {
+            // Toggle da classe 'open' no menu móvel
+            mobileMenu.classList.toggle('open');
+            
+            // Toggle da classe 'active' no botão para animação
+            menuToggle.classList.toggle('active');
+        });
+    } else {
+        console.error('Menu toggle ou menu móvel não encontrado');
+    }
 });
+

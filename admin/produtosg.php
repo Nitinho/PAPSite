@@ -24,6 +24,33 @@ while ($row = $result_categorias->fetch_assoc()) {
     }
 }
 
+// Função para gerar nome único de arquivo
+function gerarNomeUnico($conn, $nome_original) {
+    $nome_base = pathinfo($nome_original, PATHINFO_FILENAME);
+    $extensao = pathinfo($nome_original, PATHINFO_EXTENSION);
+    $nome_arquivo = $nome_base;
+    $contador = 1;
+
+    while (true) {
+        $query = "SELECT COUNT(*) as count FROM produtos WHERE imagem LIKE ?";
+        $stmt = $conn->prepare($query);
+        $nome_busca = "%{$nome_arquivo}.{$extensao}";
+        $stmt->bind_param("s", $nome_busca);
+        $stmt->execute();
+        $result = $stmt->get_result();
+        $row = $result->fetch_assoc();
+
+        if ($row['count'] == 0) {
+            break;
+        }
+
+        $nome_arquivo = $nome_base . '_' . $contador;
+        $contador++;
+    }
+
+    return $nome_arquivo . '.' . $extensao;
+}
+
 // Processar exclusão de produto
 if (isset($_POST['delete_produto']) && isset($_POST['produto_id'])) {
     $produto_id = $_POST['produto_id'];
@@ -57,30 +84,25 @@ if (isset($_POST['update_produto'])) {
     $produto_id = $_POST['produto_id'];
     $nome = $_POST['nome'];
     $descricao = $_POST['descricao'];
-    $preco = str_replace(',', '.', $_POST['preco']); // Converter vírgula para ponto
+    $preco = str_replace(',', '.', $_POST['preco']);
     $categoria = $_POST['categoria'];
     
-    // Verificar se foi enviada uma nova imagem
-    $imagem = $_POST['imagem_atual']; // Manter a imagem atual por padrão
+    $imagem = $_POST['imagem_atual'];
     
     if (isset($_FILES['imagem']) && $_FILES['imagem']['size'] > 0) {
         $target_dir = "../img/";
         
-        // Verificar se o diretório existe, se não, criar
         if (!file_exists($target_dir)) {
             mkdir($target_dir, 0777, true);
         }
         
-        $file_extension = pathinfo($_FILES["imagem"]["name"], PATHINFO_EXTENSION);
-        $new_filename = "produto_" . time() . "." . $file_extension;
-        $target_file = $target_dir . $new_filename;
+        $nome_arquivo = gerarNomeUnico($conn, $_FILES["imagem"]["name"]);
+        $target_file = $target_dir . $nome_arquivo;
         
-        // Verificar se é uma imagem válida
         $check = getimagesize($_FILES["imagem"]["tmp_name"]);
         if ($check !== false) {
-            // Tentar fazer upload da imagem
             if (move_uploaded_file($_FILES["imagem"]["tmp_name"], $target_file)) {
-                $imagem = "/PAPSite/img/" . $new_filename;
+                $imagem = "/PAPSite/img/" . $nome_arquivo;
             } else {
                 $mensagem = '<div class="alert alert-warning">Erro ao fazer upload da imagem. Os outros dados foram atualizados.</div>';
             }
@@ -89,7 +111,6 @@ if (isset($_POST['update_produto'])) {
         }
     }
     
-    // Atualizar o produto no banco de dados
     $update_query = "UPDATE produtos SET nome = ?, descricao = ?, preco = ?, imagem = ?, categoria = ? WHERE id = ?";
     $stmt = $conn->prepare($update_query);
     $stmt->bind_param("ssdssi", $nome, $descricao, $preco, $imagem, $categoria, $produto_id);
@@ -105,30 +126,25 @@ if (isset($_POST['update_produto'])) {
 if (isset($_POST['add_produto'])) {
     $nome = $_POST['nome'];
     $descricao = $_POST['descricao'];
-    $preco = str_replace(',', '.', $_POST['preco']); // Converter vírgula para ponto
+    $preco = str_replace(',', '.', $_POST['preco']);
     $categoria = $_POST['categoria'];
     
-    // Processar imagem
-    $imagem = "/PAPSite/img/Bolapao.png"; // Imagem padrão
+    $imagem = "/PAPSite/img/Bolapao.png";
     
     if (isset($_FILES['imagem']) && $_FILES['imagem']['size'] > 0) {
         $target_dir = "../img/";
         
-        // Verificar se o diretório existe, se não, criar
         if (!file_exists($target_dir)) {
             mkdir($target_dir, 0777, true);
         }
         
-        $file_extension = pathinfo($_FILES["imagem"]["name"], PATHINFO_EXTENSION);
-        $new_filename = "produto_" . time() . "." . $file_extension;
-        $target_file = $target_dir . $new_filename;
+        $nome_arquivo = gerarNomeUnico($conn, $_FILES["imagem"]["name"]);
+        $target_file = $target_dir . $nome_arquivo;
         
-        // Verificar se é uma imagem válida
         $check = getimagesize($_FILES["imagem"]["tmp_name"]);
         if ($check !== false) {
-            // Tentar fazer upload da imagem
             if (move_uploaded_file($_FILES["imagem"]["tmp_name"], $target_file)) {
-                $imagem = "/PAPSite/img/" . $new_filename;
+                $imagem = "/PAPSite/img/" . $nome_arquivo;
             } else {
                 $mensagem = '<div class="alert alert-warning">Erro ao fazer upload da imagem. O produto será adicionado com a imagem padrão.</div>';
             }
@@ -137,7 +153,6 @@ if (isset($_POST['add_produto'])) {
         }
     }
     
-    // Inserir o novo produto
     $insert_query = "INSERT INTO produtos (nome, descricao, preco, imagem, categoria) VALUES (?, ?, ?, ?, ?)";
     $stmt = $conn->prepare($insert_query);
     $stmt->bind_param("ssdss", $nome, $descricao, $preco, $imagem, $categoria);
@@ -635,6 +650,25 @@ $produtos = $result->fetch_all(MYSQLI_ASSOC);
         
         document.getElementById('edit_preco').addEventListener('input', function() {
             validarPreco(this);
+        });
+
+        
+        // Adicionar pesquisa em tempo real
+        document.getElementById('search-input').addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            const rows = document.querySelectorAll('tbody tr');
+            
+            rows.forEach(row => {
+                const nome = row.querySelector('td:nth-child(3)').textContent.toLowerCase();
+                const descricao = row.querySelector('td:nth-child(4)').textContent.toLowerCase();
+                const categoria = row.querySelector('td:nth-child(6)').textContent.toLowerCase();
+                
+                if (nome.includes(searchTerm) || descricao.includes(searchTerm) || categoria.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
         });
     </script>
 </body>

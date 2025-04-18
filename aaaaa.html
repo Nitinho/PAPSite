@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cartão de Visita - Ama Infantil</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: #f0d4e3;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            gap: 30px;
+        }
+        
+        .card-front, .card-back {
+            width: 350px;
+            height: 200px;
+            background: linear-gradient(135deg, #ffffff 0%, #fdf6fa 100%);
+            border-radius: 12px;
+            box-shadow: 0 15px 35px rgba(219, 112, 147, 0.25);
+            padding: 25px;
+            position: relative;
+            overflow: hidden;
+            z-index: 1;
+            backdrop-filter: blur(5px);
+        }
+        
+        .card-front {
+            display: flex;
+        }
+        
+        .logo-section {
+            width: 110px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            border-right: 1px solid rgba(233, 150, 183, 0.2);
+            padding-right: 20px;
+        }
+        
+        .logo-container {
+            width: 90px;
+            height: 90px;
+            border: 2px solid #e996b7;
+            border-radius: 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: white;
+            margin-bottom: 10px;
+            box-shadow: 0 5px 15px rgba(233, 150, 183, 0.15);
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo-container:hover {
+            transform: scale(1.05);
+        }
+        
+        .logo-container img {
+            max-width: 85%;
+            max-height: 85%;
+            object-fit: contain;
+        }
+        
+        .contact-section {
+            flex-grow: 1;
+            padding-left: 25px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .business-name {
+            font-size: 22px;
+            font-weight: 700;
+            color: #d64d8f;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+            position: relative;
+        }
+        
+        .business-name::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 0;
+            width: 40px;
+            height: 3px;
+            background-color: #e996b7;
+            border-radius: 2px;
+        }
+        
+        .contact-item {
+            margin-bottom: 12px;
+            font-size: 13.5px;
+            display: flex;
+            align-items: center;
+        }
+        
+        .contact-icon {
+            color: #d64d8f;
+            margin-right: 12px;
+            font-size: 16px;
+            width: 18px;
+            text-align: center;
+        }
+        
+        .contact-value {
+            color: #444;
+            font-weight: 500;
+        }
+        
+        /* Estilos para o verso do cartão */
+        .card-back {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .tagline {
+            font-size: 16px;
+            font-weight: 600;
+            color: #d64d8f;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .services {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 20px;
+            width: 100%;
+        }
+        
+        .service-item {
+            background-color: rgba(233, 150, 183, 0.1);
+            border-radius: 8px;
+            padding: 8px 15px;
+            font-size: 12px;
+            color: #444;
+            font-weight: 500;
+            border: 1px solid rgba(233, 150, 183, 0.2);
+        }
+        
+        .social-media {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+        }
+        
+        .social-icon {
+            width: 30px;
+            height: 30px;
+            background-color: #d64d8f;
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        /* Elementos decorativos (bolinhas) */
+        .decoration {
+            position: absolute;
+            bottom: -60px;
+            right: -60px;
+            width: 180px;
+            height: 180px;
+            background-color: #e996b7;
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .decoration-2 {
+            position: absolute;
+            top: -40px;
+            left: -40px;
+            width: 120px;
+            height: 120px;
+            background-color: #e996b7;
+            border-radius: 50%;
+            opacity: 0.3;
+            z-index: -1;
+        }
+        
+        .decoration-3 {
+            position: absolute;
+            top: 60px;
+            right: 60px;
+            width: 50px;
+            height: 50px;
+            background-color: #d64d8f;
+            border-radius: 50%;
+            opacity: 0.2;
+            z-index: -1;
+        }
+        
+        .decoration-4 {
+            position: absolute;
+            bottom: 50px;
+            left: 130px;
+            width: 35px;
+            height: 35px;
+            background-color: #d64d8f;
+            border-radius: 50%;
+            opacity: 0.25;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+    <!-- Frente do cartão -->
+    <div class="card-front">
+        <div class="logo-section">
+            <div class="logo-container">
+                <img src="logo.png" alt="Logo Ama Infantil">
+            </div>
+        </div>
+        
+        <div class="contact-section">
+            <div class="business-name">Ama Infantil</div>
+            
+            <div class="contact-item">
+                <span class="contact-icon">✉</span>
+                <span class="contact-value">contato@amainfantil.com</span>
+            </div>
+            
+            <div class="contact-item">
+                <span class="contact-icon">☎</span>
+                <span class="contact-value">912 345 678</span>
+            </div>
+            
+            <div class="contact-item">
+                <span class="contact-icon">⌂</span>
+                <span class="contact-value">Rua das Crianças, 123 - Lisboa</span>
+            </div>
+            
+            <div class="contact-item">
+                <span class="contact-icon">🌐</span>
+                <span class="contact-value">www.amainfantil.com</span>
+            </div>
+        </div>
+        
+        <div class="decoration"></div>
+        <div class="decoration-2"></div>
+        <div class="decoration-3"></div>
+        <div class="decoration-4"></div>
+    </div>
+    
+    <!-- Verso do cartão -->
+    <div class="card-back">
+        <div class="tagline">Cuidados infantis com carinho e dedicação</div>
+        
+        <div class="services">
+            <div class="service-item">Atividades Educativas</div>
+            <div class="service-item">Alimentação Saudável</div>
+            <div class="service-item">Ambiente Seguro</div>
+            <div class="service-item">Horário Flexível</div>
+            <div class="service-item">Desenvolvimento Infantil</div>
+            <div class="service-item">Acompanhamento Personalizado</div>
+        </div>
+        
+        <div class="social-media">
+            <div class="social-icon">f</div>
+            <div class="social-icon">i</div>
+            <div class="social-icon">w</div>
+        </div>
+        
+        <div class="decoration"></div>
+        <div class="decoration-2"></div>
+        <div class="decoration-3"></div>
+        <div class="decoration-4"></div>
+    </div>
+</body>
+</html>

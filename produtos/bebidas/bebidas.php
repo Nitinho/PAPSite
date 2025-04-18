@@ -95,12 +95,12 @@ $result = $conn->query($sql);
 
                 <h3>Outras Categorias</h3>
                 <ul>
-                    <li><a href="padaria.php"><i class="fas fa-bread-slice"></i>Padaria</a></li>
-                    <li><a href="bebidas.php"><i class="fas fa-wine-bottle"></i>Bebidas</a></li>
-                    <li><a href="congelados.php"><i class="fas fa-snowflake"></i>Congelados</a></li>
-                    <li><a href="mercearia.php"><i class="fas fa-shopping-basket"></i>Mercearia</a></li>
-                    <li><a href="laticinios.php"><i class="fas fa-cheese"></i>Laticínios</a></li>
-                    <li><a href="frescos.php"><i class="fas fa-carrot"></i>Frescos</a></li>
+                    <li><a href="../padaria/padaria1.php"><i class="fas fa-bread-slice"></i>Padaria</a></li>
+                    <li><a href="../bebidas/bebidas.php"><i class="fas fa-wine-bottle"></i>Bebidas</a></li>
+                    <li><a href="../congelados/congelados.php"><i class="fas fa-snowflake"></i>Congelados</a></li>
+                    <li><a href="../mercearia/mercearia.php"><i class="fas fa-shopping-basket"></i>Mercearia</a></li>
+                    <li><a href="../laticinios/laticinios.php"><i class="fas fa-cheese"></i>Laticínios</a></li>
+                    <li><a href="../frescos/frescos.php"><i class="fas fa-carrot"></i>Frescos</a></li>
 
                 </ul>
 

@@ -24,7 +24,7 @@ if (!isset($_SESSION['carrinho'])) {
 }
 
 // Buscar produtos do banco de dados
-$categoria = "talho"; // Ajuste conforme necessário
+$categoria = "laticinios"; // Ajuste conforme necessário
 $sql = "SELECT * FROM produtos WHERE categoria = '$categoria'";
 $result = $conn->query($sql);
 ?>
