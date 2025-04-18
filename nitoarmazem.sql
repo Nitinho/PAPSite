@@ -31,7 +31,7 @@ CREATE TABLE IF NOT EXISTS `compras` (
   PRIMARY KEY (`id`),
   KEY `usuario_id` (`usuario_id`),
   CONSTRAINT `compras_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- A despejar dados para tabela lopesarmazem.compras: ~7 rows (aproximadamente)
 INSERT INTO `compras` (`id`, `usuario_id`, `data_compra`, `valor_compra`, `pontos_ganhos`, `status`, `data_cancelamento`) VALUES
@@ -41,7 +41,8 @@ INSERT INTO `compras` (`id`, `usuario_id`, `data_compra`, `valor_compra`, `ponto
 	(4, 1, '2025-03-20 17:06:52', 222.40, 22, 'cancelado', NULL),
 	(5, 1, '2025-03-25 16:45:22', 38.30, 3, 'enviado', NULL),
 	(6, 1, '2025-03-25 16:45:31', 715.00, 71, 'pendente', NULL),
-	(7, 2, '2025-03-25 16:56:43', 21.20, 2, 'recebido', NULL);
+	(7, 2, '2025-03-25 16:56:43', 21.20, 2, 'recebido', NULL),
+	(8, 1, '2025-04-01 14:16:22', 4.30, 0, 'pendente', NULL);
 
 -- A despejar estrutura para tabela lopesarmazem.enderecos
 CREATE TABLE IF NOT EXISTS `enderecos` (
@@ -56,7 +57,7 @@ CREATE TABLE IF NOT EXISTS `enderecos` (
   CONSTRAINT `enderecos_ibfk_1` FOREIGN KEY (`usuario_id`) REFERENCES `usuarios` (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela lopesarmazem.enderecos: ~1 rows (aproximadamente)
+-- A despejar dados para tabela lopesarmazem.enderecos: ~0 rows (aproximadamente)
 INSERT INTO `enderecos` (`id`, `usuario_id`, `rua`, `numero`, `cidade`, `codigo_postal`) VALUES
 	(1, 1, 'Rua Da Cavadinha', '7', 'Ourem', '2435-260'),
 	(2, 2, 'rua da escola', '21', 'Ourem', '2435-260');
@@ -74,9 +75,9 @@ CREATE TABLE IF NOT EXISTS `itens_compra` (
   KEY `produto_id` (`produto_id`),
   CONSTRAINT `itens_compra_ibfk_1` FOREIGN KEY (`compra_id`) REFERENCES `compras` (`id`),
   CONSTRAINT `itens_compra_ibfk_2` FOREIGN KEY (`produto_id`) REFERENCES `produtos` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela lopesarmazem.itens_compra: ~19 rows (aproximadamente)
+-- A despejar dados para tabela lopesarmazem.itens_compra: ~17 rows (aproximadamente)
 INSERT INTO `itens_compra` (`id`, `compra_id`, `produto_id`, `quantidade`, `preco_unitario`, `subtotal`) VALUES
 	(1, 1, 1, 100, 0.50, 50.00),
 	(2, 2, 1, 4, 1.50, 6.00),
@@ -96,7 +97,8 @@ INSERT INTO `itens_compra` (`id`, `compra_id`, `produto_id`, `quantidade`, `prec
 	(16, 7, 2, 1, 0.60, 0.60),
 	(17, 7, 15, 1, 4.30, 4.30),
 	(18, 7, 14, 1, 10.50, 10.50),
-	(19, 7, 17, 1, 4.30, 4.30);
+	(19, 7, 17, 1, 4.30, 4.30),
+	(20, 8, 15, 1, 4.30, 4.30);
 
 -- A despejar estrutura para tabela lopesarmazem.produtos
 CREATE TABLE IF NOT EXISTS `produtos` (
@@ -107,9 +109,9 @@ CREATE TABLE IF NOT EXISTS `produtos` (
   `imagem` varchar(255) DEFAULT NULL,
   `categoria` varchar(50) DEFAULT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=24 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela lopesarmazem.produtos: ~20 rows (aproximadamente)
+-- A despejar dados para tabela lopesarmazem.produtos: ~29 rows (aproximadamente)
 INSERT INTO `produtos` (`id`, `nome`, `descricao`, `preco`, `imagem`, `categoria`) VALUES
 	(1, 'Pão de Teste', 'Pão tradicional', 1.50, '/PAPSite/img/produto_1742170389.png', 'pao'),
 	(2, 'Pão Integral', 'Feito com farinha integral', 0.60, '/PAPSite/img/Bolapao.png', 'pao'),
@@ -130,7 +132,17 @@ INSERT INTO `produtos` (`id`, `nome`, `descricao`, `preco`, `imagem`, `categoria
 	(20, 'Salmão 5/6 Kg', '', 4.30, '/PAPSite/img/salmao.png', 'peixe'),
 	(21, 'Alface Frisada Kg', '', 0.70, '/PAPSite/img/alface.png', 'legumes'),
 	(22, 'Banana Kg', '', 1.00, '/PAPSite/img/banana.png', 'frutas'),
-	(23, 'bacalhau', 'bacalhau', 20.00, '/PAPSite/img/Bolapao.png', 'peixe');
+	(23, 'Bacalhau Corrente Noruega MasterChef Caixa 15Kg', 'bacalhau', 20.00, '/PAPSite/img/bacalhau.jpg', 'peixe'),
+	(24, 'Peixe Espada Preto Kg', '', 9.00, '/PAPSite/img/preto.jpg', 'peixe'),
+	(25, 'Dourada 400/600 G', '', 9.30, '/PAPSite/img/dourada.jpg', 'peixe'),
+	(26, 'Porco Tiras de Entrecosto', '', 4.50, '/PAPSite/img/entrecosto.jpg', 'talho'),
+	(27, 'Porco Bifanas KG', '', 3.50, '/PAPSite/img/bifana.jpg', 'talho'),
+	(28, 'Porco Cachaço com Osso KG', '', 4.49, '/PAPSite/img/cachaso.jpg', 'talho'),
+	(29, 'Cenoura 25/40 Saco 10 Kg', '', 4.50, '/PAPSite/img/cenoura.jpg', 'legumes'),
+	(30, 'Batata Ganderesa Saco 15 Kg', '', 8.00, '/PAPSite/img/batata.jpg', 'legumes'),
+	(31, 'Morango Caixa 3 Kg', '', 8.20, '/PAPSite/img/morango.jpg', 'frutas'),
+	(33, 'Laranja Caixa 3KG', '', 4.00, '/PAPSite/img/laranja.jpg', 'frutas'),
+	(34, 'Pêra Rocha Caixa 3KG', '', 4.00, '/PAPSite/img/perarocha.jpg', 'frutas');
 
 -- A despejar estrutura para tabela lopesarmazem.support_messages
 CREATE TABLE IF NOT EXISTS `support_messages` (
@@ -182,7 +194,7 @@ CREATE TABLE IF NOT EXISTS `usuarios` (
   UNIQUE KEY `email` (`email`)
 ) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
--- A despejar dados para tabela lopesarmazem.usuarios: ~1 rows (aproximadamente)
+-- A despejar dados para tabela lopesarmazem.usuarios: ~0 rows (aproximadamente)
 INSERT INTO `usuarios` (`id`, `nome`, `email`, `senha`, `nif`, `nome_da_empresa`, `nif_da_empresa`, `data_registro`, `telefone`) VALUES
 	(1, 'admin@admin', 'admin@admin', '$2y$10$3.sm7dl8/5W1U4sYjEUQFOtVRigg/vQ8stxOCPASqrAVf1G9s.FZK', '111111111', 'admin@admin', '11111111', '2025-03-16 23:58:53', '912129743'),
 	(2, 'professora', 'professora@gmail.com', '$2y$10$/VSWrbXlKPdELeSTivaHkugIs84.pLnGo3VkK/G9yEqAXbO77/.eW', '1111111111', 'professora', '1222121211211', '2025-03-25 16:55:05', '9111111111111');
