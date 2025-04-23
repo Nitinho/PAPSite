@@ -22,6 +22,7 @@ if (isset($_SESSION['email'])) {
     <link rel="stylesheet" href="styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="js/index.js" defer></script>
+    <link rel="shortcut icon" type="image/x-icon" href="img/logolopes.ico">
     <meta name="description" content="Armazéns Lopes - Fornecedor premium de produtos para supermercados em Portugal">
 </head>
 
@@ -45,11 +46,12 @@ if (isset($_SESSION['email'])) {
         </div>
 
         <nav class="mobile-menu">
-            <a href="index.php">INÍCIO</a>
-            <a href="#container2">PRODUTOS</a>
-            <a href="#sobre">SOBRE</a>
-            <a href="#container6">CONTACTOS</a>
-            <a href="<?php echo $redirectUrl; ?>" class="mobile-area-cliente"><strong>ÁREA CLIENTE</strong></a>
+            <a href="../index.php">INÍCIO</a>
+            <a href="../index.php#container2">PRODUTOS</a>
+            <a href="../index.php#sobre">SOBRE</a>
+            <a href="../index.php#container6">CONTACTOS</a>
+            <a href="../formulario.php">VIRAR CLIENTE</a>
+            <a href="#" class="mobile-area-cliente"><strong>ÁREA CLIENTE</strong></a>
         </nav>
     </header>
 
@@ -58,7 +60,7 @@ if (isset($_SESSION['email'])) {
             <div id="container1txt">
                 <h1>Qualidade Premium para o seu Negócio</h1>
                 <p>Nos Armazéns Lopes, encontra tudo o que precisa para o seu supermercado. Desde produtos básicos e frescos até especialidades gourmet e internacionais.</p>
-                <a href="form.php" class="cta-button">Torne-se Cliente</a>
+                <a href="login/registrar.php" class="cta-button">Torne-se Cliente</a>
             </div>
             <div id="container1img">
                 <img src="img/carrinhop.png" alt="Carrinho de Compras">
@@ -218,7 +220,6 @@ if (isset($_SESSION['email'])) {
     <footer>
         <div class="footer-content">
             <div class="footer-logo">
-                <img src="img/logolopes.png" alt="Logo Armazéns Lopes" width="50">
             </div>
             <div class="footer-links">
                 <a href="index.php">Início</a>
@@ -227,9 +228,7 @@ if (isset($_SESSION['email'])) {
                 <a href="#container6">Contactos</a>
             </div>
             <div class="footer-social">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+
             </div>
         </div>
         <div class="footer-bottom">
@@ -238,6 +237,8 @@ if (isset($_SESSION['email'])) {
     </footer>
 
     <button id="back-to-top" title="Voltar ao Topo"><i class="fas fa-arrow-up"></i></button>
+
+
 </body>
 
 </html>
