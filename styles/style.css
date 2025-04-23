@@ -1,17 +1,27 @@
+/* ==========================================================================
+   CONFIGURAÇÕES INICIAIS
+   ========================================================================== */
+
 /* Importação de Fontes */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-/* Configurações Globais */
+/* Variáveis Globais */
 :root {
+    /* Cores principais */
     --primary-color: #FF4C4C;
     --primary-dark: #e63939;
     --primary-light: #ff7a7a;
+    
+    /* Cores neutras */
     --white: #ffffff;
     --light-gray: #f5f5f5;
     --dark-gray: #333333;
+    
+    /* Transições */
     --transition: all 0.3s ease;
 }
 
+/* Reset e configurações base */
 * {
     margin: 0;
     padding: 0;
@@ -35,6 +45,11 @@ a {
     color: inherit;
 }
 
+/* ==========================================================================
+   COMPONENTES REUTILIZÁVEIS
+   ========================================================================== */
+
+/* Títulos de seção */
 .section-title {
     font-size: 2.5rem;
     font-weight: 700;
@@ -56,6 +71,7 @@ a {
     background-color: var(--primary-color);
 }
 
+/* Animações de fade-in */
 .fade-in {
     opacity: 0;
     transform: translateY(20px);
@@ -67,8 +83,29 @@ a {
     transform: translateY(0);
 }
 
-/* Header */
-header {
+/* Botões CTA */
+.cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--white);
+    color: var(--primary-color);
+    font-weight: 600;
+    border-radius: 30px;
+    transition: var(--transition);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+/* ==========================================================================
+   HEADER E NAVEGAÇÃO
+   ========================================================================== */
+
+/* Header principal */
+.header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -84,22 +121,29 @@ header {
     transition: var(--transition);
 }
 
-header.scrolled {
+.header.scrolled {
     height: 70px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-#headerimg img {
-    width: 67px;
-    transition: var(--transition);
-}
-
-#headerselect {
+.header__logo {
+    height: 100%;
     display: flex;
     align-items: center;
 }
 
-#headerselect a {
+.header__logo-img {
+    width: 67px;
+    transition: var(--transition);
+}
+
+/* Menu de navegação desktop */
+.nav {
+    display: flex;
+    align-items: center;
+}
+
+.nav__link {
     color: var(--primary-color);
     padding: 0 20px;
     font-weight: 600;
@@ -108,7 +152,7 @@ header.scrolled {
     position: relative;
 }
 
-#headerselect a::after {
+.nav__link::after {
     content: '';
     position: absolute;
     bottom: -5px;
@@ -120,11 +164,11 @@ header.scrolled {
     transition: var(--transition);
 }
 
-#headerselect a:hover::after {
+.nav__link:hover::after {
     width: 70%;
 }
 
-#buttonheader {
+.nav__button {
     padding: 10px 20px;
     margin-left: 20px;
     font-size: 14px;
@@ -137,13 +181,14 @@ header.scrolled {
     transition: var(--transition);
 }
 
-#buttonheader:hover {
+.nav__button:hover {
     background-color: var(--primary-color);
     color: var(--white);
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(255, 76, 76, 0.3);
 }
 
+/* Menu móvel */
 /* Menu Móvel */
 .mobile-menu-toggle {
     display: none;
@@ -205,8 +250,11 @@ header.scrolled {
     border: none;
 }
 
-/* Container 1 */
-#container1 {
+/* ==========================================================================
+   SEÇÃO HERO (CONTAINER 1)
+   ========================================================================== */
+
+.hero {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -217,48 +265,32 @@ header.scrolled {
     color: var(--white);
 }
 
-#container1txt {
+.hero__content {
     flex: 1;
     max-width: 600px;
 }
 
-#container1txt h1 {
+.hero__title {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
-#container1txt p {
+.hero__text {
     font-size: 1.1rem;
     margin-bottom: 2rem;
     line-height: 1.6;
 }
 
-.cta-button {
-    display: inline-block;
-    padding: 12px 30px;
-    background-color: var(--white);
-    color: var(--primary-color);
-    font-weight: 600;
-    border-radius: 30px;
-    transition: var(--transition);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-#container1img {
+.hero__image {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-#container1img img {
+.hero__image-img {
     max-width: 100%;
     height: auto;
     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
@@ -270,13 +302,16 @@ header.scrolled {
     50% { transform: translateY(-15px); }
 }
 
-/* Container 2 - Produtos */
-#container2 {
+/* ==========================================================================
+   SEÇÃO PRODUTOS (CONTAINER 2)
+   ========================================================================== */
+
+.products {
     padding: 80px 5%;
     background-color: var(--white);
 }
 
-.produtos-grid {
+.products__grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 30px;
@@ -284,7 +319,7 @@ header.scrolled {
     margin: 0 auto;
 }
 
-.containerproduto {
+.product-card {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(255, 76, 76, 0.1);
@@ -296,12 +331,12 @@ header.scrolled {
     align-items: center;
 }
 
-.containerproduto:hover {
+.product-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(255, 76, 76, 0.2);
 }
 
-.produtosselect {
+.product-card__content {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -309,7 +344,7 @@ header.scrolled {
     padding: 20px;
 }
 
-.produtosselect img {
+.product-card__image {
     width: 120px;
     height: 120px;
     object-fit: contain;
@@ -317,11 +352,11 @@ header.scrolled {
     transition: var(--transition);
 }
 
-.containerproduto:hover .produtosselect img {
+.product-card:hover .product-card__image {
     transform: scale(1.1);
 }
 
-.produtosselect button {
+.product-card__button {
     padding: 10px 20px;
     background-color: var(--white);
     color: var(--primary-color);
@@ -333,37 +368,43 @@ header.scrolled {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.produtosselect button:hover {
+.product-card__button:hover {
     background-color: rgba(255, 255, 255, 0.9);
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* Sobre Nós */
-#sobre {
+/* ==========================================================================
+   SEÇÃO SOBRE NÓS
+   ========================================================================== */
+
+.about {
     padding: 80px 5%;
     background-color: var(--light-gray);
 }
 
-.sobre-content {
+.about__content {
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
 }
 
-.sobre-content p {
+.about__text {
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
     line-height: 1.7;
 }
 
-/* Perguntas Frequentes */
-#container5 {
+/* ==========================================================================
+   SEÇÃO FAQ (CONTAINER 5)
+   ========================================================================== */
+
+.faq {
     padding: 80px 5%;
     background-color: var(--white);
 }
 
-.faq-container {
+.faq__container {
     max-width: 800px;
     margin: 0 auto;
 }
@@ -382,7 +423,7 @@ header.scrolled {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-.faq-question {
+.faq-item__question {
     padding: 20px;
     font-size: 1.2rem;
     font-weight: 600;
@@ -392,7 +433,7 @@ header.scrolled {
     transition: var(--transition);
 }
 
-.faq-question::after {
+.faq-item__question::after {
     content: '+';
     position: absolute;
     right: 20px;
@@ -402,29 +443,32 @@ header.scrolled {
     transition: var(--transition);
 }
 
-.faq-item.active .faq-question::after {
+.faq-item.active .faq-item__question::after {
     content: '-';
 }
 
-.faq-answer {
+.faq-item__answer {
     padding: 0 20px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease, padding 0.4s ease;
 }
 
-.faq-item.active .faq-answer {
+.faq-item.active .faq-item__answer {
     max-height: 500px;
     padding: 0 20px 20px;
 }
 
-/* Locais de Reabastecimento */
-#locais {
+/* ==========================================================================
+   SEÇÃO LOCAIS
+   ========================================================================== */
+
+.locations {
     padding: 80px 5%;
     background-color: var(--light-gray);
 }
 
-.reabastecimento {
+.locations__grid {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -433,7 +477,7 @@ header.scrolled {
     margin: 0 auto;
 }
 
-.reabastecimento-card {
+.location-card {
     width: 350px;
     background-color: var(--white);
     border-radius: 15px;
@@ -442,61 +486,64 @@ header.scrolled {
     transition: var(--transition);
 }
 
-.reabastecimento-card:hover {
+.location-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-.card-image {
+.location-card__image {
     height: 200px;
     overflow: hidden;
 }
 
-.card-image img {
+.location-card__image-img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: var(--transition);
 }
 
-.reabastecimento-card:hover .card-image img {
+.location-card:hover .location-card__image-img {
     transform: scale(1.1);
 }
 
-.reabastecimento-info {
+.location-card__info {
     padding: 20px;
 }
 
-.reabastecimento-info h3 {
+.location-card__title {
     font-size: 1.3rem;
     color: var(--primary-color);
     margin-bottom: 15px;
     font-weight: 600;
 }
 
-.reabastecimento-info ul {
+.location-card__list {
     list-style: none;
 }
 
-.reabastecimento-info li {
+.location-card__item {
     margin-bottom: 10px;
     display: flex;
     align-items: center;
 }
 
-.reabastecimento-info i {
+.location-card__icon {
     color: var(--primary-color);
     margin-right: 10px;
     font-size: 1rem;
 }
 
-/* Contactos */
-#container6 {
+/* ==========================================================================
+   SEÇÃO CONTACTOS (CONTAINER 6)
+   ========================================================================== */
+
+.contact {
     padding: 80px 5%;
     background-color: var(--white);
 }
 
-.contact-container {
+.contact__container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -521,7 +568,7 @@ header.scrolled {
     box-shadow: 0 15px 30px rgba(255, 76, 76, 0.2);
 }
 
-.contact-icon {
+.contact-item__icon {
     width: 60px;
     height: 60px;
     background-color: var(--white);
@@ -533,28 +580,28 @@ header.scrolled {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.contact-icon i {
+.contact-item__icon-img {
     font-size: 1.5rem;
     color: var(--primary-color);
 }
 
-.contact-info {
+.contact-item__info {
     flex: 1;
 }
 
-.contact-info h3 {
+.contact-item__title {
     font-size: 1.2rem;
     color: var(--white);
     margin-bottom: 5px;
     font-weight: 600;
 }
 
-.contact-info p {
+.contact-item__text {
     color: var(--white);
     font-size: 1.1rem;
 }
 
-.contact-item button {
+.contact-item__button {
     padding: 10px 20px;
     background-color: transparent;
     color: var(--white);
@@ -565,19 +612,22 @@ header.scrolled {
     transition: var(--transition);
 }
 
-.contact-item button:hover {
+.contact-item__button:hover {
     background-color: var(--white);
     color: var(--primary-color);
 }
 
-/* Footer */
-footer {
+/* ==========================================================================
+   FOOTER
+   ========================================================================== */
+
+.footer {
     background-color: var(--dark-gray);
     color: var(--white);
     padding: 50px 5% 20px;
 }
 
-.footer-content {
+.footer__content {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -585,31 +635,31 @@ footer {
     margin-bottom: 30px;
 }
 
-.footer-logo img {
+.footer__logo-img {
     filter: brightness(0) invert(1);
 }
 
-.footer-links {
+.footer__links {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-.footer-links a {
+.footer__link {
     color: var(--white);
     transition: var(--transition);
 }
 
-.footer-links a:hover {
+.footer__link:hover {
     color: var(--primary-light);
 }
 
-.footer-social {
+.footer__social {
     display: flex;
     gap: 15px;
 }
 
-.footer-social a {
+.footer__social-link {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -620,24 +670,28 @@ footer {
     transition: var(--transition);
 }
 
-.footer-social a:hover {
+.footer__social-link:hover {
     background-color: var(--primary-color);
     transform: translateY(-3px);
 }
 
-.footer-social i {
+.footer__social-icon {
     font-size: 1.2rem;
     color: var(--white);
 }
 
-.footer-bottom {
+.footer__bottom {
     text-align: center;
     padding-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
+/* ==========================================================================
+   UTILIDADES
+   ========================================================================== */
+
 /* Botão Voltar ao Topo */
-#back-to-top {
+.back-to-top {
     position: fixed;
     bottom: 30px;
     right: 30px;
@@ -658,30 +712,33 @@ footer {
     z-index: 999;
 }
 
-#back-to-top.visible {
+.back-to-top.visible {
     opacity: 1;
     visibility: visible;
 }
 
-#back-to-top:hover {
+.back-to-top:hover {
     background-color: var(--primary-dark);
     transform: translateY(-5px);
 }
 
-/* Responsividade */
+/* ==========================================================================
+   MEDIA QUERIES
+   ========================================================================== */
+
 @media (max-width: 1024px) {
     .section-title {
         font-size: 2.2rem;
     }
     
-    #container1txt h1 {
+    .hero__title {
         font-size: 2.5rem;
     }
 }
 
 @media (max-width: 768px) {
     /* Header */
-    #headerselect {
+    .nav {
         display: none;
     }
     
@@ -689,48 +746,53 @@ footer {
         display: flex;
     }
     
-    /* Container 1 */
-    #container1 {
+    /* Header com scroll */
+    .header.scrolled + .mobile-menu {
+        top: 70px;
+    }
+    
+    /* Hero */
+    .hero {
         flex-direction: column;
         padding: 50px 5%;
         text-align: center;
     }
     
-    #container1txt {
+    .hero__content {
         margin-bottom: 40px;
     }
     
-    #container1txt h1 {
+    .hero__title {
         font-size: 2rem;
     }
     
-    #container1img img {
+    .hero__image-img {
         max-width: 80%;
     }
     
     /* Produtos */
-    .produtos-grid {
+    .products__grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
     
-    /* Reabastecimento */
-    .reabastecimento-card {
+    /* Locais */
+    .location-card {
         width: 100%;
         max-width: 400px;
     }
     
     /* Footer */
-    .footer-content {
+    .footer__content {
         flex-direction: column;
         gap: 30px;
         text-align: center;
     }
     
-    .footer-links {
+    .footer__links {
         justify-content: center;
     }
     
-    .footer-social {
+    .footer__social {
         justify-content: center;
     }
 }
@@ -740,11 +802,11 @@ footer {
         font-size: 1.8rem;
     }
     
-    #container1txt h1 {
+    .hero__title {
         font-size: 1.8rem;
     }
     
-    .produtos-grid {
+    .products__grid {
         grid-template-columns: 1fr;
     }
     
@@ -753,20 +815,11 @@ footer {
         text-align: center;
     }
     
-    .contact-icon {
+    .contact-item__icon {
         margin: 0 0 15px 0;
     }
     
-    .contact-info {
+    .contact-item__info {
         margin-bottom: 15px;
     }
-}
-.mobile-menu {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease;
-}
-
-.mobile-menu.active {
-    max-height: 350px; /* Ou altura suficiente para seu menu */
 }

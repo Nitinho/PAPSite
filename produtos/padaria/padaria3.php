@@ -39,7 +39,7 @@ $result = $conn->query($sql);
     <meta name="description" content="Produtos de padaria e pastelaria de alta qualidade dos Armazéns Lopes">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="icon" href="../../img/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" type="image/x-icon" href="../img/logolopes.ico">
 </head>
 
 <body>
