@@ -8,11 +8,11 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }, { threshold: 0.1 });
-    
+
     fadeElements.forEach(element => {
         observer.observe(element);
     });
-    
+
     // Header scroll effect
     const header = document.querySelector('header');
     window.addEventListener('scroll', function() {
@@ -22,7 +22,7 @@ document.addEventListener('DOMContentLoaded', function() {
             header.classList.remove('scrolled');
         }
     });
-    
+
     // Perguntas frequentes
     const faqItems = document.querySelectorAll('.faq-item');
     faqItems.forEach(item => {
@@ -34,46 +34,50 @@ document.addEventListener('DOMContentLoaded', function() {
                     otherItem.classList.remove('active');
                 }
             });
+            
             // Toggle current item
             item.classList.toggle('active');
         });
     });
-    
-        
-        
-        // Fechar o menu ao clicar em um link
-        const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
-        mobileMenuLinks.forEach(link => {
-            link.addEventListener('click', function() {
-                menuToggle.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                
-                // Reset menu icon
-                const spans = menuToggle.querySelectorAll('span');
-                spans[0].style.transform = 'none';
-                spans[1].style.opacity = '1';
-                spans[2].style.transform = 'none';
-            });
-        });
-        
-        // Fechar o menu ao clicar fora dele
-        document.addEventListener('click', function(event) {
-            if (mobileMenu.classList.contains('active') && 
-                !mobileMenu.contains(event.target) && 
-                !menuToggle.contains(event.target)) {
-                
-                menuToggle.classList.remove('active');
-                mobileMenu.classList.remove('active');
-                
-                // Reset menu icon
-                const spans = menuToggle.querySelectorAll('span');
+
+    // Menu móvel
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', function() {
+            menuToggle.classList.toggle('active');
+            mobileMenu.classList.toggle('active');
+            
+            // Animação do ícone do menu
+            const spans = menuToggle.querySelectorAll('span');
+            if (menuToggle.classList.contains('active')) {
+                spans[0].style.transform = 'rotate(45deg) translate(5px, 5px)';
+                spans[1].style.opacity = '0';
+                spans[2].style.transform = 'rotate(-45deg) translate(7px, -6px)';
+            } else {
                 spans[0].style.transform = 'none';
                 spans[1].style.opacity = '1';
                 spans[2].style.transform = 'none';
             }
         });
     }
-    
+
+    // Fechar o menu ao clicar em um link
+    const mobileMenuLinks = document.querySelectorAll('.mobile-menu a');
+    mobileMenuLinks.forEach(link => {
+        link.addEventListener('click', function() {
+            menuToggle.classList.remove('active');
+            mobileMenu.classList.remove('active');
+            
+            // Reset menu icon
+            const spans = menuToggle.querySelectorAll('span');
+            spans[0].style.transform = 'none';
+            spans[1].style.opacity = '1';
+            spans[2].style.transform = 'none';
+        });
+    });
+
     // Função para copiar texto para a área de transferência
     window.copyToClipboard = function(text) {
         navigator.clipboard.writeText(text).then(() => {
@@ -89,6 +93,7 @@ document.addEventListener('DOMContentLoaded', function() {
             notification.style.color = 'white';
             notification.style.borderRadius = '5px';
             notification.style.zIndex = '9999';
+            
             document.body.appendChild(notification);
             
             setTimeout(() => {
@@ -102,9 +107,10 @@ document.addEventListener('DOMContentLoaded', function() {
             console.error('Erro ao copiar: ', err);
         });
     };
-    
+
     // Botão de Voltar ao Topo
     const backToTopButton = document.getElementById('back-to-top');
+
     if (backToTopButton) {
         window.addEventListener('scroll', function() {
             if (window.scrollY > 300) {
@@ -113,19 +119,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 backToTopButton.classList.remove('visible');
             }
         });
-        
+
         backToTopButton.addEventListener('click', function() {
-            window.scrollTo({
-                top: 0,
-                behavior: 'smooth'
-            });
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         });
     }
-    
+
     // Links de ancoragem suaves
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
         anchor.addEventListener('click', function(e) {
             e.preventDefault();
+            
             const targetId = this.getAttribute('href');
             if (targetId === '#') return;
             
@@ -141,7 +145,7 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     });
-    
+
     // Animação para cards de produtos
     const produtoCards = document.querySelectorAll('.containerproduto');
     produtoCards.forEach((card, index) => {
@@ -153,4 +157,44 @@ document.addEventListener('DOMContentLoaded', function() {
             this.style.transform = 'translateY(0)';
         });
     });
+
+    // Preloader
+    const preloader = document.createElement('div');
+    preloader.className = 'preloader';
+    preloader.innerHTML = `
+        <div class="spinner">
+            <div class="bounce1"></div>
+            <div class="bounce2"></div>
+            <div class="bounce3"></div>
+        </div>
+    `;
+    document.body.appendChild(preloader);
+
+    window.addEventListener('load', function() {
+        setTimeout(() => {
+            preloader.style.opacity = '0';
+            setTimeout(() => {
+                document.body.removeChild(preloader);
+            }, 500);
+        }, 500);
+    });
 });
+
+
+document.addEventListener('DOMContentLoaded', function() {
+    const menuToggle = document.querySelector('.mobile-menu-toggle');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    
+    if (menuToggle && mobileMenu) {
+        menuToggle.addEventListener('click', function() {
+            // Toggle da classe 'open' no menu móvel
+            mobileMenu.classList.toggle('open');
+            
+            // Toggle da classe 'active' no botão para animação
+            menuToggle.classList.toggle('active');
+        });
+    } else {
+        console.error('Menu toggle ou menu móvel não encontrado');
+    }
+});
+

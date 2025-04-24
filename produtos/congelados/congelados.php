@@ -39,7 +39,7 @@ $result = $conn->query($sql);
     <meta name="description" content="Produtos de padaria e pastelaria de alta qualidade dos Armazéns Lopes">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="shortcut icon" type="image/x-icon" href="../img/logolopes.ico">
+    <link rel="icon" href="../../img/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -217,17 +217,20 @@ $result = $conn->query($sql);
     </div>
 
     <footer>
-    <div class="footer-content">
+        <div class="footer-content">
             <div class="footer-logo">
+                <img src="../../img/logolopes.png" alt="Logo Armazéns Lopes" width="50">
             </div>
             <div class="footer-links">
-                <a href="index.php">Início</a>
-                <a href="#container2">Produtos</a>
-                <a href="#sobre">Sobre</a>
-                <a href="#container6">Contactos</a>
+                <a href="../../index.php">Início</a>
+                <a href="../../index.php#container2">Produtos</a>
+                <a href="../../index.php#sobre">Sobre</a>
+                <a href="../../index.php#container6">Contactos</a>
             </div>
             <div class="footer-social">
-
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-instagram"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
         </div>
         <div class="footer-bottom">

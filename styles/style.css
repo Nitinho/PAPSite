@@ -1,27 +1,17 @@
-/* ==========================================================================
-   CONFIGURAÇÕES INICIAIS
-   ========================================================================== */
-
 /* Importação de Fontes */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
-/* Variáveis Globais */
+/* Configurações Globais */
 :root {
-    /* Cores principais */
     --primary-color: #FF4C4C;
     --primary-dark: #e63939;
     --primary-light: #ff7a7a;
-    
-    /* Cores neutras */
     --white: #ffffff;
     --light-gray: #f5f5f5;
     --dark-gray: #333333;
-    
-    /* Transições */
     --transition: all 0.3s ease;
 }
 
-/* Reset e configurações base */
 * {
     margin: 0;
     padding: 0;
@@ -45,11 +35,6 @@ a {
     color: inherit;
 }
 
-/* ==========================================================================
-   COMPONENTES REUTILIZÁVEIS
-   ========================================================================== */
-
-/* Títulos de seção */
 .section-title {
     font-size: 2.5rem;
     font-weight: 700;
@@ -71,7 +56,6 @@ a {
     background-color: var(--primary-color);
 }
 
-/* Animações de fade-in */
 .fade-in {
     opacity: 0;
     transform: translateY(20px);
@@ -83,29 +67,8 @@ a {
     transform: translateY(0);
 }
 
-/* Botões CTA */
-.cta-button {
-    display: inline-block;
-    padding: 12px 30px;
-    background-color: var(--white);
-    color: var(--primary-color);
-    font-weight: 600;
-    border-radius: 30px;
-    transition: var(--transition);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-}
-
-.cta-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
-}
-
-/* ==========================================================================
-   HEADER E NAVEGAÇÃO
-   ========================================================================== */
-
-/* Header principal */
-.header {
+/* Header */
+header {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -121,29 +84,22 @@ a {
     transition: var(--transition);
 }
 
-.header.scrolled {
+header.scrolled {
     height: 70px;
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.header__logo {
-    height: 100%;
-    display: flex;
-    align-items: center;
-}
-
-.header__logo-img {
+#headerimg img {
     width: 67px;
     transition: var(--transition);
 }
 
-/* Menu de navegação desktop */
-.nav {
+#headerselect {
     display: flex;
     align-items: center;
 }
 
-.nav__link {
+#headerselect a {
     color: var(--primary-color);
     padding: 0 20px;
     font-weight: 600;
@@ -152,7 +108,7 @@ a {
     position: relative;
 }
 
-.nav__link::after {
+#headerselect a::after {
     content: '';
     position: absolute;
     bottom: -5px;
@@ -164,11 +120,11 @@ a {
     transition: var(--transition);
 }
 
-.nav__link:hover::after {
+#headerselect a:hover::after {
     width: 70%;
 }
 
-.nav__button {
+#buttonheader {
     padding: 10px 20px;
     margin-left: 20px;
     font-size: 14px;
@@ -181,14 +137,13 @@ a {
     transition: var(--transition);
 }
 
-.nav__button:hover {
+#buttonheader:hover {
     background-color: var(--primary-color);
     color: var(--white);
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(255, 76, 76, 0.3);
 }
 
-/* Menu móvel */
 /* Menu Móvel */
 .mobile-menu-toggle {
     display: none;
@@ -250,11 +205,8 @@ a {
     border: none;
 }
 
-/* ==========================================================================
-   SEÇÃO HERO (CONTAINER 1)
-   ========================================================================== */
-
-.hero {
+/* Container 1 */
+#container1 {
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -265,32 +217,48 @@ a {
     color: var(--white);
 }
 
-.hero__content {
+#container1txt {
     flex: 1;
     max-width: 600px;
 }
 
-.hero__title {
+#container1txt h1 {
     font-size: 3rem;
     font-weight: 700;
     margin-bottom: 1.5rem;
     line-height: 1.2;
 }
 
-.hero__text {
+#container1txt p {
     font-size: 1.1rem;
     margin-bottom: 2rem;
     line-height: 1.6;
 }
 
-.hero__image {
+.cta-button {
+    display: inline-block;
+    padding: 12px 30px;
+    background-color: var(--white);
+    color: var(--primary-color);
+    font-weight: 600;
+    border-radius: 30px;
+    transition: var(--transition);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.cta-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+#container1img {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
-.hero__image-img {
+#container1img img {
     max-width: 100%;
     height: auto;
     filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.2));
@@ -302,16 +270,13 @@ a {
     50% { transform: translateY(-15px); }
 }
 
-/* ==========================================================================
-   SEÇÃO PRODUTOS (CONTAINER 2)
-   ========================================================================== */
-
-.products {
+/* Container 2 - Produtos */
+#container2 {
     padding: 80px 5%;
     background-color: var(--white);
 }
 
-.products__grid {
+.produtos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     gap: 30px;
@@ -319,7 +284,7 @@ a {
     margin: 0 auto;
 }
 
-.product-card {
+.containerproduto {
     background: linear-gradient(135deg, var(--primary-color) 0%, var(--primary-dark) 100%);
     border-radius: 15px;
     box-shadow: 0 10px 20px rgba(255, 76, 76, 0.1);
@@ -331,12 +296,12 @@ a {
     align-items: center;
 }
 
-.product-card:hover {
+.containerproduto:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(255, 76, 76, 0.2);
 }
 
-.product-card__content {
+.produtosselect {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -344,7 +309,7 @@ a {
     padding: 20px;
 }
 
-.product-card__image {
+.produtosselect img {
     width: 120px;
     height: 120px;
     object-fit: contain;
@@ -352,11 +317,11 @@ a {
     transition: var(--transition);
 }
 
-.product-card:hover .product-card__image {
+.containerproduto:hover .produtosselect img {
     transform: scale(1.1);
 }
 
-.product-card__button {
+.produtosselect button {
     padding: 10px 20px;
     background-color: var(--white);
     color: var(--primary-color);
@@ -368,43 +333,37 @@ a {
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
 }
 
-.product-card__button:hover {
+.produtosselect button:hover {
     background-color: rgba(255, 255, 255, 0.9);
     transform: scale(1.05);
     box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
 }
 
-/* ==========================================================================
-   SEÇÃO SOBRE NÓS
-   ========================================================================== */
-
-.about {
+/* Sobre Nós */
+#sobre {
     padding: 80px 5%;
     background-color: var(--light-gray);
 }
 
-.about__content {
+.sobre-content {
     max-width: 800px;
     margin: 0 auto;
     text-align: center;
 }
 
-.about__text {
+.sobre-content p {
     margin-bottom: 1.5rem;
     font-size: 1.1rem;
     line-height: 1.7;
 }
 
-/* ==========================================================================
-   SEÇÃO FAQ (CONTAINER 5)
-   ========================================================================== */
-
-.faq {
+/* Perguntas Frequentes */
+#container5 {
     padding: 80px 5%;
     background-color: var(--white);
 }
 
-.faq__container {
+.faq-container {
     max-width: 800px;
     margin: 0 auto;
 }
@@ -423,7 +382,7 @@ a {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
 }
 
-.faq-item__question {
+.faq-question {
     padding: 20px;
     font-size: 1.2rem;
     font-weight: 600;
@@ -433,7 +392,7 @@ a {
     transition: var(--transition);
 }
 
-.faq-item__question::after {
+.faq-question::after {
     content: '+';
     position: absolute;
     right: 20px;
@@ -443,32 +402,29 @@ a {
     transition: var(--transition);
 }
 
-.faq-item.active .faq-item__question::after {
+.faq-item.active .faq-question::after {
     content: '-';
 }
 
-.faq-item__answer {
+.faq-answer {
     padding: 0 20px;
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.4s ease, padding 0.4s ease;
 }
 
-.faq-item.active .faq-item__answer {
+.faq-item.active .faq-answer {
     max-height: 500px;
     padding: 0 20px 20px;
 }
 
-/* ==========================================================================
-   SEÇÃO LOCAIS
-   ========================================================================== */
-
-.locations {
+/* Locais de Reabastecimento */
+#locais {
     padding: 80px 5%;
     background-color: var(--light-gray);
 }
 
-.locations__grid {
+.reabastecimento {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -477,7 +433,7 @@ a {
     margin: 0 auto;
 }
 
-.location-card {
+.reabastecimento-card {
     width: 350px;
     background-color: var(--white);
     border-radius: 15px;
@@ -486,64 +442,61 @@ a {
     transition: var(--transition);
 }
 
-.location-card:hover {
+.reabastecimento-card:hover {
     transform: translateY(-10px);
     box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
 }
 
-.location-card__image {
+.card-image {
     height: 200px;
     overflow: hidden;
 }
 
-.location-card__image-img {
+.card-image img {
     width: 100%;
     height: 100%;
     object-fit: cover;
     transition: var(--transition);
 }
 
-.location-card:hover .location-card__image-img {
+.reabastecimento-card:hover .card-image img {
     transform: scale(1.1);
 }
 
-.location-card__info {
+.reabastecimento-info {
     padding: 20px;
 }
 
-.location-card__title {
+.reabastecimento-info h3 {
     font-size: 1.3rem;
     color: var(--primary-color);
     margin-bottom: 15px;
     font-weight: 600;
 }
 
-.location-card__list {
+.reabastecimento-info ul {
     list-style: none;
 }
 
-.location-card__item {
+.reabastecimento-info li {
     margin-bottom: 10px;
     display: flex;
     align-items: center;
 }
 
-.location-card__icon {
+.reabastecimento-info i {
     color: var(--primary-color);
     margin-right: 10px;
     font-size: 1rem;
 }
 
-/* ==========================================================================
-   SEÇÃO CONTACTOS (CONTAINER 6)
-   ========================================================================== */
-
-.contact {
+/* Contactos */
+#container6 {
     padding: 80px 5%;
     background-color: var(--white);
 }
 
-.contact__container {
+.contact-container {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
@@ -568,7 +521,7 @@ a {
     box-shadow: 0 15px 30px rgba(255, 76, 76, 0.2);
 }
 
-.contact-item__icon {
+.contact-icon {
     width: 60px;
     height: 60px;
     background-color: var(--white);
@@ -580,28 +533,28 @@ a {
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
 }
 
-.contact-item__icon-img {
+.contact-icon i {
     font-size: 1.5rem;
     color: var(--primary-color);
 }
 
-.contact-item__info {
+.contact-info {
     flex: 1;
 }
 
-.contact-item__title {
+.contact-info h3 {
     font-size: 1.2rem;
     color: var(--white);
     margin-bottom: 5px;
     font-weight: 600;
 }
 
-.contact-item__text {
+.contact-info p {
     color: var(--white);
     font-size: 1.1rem;
 }
 
-.contact-item__button {
+.contact-item button {
     padding: 10px 20px;
     background-color: transparent;
     color: var(--white);
@@ -612,22 +565,19 @@ a {
     transition: var(--transition);
 }
 
-.contact-item__button:hover {
+.contact-item button:hover {
     background-color: var(--white);
     color: var(--primary-color);
 }
 
-/* ==========================================================================
-   FOOTER
-   ========================================================================== */
-
-.footer {
+/* Footer */
+footer {
     background-color: var(--dark-gray);
     color: var(--white);
     padding: 50px 5% 20px;
 }
 
-.footer__content {
+.footer-content {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
@@ -635,31 +585,31 @@ a {
     margin-bottom: 30px;
 }
 
-.footer__logo-img {
+.footer-logo img {
     filter: brightness(0) invert(1);
 }
 
-.footer__links {
+.footer-links {
     display: flex;
     flex-wrap: wrap;
     gap: 20px;
 }
 
-.footer__link {
+.footer-links a {
     color: var(--white);
     transition: var(--transition);
 }
 
-.footer__link:hover {
+.footer-links a:hover {
     color: var(--primary-light);
 }
 
-.footer__social {
+.footer-social {
     display: flex;
     gap: 15px;
 }
 
-.footer__social-link {
+.footer-social a {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -670,28 +620,24 @@ a {
     transition: var(--transition);
 }
 
-.footer__social-link:hover {
+.footer-social a:hover {
     background-color: var(--primary-color);
     transform: translateY(-3px);
 }
 
-.footer__social-icon {
+.footer-social i {
     font-size: 1.2rem;
     color: var(--white);
 }
 
-.footer__bottom {
+.footer-bottom {
     text-align: center;
     padding-top: 20px;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* ==========================================================================
-   UTILIDADES
-   ========================================================================== */
-
 /* Botão Voltar ao Topo */
-.back-to-top {
+#back-to-top {
     position: fixed;
     bottom: 30px;
     right: 30px;
@@ -712,33 +658,30 @@ a {
     z-index: 999;
 }
 
-.back-to-top.visible {
+#back-to-top.visible {
     opacity: 1;
     visibility: visible;
 }
 
-.back-to-top:hover {
+#back-to-top:hover {
     background-color: var(--primary-dark);
     transform: translateY(-5px);
 }
 
-/* ==========================================================================
-   MEDIA QUERIES
-   ========================================================================== */
-
+/* Responsividade */
 @media (max-width: 1024px) {
     .section-title {
         font-size: 2.2rem;
     }
     
-    .hero__title {
+    #container1txt h1 {
         font-size: 2.5rem;
     }
 }
 
 @media (max-width: 768px) {
     /* Header */
-    .nav {
+    #headerselect {
         display: none;
     }
     
@@ -746,53 +689,48 @@ a {
         display: flex;
     }
     
-    /* Header com scroll */
-    .header.scrolled + .mobile-menu {
-        top: 70px;
-    }
-    
-    /* Hero */
-    .hero {
+    /* Container 1 */
+    #container1 {
         flex-direction: column;
         padding: 50px 5%;
         text-align: center;
     }
     
-    .hero__content {
+    #container1txt {
         margin-bottom: 40px;
     }
     
-    .hero__title {
+    #container1txt h1 {
         font-size: 2rem;
     }
     
-    .hero__image-img {
+    #container1img img {
         max-width: 80%;
     }
     
     /* Produtos */
-    .products__grid {
+    .produtos-grid {
         grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
     
-    /* Locais */
-    .location-card {
+    /* Reabastecimento */
+    .reabastecimento-card {
         width: 100%;
         max-width: 400px;
     }
     
     /* Footer */
-    .footer__content {
+    .footer-content {
         flex-direction: column;
         gap: 30px;
         text-align: center;
     }
     
-    .footer__links {
+    .footer-links {
         justify-content: center;
     }
     
-    .footer__social {
+    .footer-social {
         justify-content: center;
     }
 }
@@ -802,11 +740,11 @@ a {
         font-size: 1.8rem;
     }
     
-    .hero__title {
+    #container1txt h1 {
         font-size: 1.8rem;
     }
     
-    .products__grid {
+    .produtos-grid {
         grid-template-columns: 1fr;
     }
     
@@ -815,11 +753,20 @@ a {
         text-align: center;
     }
     
-    .contact-item__icon {
+    .contact-icon {
         margin: 0 0 15px 0;
     }
     
-    .contact-item__info {
+    .contact-info {
         margin-bottom: 15px;
     }
+}
+.mobile-menu {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+}
+
+.mobile-menu.active {
+    max-height: 350px; /* Ou altura suficiente para seu menu */
 }

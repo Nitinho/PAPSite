@@ -44,8 +44,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <title>Login | Armazéns Lopes</title>
     <link rel="stylesheet" href="style/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="shortcut icon" type="image/x-icon" href="../img/logolopes.ico">
-
+    <link rel="icon" href="../img/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
@@ -90,6 +89,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <div class="login-form-container">
                 <div class="login-form-wrapper">
                     <div class="login-header">
+
                         <h1>Acesso à Área de Cliente</h1>
                         <p>Introduza os seus dados para aceder</p>
                     </div>
@@ -101,23 +101,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                         </div>
                     <?php endif; ?>
 
-                    <form method="POST" action="login.php" class="login-form" id="login-form">
+                    <form method="POST" action="login.php" class="login-form">
                         <div class="form-group">
                             <label for="email"><i class="fas fa-envelope"></i> Email</label>
-                            <input type="email" id="email" name="email" placeholder="exemplo@email.com" autocomplete="username" required>
+                            <input type="email" id="email" name="email" placeholder="exemplo@email.com" required>
                         </div>
 
                         <div class="form-group">
                             <label for="password"><i class="fas fa-lock"></i> Senha</label>
                             <div class="password-input-container">
-                                <input type="password" id="password" name="password" placeholder="Digite sua senha" autocomplete="current-password" required>
+                                <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
                                 <button type="button" id="toggle-password" class="toggle-password">
                                     <i class="fas fa-eye"></i>
                                 </button>
                             </div>
                         </div>
 
-                        <button type="submit" class="login-button" name="login">
+                        <button type="submit" class="login-button">
                             <span>Entrar</span>
                             <i class="fas fa-arrow-right"></i>
                         </button>
