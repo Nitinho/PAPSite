@@ -691,7 +691,6 @@ $conn->close();
   </main>
   <footer>
     <div class="footer-content">
-      <div class="footer-logo"> <img src="../img/logolopes.png" alt="Logo Armazéns Lopes" width="50"> </div>
       <div class="footer-links"> <a href="../index.php">Início</a> <a href="../index.php#container2">Produtos</a> <a href="../index.php#sobre">Sobre</a> <a href="../index.php#container6">Contactos</a> </div>
       <div class="footer-social"> <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-instagram"></i></a> <a href="#"><i class="fab fa-linkedin"></i></a> </div>
     </div>

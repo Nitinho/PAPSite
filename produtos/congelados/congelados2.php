@@ -218,9 +218,7 @@ $result = $conn->query($sql);
 
     <footer>
         <div class="footer-content">
-            <div class="footer-logo">
-                <img src="../../img/logolopes.png" alt="Logo Armazéns Lopes" width="50">
-            </div>
+
             <div class="footer-links">
                 <a href="../../index.php">Início</a>
                 <a href="../../index.php#container2">Produtos</a>
