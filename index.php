@@ -1,12 +1,10 @@
 <?php
 session_start(); // Inicia a sessão
 
-// Verifica se o usuário está logado
+
 if (isset($_SESSION['email'])) {
-    // Usuário logado, redireciona para o dashboard
     $redirectUrl = "Client/dashboard.php";
 } else {
-    // Usuário não logado, redireciona para o login
     $redirectUrl = "Login/login.php";
 }
 ?>
@@ -18,12 +16,14 @@ if (isset($_SESSION['email'])) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Armazéns Lopes | Fornecedor Premium para Supermercados</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <link rel="stylesheet" href="styles/index.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="js/index.js" defer></script>
     <link rel="shortcut icon" type="image/x-icon" href="img/logolopes.ico">
     <meta name="description" content="Armazéns Lopes - Fornecedor premium de produtos para supermercados em Portugal">
+
 </head>
+
 
 <body>
     <!-- Preloader -->
@@ -205,9 +205,9 @@ if (isset($_SESSION['email'])) {
                     </div>
                     <div class="contact-info">
                         <h3>Email</h3>
-                        <p>contacto@lopesmarket.com</p>
+                        <p>contacto@armazem.com</p>
                     </div>
-                    <button onclick="copyToClipboard('contacto@lopesmarket.com')">Copiar</button>
+                    <button onclick="copyToClipboard('contacto@armazem.com')">Copiar</button>
                 </div>
                 <div class="contact-item">
                     <div class="contact-icon">

@@ -462,8 +462,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     closeModal(confirmationModal);
                     
                     // Gerar número de pedido aleatório
-                    const orderNumber = 'ORD-' + Math.floor(Math.random() * 100000);
-                    document.getElementById('order-number').textContent = orderNumber;
+                   // const orderNumber = 'ORD-' + Math.floor(Math.random() * 100000);
+                   // document.getElementById('order-number').textContent = orderNumber;
                     
                     // Mostrar modal de sucesso
                     setTimeout(() => {

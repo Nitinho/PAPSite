@@ -131,6 +131,7 @@ $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo "<div class='product' data-id='" . $row["id"] . "' data-name='" . $row["nome"] . "' data-price='" . $row["preco"] . "'>";
+                            echo "<div class='product-badge'>Fresco</div>";
 
                             echo "<div class='img-container'>";
                             echo "<img src='" . $row["imagem"] . "' alt='" . $row["nome"] . "'>";
@@ -218,7 +219,6 @@ $result = $conn->query($sql);
             </div>
             <h3>Pedido Realizado com Sucesso!</h3>
             <p>O seu pedido foi registado e será processado em breve.</p>
-            <p>Número do pedido: <strong id="order-number">ORD-12345</strong></p>
             <button id="continue-shopping">Continuar Comprando</button>
         </div>
     </div>

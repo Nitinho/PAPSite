@@ -24,7 +24,7 @@ if (!isset($_SESSION['carrinho'])) {
 }
 
 // Buscar produtos do banco de dados
-$categoria = "bolos"; // Ajuste conforme necessário
+$categoria = "azeite"; // Ajuste conforme necessário
 $sql = "SELECT * FROM produtos WHERE categoria = '$categoria'";
 $result = $conn->query($sql);
 ?>
@@ -35,7 +35,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Padaria e Pastelaria | Armazéns Lopes</title>
+    <title>Mercearia</title>
     <meta name="description" content="Produtos de padaria e pastelaria de alta qualidade dos Armazéns Lopes">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -72,8 +72,8 @@ $result = $conn->query($sql);
 
     <div class="page-banner">
         <div class="banner-content">
-            <h1>Padaria e Pastelaria</h1>
-            <p>Descubra nossa seleção de produtos frescos e de qualidade</p>
+            <h1>Mercearia</h1>
+            <p>Azeite, Óleo e Vinagre</p>
         </div>
     </div>
 
@@ -82,17 +82,20 @@ $result = $conn->query($sql);
             <div class="sidebar">
                 <h3>Categorias</h3>
                 <ul>
-                    <li><a href="padaria1.php"><i class="fas fa-bread-slice"></i> Pão</a></li>
-                    <li><a href="padaria2.php"><i class="fas fa-bread-slice"></i> Baguete</a></li>
-                    <li><a href="padaria3.php" class="active"><i class="fas fa-birthday-cake"></i> Bolos</a></li>
-
+                <li>
+                        <a href="mercearia.php" class="active">
+                            <i class="fas fa-oil-can" aria-hidden="true"></i>
+                            Azeites, Óleos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mercearia2.php">
+                            <i class="fas fa-seedling" aria-hidden="true"></i>
+                            Arroz e massa
+                        </a>
+                    </li>
                 </ul>
 
-                <div class="sidebar-info">
-                    <h4>Informações</h4>
-                    <p>Todos os nossos produtos são frescos e preparados diariamente.</p>
-                    <p>Para encomendas especiais, entre em contacto connosco.</p>
-                </div>
 
 
                 <div style="margin-top: 30px;"></div>
@@ -107,7 +110,11 @@ $result = $conn->query($sql);
                     <li><a href="../frescos/frescos.php"><i class="fas fa-carrot"></i>Frescos</a></li>
 
                 </ul>
+
             </div>
+
+
+
 
             <div class="content-wrapper">
                 <div class="product-filters">
@@ -131,7 +138,7 @@ $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo "<div class='product' data-id='" . $row["id"] . "' data-name='" . $row["nome"] . "' data-price='" . $row["preco"] . "'>";
-                            echo "<div class='product-badge'>Fresco</div>";
+
                             echo "<div class='img-container'>";
                             echo "<img src='" . $row["imagem"] . "' alt='" . $row["nome"] . "'>";
                             echo "</div>";
@@ -191,6 +198,7 @@ $result = $conn->query($sql);
         </div>
     </main>
 
+
     <!-- Modal de confirmação -->
     <div id="confirmation-modal" class="modal">
         <div class="modal-content">
@@ -205,6 +213,7 @@ $result = $conn->query($sql);
                 <button id="cancel-order">Cancelar</button>
             </div>
         </div>
+
     </div>
 
     <!-- Modal de sucesso -->
@@ -216,13 +225,13 @@ $result = $conn->query($sql);
             </div>
             <h3>Pedido Realizado com Sucesso!</h3>
             <p>O seu pedido foi registado e será processado em breve.</p>
-            <p>Número do pedido: <strong id="order-number">ORD-12345</strong></p>
             <button id="continue-shopping">Continuar Comprando</button>
         </div>
     </div>
 
     <footer>
         <div class="footer-content">
+
             <div class="footer-links">
                 <a href="../../index.php">Início</a>
                 <a href="../../index.php#container2">Produtos</a>

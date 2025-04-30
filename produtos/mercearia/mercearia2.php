@@ -24,7 +24,7 @@ if (!isset($_SESSION['carrinho'])) {
 }
 
 // Buscar produtos do banco de dados
-$categoria = "leite"; // Ajuste conforme necessário
+$categoria = "arroz"; // Ajuste conforme necessário
 $sql = "SELECT * FROM produtos WHERE categoria = '$categoria'";
 $result = $conn->query($sql);
 ?>
@@ -35,7 +35,7 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Armázem Lopes | Leites</title>
+    <title>Mercearia</title>
     <meta name="description" content="Produtos de padaria e pastelaria de alta qualidade dos Armazéns Lopes">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -72,8 +72,8 @@ $result = $conn->query($sql);
 
     <div class="page-banner">
         <div class="banner-content">
-            <h1>Leite</h1>
-            <p>Descubra nossa seleção de leites</p>
+            <h1>Mercearia</h1>
+            <p>Arroz e massa</p>
         </div>
     </div>
 
@@ -82,14 +82,18 @@ $result = $conn->query($sql);
             <div class="sidebar">
                 <h3>Categorias</h3>
                 <ul>
-                    <li><a href="laticinios.php" class="active"><i class="fas fa-tint" aria-hidden="true"></i>Leite</a></li>
-                    <li><a href="laticinios2.php"><i class="fas fa-prescription-bottle" aria-hidden="true"></i>Iogurtes</a></li>
-                    <li><a href="laticinios3.php"><i class="fas fa-cube" aria-hidden="true"></i>Manteigas e Cremes Vegetais</a></li>
-                    <li><a href="laticinios4.php"><i class="fas fa-wine-glass" aria-hidden="true"></i>Natas e Cremes</a></li>
-                    <li><a href="laticinios5.php"><i class="fas fa-cheese" aria-hidden="true"></i>Queijos</a></li>
-                    <li><a href="laticinios6.php"><i class="fas fa-egg" aria-hidden="true"></i>Ovos</a></li>
-
-
+                    <li>
+                        <a href="mercearia.php">
+                            <i class="fas fa-oil-can" aria-hidden="true"></i>
+                            Azeites, Óleos
+                        </a>
+                    </li>
+                    <li>
+                        <a href="mercearia2.php" class="active">
+                            <i class="fas fa-seedling" aria-hidden="true"></i>
+                            Arroz e massa
+                        </a>
+                    </li>
                 </ul>
 
 

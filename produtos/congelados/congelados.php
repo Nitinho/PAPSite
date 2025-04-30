@@ -211,7 +211,6 @@ $result = $conn->query($sql);
             </div>
             <h3>Pedido Realizado com Sucesso!</h3>
             <p>O seu pedido foi registado e será processado em breve.</p>
-            <p>Número do pedido: <strong id="order-number">ORD-12345</strong></p>
             <button id="continue-shopping">Continuar Comprando</button>
         </div>
     </div>

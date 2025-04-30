@@ -316,6 +316,8 @@ function addPhone($conn, $email)
 // Obter o histórico de compras do usuário
 $historicoCompras = getHistoricoCompras($conn, $usuario_id);
 
+
+
 // Fechar a conexão com o banco de dados
 $stmt->close();
 $conn->close();

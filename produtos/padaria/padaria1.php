@@ -82,9 +82,8 @@ $result = $conn->query($sql);
             <div class="sidebar">
                 <h3>Categorias</h3>
                 <ul>
-                    <li><a href="padaria1.php" class="active"><i class="fas fa-bread-slice"></i> Pão</a></li>
-                    <li><a href="padaria2.php"><i class="fas fa-bread-slice"></i> Baguete</a></li>
-                    <li><a href="padaria3.php"><i class="fas fa-birthday-cake"></i> Bolos</a></li>
+                    <li><a href="padaria1.php" class="active"><i class="fas fa-bread-slice"></i>Padaria</a></li>
+                    <li><a href="padaria2.php"><i class="fas fa-birthday-cake"></i>Pastelaria</a></li>
                 </ul>
 
                 <div class="sidebar-info">
@@ -129,7 +128,7 @@ $result = $conn->query($sql);
                     if ($result->num_rows > 0) {
                         while ($row = $result->fetch_assoc()) {
                             echo "<div class='product' data-id='" . $row["id"] . "' data-name='" . $row["nome"] . "' data-price='" . $row["preco"] . "'>";
-                            echo "<div class='product-badge'>Fresco</div>";
+
                             echo "<div class='img-container'>";
                             echo "<img src='" . $row["imagem"] . "' alt='" . $row["nome"] . "'>";
                             echo "</div>";
@@ -216,7 +215,6 @@ $result = $conn->query($sql);
             </div>
             <h3>Pedido Realizado com Sucesso!</h3>
             <p>O seu pedido foi registado e será processado em breve.</p>
-            <p>Número do pedido: <strong id="order-number">ORD-12345</strong></p>
             <button id="continue-shopping">Continuar Comprando</button>
         </div>
     </div>

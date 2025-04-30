@@ -72,7 +72,7 @@ $result = $conn->query($sql);
 
     <div class="page-banner">
         <div class="banner-content">
-            <h1>Bebidasa</h1>
+            <h1>bebidas Alcoólicas</h1>
             <p>Descubra nossa seleção de bebidas</p>
         </div>
     </div>
@@ -213,7 +213,6 @@ $result = $conn->query($sql);
             </div>
             <h3>Pedido Realizado com Sucesso!</h3>
             <p>O seu pedido foi registado e será processado em breve.</p>
-            <p>Número do pedido: <strong id="order-number">ORD-12345</strong></p>
             <button id="continue-shopping">Continuar Comprando</button>
         </div>
     </div>
