@@ -1,10 +1,12 @@
 <?php
 session_start(); // Inicia a sessão
 
-
+// Verifica se o usuário está logado
 if (isset($_SESSION['email'])) {
+    // Usuário logado, redireciona para o dashboard
     $redirectUrl = "Client/dashboard.php";
 } else {
+    // Usuário não logado, redireciona para o login
     $redirectUrl = "Login/login.php";
 }
 ?>
@@ -205,9 +207,9 @@ if (isset($_SESSION['email'])) {
                     </div>
                     <div class="contact-info">
                         <h3>Email</h3>
-                        <p>contacto@armazem.com</p>
+                        <p>contacto@lopesmarket.com</p>
                     </div>
-                    <button onclick="copyToClipboard('contacto@armazem.com')">Copiar</button>
+                    <button onclick="copyToClipboard('contacto@lopesmarket.com')">Copiar</button>
                 </div>
                 <div class="contact-item">
                     <div class="contact-icon">

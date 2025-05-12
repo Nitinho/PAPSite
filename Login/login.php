@@ -22,7 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (password_verify($password, $user['senha'])) {
             // Se a senha for válida, inicia a sessão do usuário
             $_SESSION['email'] = $user['email']; // Salva o e-mail na sessão
-            header("Location: http://localhost/armazemlopes/client/dashboard.php"); // Redireciona para o dashboard
+            header("Location: http://localhost/papsite/client/dashboard.php"); // Redireciona para o dashboard
             exit();
         } else {
             // Se a senha estiver incorreta
@@ -30,7 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     } else {
         // Se o e-mail não for encontrado no banco de dados
-        $error_message = "Utilizador não encontrado!";
+        $error_message = "Usuário não encontrado!";
     }
 }
 ?>
