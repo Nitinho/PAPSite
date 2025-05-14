@@ -1,12 +1,10 @@
 <?php
 session_start(); // Inicia a sessão
 
-// Verifica se o usuário está logado
+
 if (isset($_SESSION['email'])) {
-    // Usuário logado, redireciona para o dashboard
     $redirectUrl = "Client/dashboard.php";
 } else {
-    // Usuário não logado, redireciona para o login
     $redirectUrl = "Login/login.php";
 }
 ?>
@@ -101,7 +99,7 @@ if (isset($_SESSION['email'])) {
                 <div class="containerproduto product-card">
                     <div class="produtosselect">
                         <img src="img/marceria.png" alt="Mercearia">
-                        <button>Mercearia</button>
+                        <a href="produtos/mercearia/mercearia.php"><button>Mercearia</button></a>
                     </div>
                 </div>
                 <div class="containerproduto product-card">
@@ -207,9 +205,9 @@ if (isset($_SESSION['email'])) {
                     </div>
                     <div class="contact-info">
                         <h3>Email</h3>
-                        <p>contacto@lopesmarket.com</p>
+                        <p>contacto@armazemlopes.com</p>
                     </div>
-                    <button onclick="copyToClipboard('contacto@lopesmarket.com')">Copiar</button>
+                    <button onclick="copyToClipboard('contacto@armazemlopes.com')">Copiar</button>
                 </div>
                 <div class="contact-item">
                     <div class="contact-icon">
@@ -235,9 +233,9 @@ if (isset($_SESSION['email'])) {
                 <a href="#container6">Contactos</a>
             </div>
             <div class="footer-social">
-                <a href="#"><i class="fab fa-facebook-f"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                <a href="https://www.facebook.com/escolabasica.secundariaourem/?locale=pt_PT"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/aeourem/"><i class="fab fa-instagram"></i></a>
+                
             </div>
         </div>
         <div class="footer-bottom">
@@ -252,3 +250,4 @@ if (isset($_SESSION['email'])) {
 </body>
 
 </html>
+ 

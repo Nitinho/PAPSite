@@ -221,7 +221,6 @@ document.addEventListener('DOMContentLoaded', function() {
             </div>
             <div class="order-meta">
               <p><i class="far fa-calendar-alt"></i> Data: ${new Date(data.order.data_compra).toLocaleDateString()}</p>
-              <p><i class="fas fa-star"></i> Pontos ganhos: ${data.order.pontos_ganhos}</p>
             </div>
           </div>
         `;

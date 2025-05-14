@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// Verificar se o usuário está logado
+// Verificar se o Utilizador está logado
 if (!isset($_SESSION['email'])) {
   header('Content-Type: application/json');
-  echo json_encode(['status' => 'error', 'message' => 'Usuário não autenticado']);
+  echo json_encode(['status' => 'error', 'message' => 'Utilizador não autenticado']);
   exit();
 }
 
@@ -22,37 +22,37 @@ if (!isset($_POST['action']) || $_POST['action'] != 'cancel_order' || !isset($_P
   exit();
 }
 
-// Conexão ao banco de dados
+// Conexão ao base de dados
 $conn = new mysqli('localhost', 'root', '', 'lopesarmazem');
 
 // Verificar conexão
 if ($conn->connect_error) {
   header('Content-Type: application/json');
-  echo json_encode(['status' => 'error', 'message' => 'Falha na conexão com o banco de dados']);
+  echo json_encode(['status' => 'error', 'message' => 'Falha na conexão com o base de dados']);
   exit();
 }
 
-// Obter o ID do usuário logado
+// Obter o ID do Utilizador logado
 $email = $_SESSION['email'];
-$stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
+$stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
 $user = $result->fetch_assoc();
-$usuario_id = $user['id'];
+$user_id = $user['id'];
 
 // Obter o ID do pedido
 $order_id = $_POST['order_id'];
 
-// Verificar se o pedido pertence ao usuário e está pendente
-$stmt = $conn->prepare("SELECT id, status FROM compras WHERE id = ? AND usuario_id = ?");
-$stmt->bind_param("ii", $order_id, $usuario_id);
+// Verificar se o pedido pertence ao Utilizador e está pendente
+$stmt = $conn->prepare("SELECT id, status FROM compras WHERE id = ? AND user_id = ?");
+$stmt->bind_param("ii", $order_id, $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
   header('Content-Type: application/json');
-  echo json_encode(['status' => 'error', 'message' => 'Pedido não encontrado ou não pertence ao usuário']);
+  echo json_encode(['status' => 'error', 'message' => 'Pedido não encontrado ou não pertence ao Utilizador']);
   exit();
 }
 

@@ -1,10 +1,10 @@
 <?php
 session_start();
 
-// Verificar se o usuário está logado
+// Verificar se o Utilizador está logado
 if (!isset($_SESSION['email'])) {
   header('Content-Type: application/json');
-  echo json_encode(['status' => 'error', 'message' => 'Usuário não autenticado.']);
+  echo json_encode(['status' => 'error', 'message' => 'Utilizador não autenticado.']);
   exit();
 }
 
@@ -15,19 +15,19 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST' || !isset($_POST['action']) || $_POST[
   exit();
 }
 
-// Conexão ao banco de dados
+// Conexão ao base de dados
 $conn = new mysqli('localhost', 'root', '', 'lopesarmazem');
 
 // Verificar conexão
 if ($conn->connect_error) {
   header('Content-Type: application/json');
-  echo json_encode(['status' => 'error', 'message' => 'Falha na conexão com o banco de dados.']);
+  echo json_encode(['status' => 'error', 'message' => 'Falha na conexão com o base de dados.']);
   exit();
 }
 
-// Obter informações do usuário logado
+// Obter informações do Utilizador logado
 $email = $_SESSION['email'];
-$stmt = $conn->prepare("SELECT id, nome FROM usuarios WHERE email = ?");
+$stmt = $conn->prepare("SELECT id, nome FROM users WHERE email = ?");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
@@ -35,24 +35,24 @@ $user = $result->fetch_assoc();
 
 if (!$user) {
   header('Content-Type: application/json');
-  echo json_encode(['status' => 'error', 'message' => 'Usuário não encontrado.']);
+  echo json_encode(['status' => 'error', 'message' => 'Utilizador não encontrado.']);
   exit();
 }
 
-$usuario_id = $user['id'];
-$usuario_nome = $user['nome'];
+$user_id = $user['id'];
+$users_nome = $user['nome'];
 
-// Obter os pontos atuais do usuário
-$stmt = $conn->prepare("SELECT SUM(pontos_ganhos) as total_pontos FROM compras WHERE usuario_id = ?");
-$stmt->bind_param("i", $usuario_id);
+// Obter os pontos atuais do Utilizador
+$stmt = $conn->prepare("SELECT SUM(pontos_ganhos) as total_pontos FROM compras WHERE user_id = ?");
+$stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
 $totalPontos = $row['total_pontos'] ?? 0;
 
-// Obter os pontos já gastos pelo usuário
-$stmt = $conn->prepare("SELECT SUM(pontos_utilizados) as pontos_gastos FROM resgates_pontos WHERE usuario_id = ?");
-$stmt->bind_param("i", $usuario_id);
+// Obter os pontos já gastos pelo Utilizador
+$stmt = $conn->prepare("SELECT SUM(pontos_utilizados) as pontos_gastos FROM resgates_pontos WHERE user_id = ?");
+$stmt->bind_param("i", $user_id);
 $stmt->execute();
 $result = $stmt->get_result();
 $row = $result->fetch_assoc();
@@ -65,16 +65,16 @@ $pontosDisponiveis = $totalPontos - $pontosGastos;
 $pontos = $_POST['points'];
 $recompensa = $_POST['reward'];
 
-// Verificar se o usuário tem pontos suficientes
+// Verificar se o Utilizador tem pontos suficientes
 if ($pontosDisponiveis < $pontos) {
   header('Content-Type: application/json');
   echo json_encode(['status' => 'error', 'message' => 'Pontos insuficientes para este resgate.']);
   exit();
 }
 
-// Inserir o resgate no banco de dados
-$stmt = $conn->prepare("INSERT INTO resgates_pontos (usuario_id, recompensa, pontos_utilizados, data_resgate, status) VALUES (?, ?, ?, NOW(), 'pendente')");
-$stmt->bind_param("isi", $usuario_id, $recompensa, $pontos);
+// Inserir o resgate no base de dados
+$stmt = $conn->prepare("INSERT INTO resgates_pontos (user_id, recompensa, pontos_utilizados, data_resgate, status) VALUES (?, ?, ?, NOW(), 'pendente')");
+$stmt->bind_param("isi", $user_id, $recompensa, $pontos);
 
 if ($stmt->execute()) {
   // Resgate realizado com sucesso
@@ -87,9 +87,9 @@ if ($stmt->execute()) {
 }
 
 // Função para obter o histórico de resgates
-function getRedemptionHistory($conn, $usuario_id) {
-  $stmt = $conn->prepare("SELECT id, recompensa, pontos_utilizados, data_resgate, status FROM resgates_pontos WHERE usuario_id = ? ORDER BY data_resgate DESC");
-  $stmt->bind_param("i", $usuario_id);
+function getRedemptionHistory($conn, $user_id) {
+  $stmt = $conn->prepare("SELECT id, recompensa, pontos_utilizados, data_resgate, status FROM resgates_pontos WHERE user_id = ? ORDER BY data_resgate DESC");
+  $stmt->bind_param("i", $user_id);
   $stmt->execute();
   $result = $stmt->get_result();
   

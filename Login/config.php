@@ -1,11 +1,11 @@
 <?php
-// Configurações do banco de dados
+// Configurações do base de dados
 define('DB_SERVER', 'localhost');  // Endereço do servidor (localhost para ambiente local)
-define('DB_USERNAME', 'root');     // Usuário do banco de dados
-define('DB_PASSWORD', '');         // Senha do banco de dados
-define('DB_NAME', 'lopesarmazem'); // Nome do banco de dados
+define('DB_USERNAME', 'root');     // Utilizador do base de dados
+define('DB_PASSWORD', '');         // Senha do base de dados
+define('DB_NAME', 'lopesarmazem'); // Nome do base de dados
 
-// Criar a conexão com o banco de dados
+// Criar a conexão com o base de dados
 function getDBConnection() {
     try {
         // Usando PDO para garantir a segurança na conexão
@@ -13,7 +13,7 @@ function getDBConnection() {
         $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
         return $conn;
     } catch (PDOException $e) {
-        echo "Erro ao conectar ao banco de dados: " . $e->getMessage();
+        echo "Erro ao conectar ao base de dados: " . $e->getMessage();
         exit();
     }
 }

@@ -42,7 +42,7 @@ $tentativas = isset($_SESSION['login_attempts']) ? $_SESSION['login_attempts'] :
 $bloqueado = false;
 $tempo_restante = 0;
 
-// Verificar se o usuário está bloqueado por excesso de tentativas
+// Verificar se o Utilizador está bloqueado por excesso de tentativas
 if (isset($_SESSION['lockout_time'])) {
     $tempo_bloqueio = 15 * 60; // 15 minutos em segundos
     $tempo_passado = time() - $_SESSION['lockout_time'];
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST" && !$bloqueado) {
             $email = filter_input(INPUT_POST, 'email', FILTER_SANITIZE_EMAIL);
             $senha = $_POST['senha'];
             
-            // Verificar credenciais fixas para admin (em produção, usar banco de dados e hash)
+            // Verificar credenciais fixas para admin (em produção, usar base de dados e hash)
             if ($email === "admingeral@admingeral" && $senha === "admingeral@admingeral") {
                 // Login bem-sucedido
                 $_SESSION['login_attempts'] = 0;

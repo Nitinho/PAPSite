@@ -10,10 +10,10 @@ require_once 'config.php';
 verificarLoginAdmin();
 
 // Processar atualização de status
-if(isset($_POST['update_status']) && isset($_POST['compra_id']) && isset($_POST['status'])) {
+if (isset($_POST['update_status']) && isset($_POST['compra_id']) && isset($_POST['status'])) {
     $compra_id = $_POST['compra_id'];
     $status = $_POST['status'];
-    
+
     $update_query = "UPDATE compras SET status = ? WHERE id = ?";
     $stmt = $conn->prepare($update_query);
     if ($stmt === false) {
@@ -23,8 +23,8 @@ if(isset($_POST['update_status']) && isset($_POST['compra_id']) && isset($_POST[
                     </div>';
     } else {
         $stmt->bind_param("si", $status, $compra_id);
-        
-        if($stmt->execute()) {
+
+        if ($stmt->execute()) {
             $mensagem = '<div class="alert alert-success alert-dismissible fade show">
                             <i class="fas fa-check-circle me-2"></i>Status da encomenda atualizado com sucesso!
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
@@ -87,37 +87,37 @@ if (!empty($where_clauses)) {
 
 // Verificar se é para exibir detalhes de uma compra específica
 $mostrar_detalhes = false;
-if(isset($_GET['compra_id'])) {
+if (isset($_GET['compra_id'])) {
     $compra_id = $_GET['compra_id'];
     $mostrar_detalhes = true;
-    
+
     // Verificar se o ID é válido
     if (!is_numeric($compra_id)) {
         die("ID de encomenda inválido");
     }
-    
+
     // Buscar detalhes da compra
     $query_compra = "SELECT c.*, u.nome as nome_cliente, u.email, u.telefone, u.nif 
                     FROM compras c 
-                    JOIN usuarios u ON c.usuario_id = u.id 
+                    JOIN users u ON c.user_id = u.id 
                     WHERE c.id = ?";
     $stmt = $conn->prepare($query_compra);
     if ($stmt === false) {
         die("Erro na preparação da consulta: " . $conn->error . "<br>Query: " . $query_compra);
     }
-    
+
     $stmt->bind_param("i", $compra_id);
     if (!$stmt->execute()) {
         die("Erro na execução da consulta: " . $stmt->error);
     }
-    
+
     $result_compra = $stmt->get_result();
     if ($result_compra->num_rows === 0) {
         die("Encomenda não encontrada");
     }
-    
+
     $compra = $result_compra->fetch_assoc();
-    
+
     // Buscar itens da compra
     $query_itens = "SELECT i.*, p.nome as nome_produto, p.imagem 
                    FROM itens_compra i 
@@ -127,15 +127,15 @@ if(isset($_GET['compra_id'])) {
     if ($stmt === false) {
         die("Erro na preparação da consulta de itens: " . $conn->error);
     }
-    
+
     $stmt->bind_param("i", $compra_id);
     if (!$stmt->execute()) {
         die("Erro na execução da consulta de itens: " . $stmt->error);
     }
-    
+
     $result_itens = $stmt->get_result();
     $itens = $result_itens->fetch_all(MYSQLI_ASSOC);
-    
+
     // Buscar endereço de entrega
     $query_endereco = "SELECT e.* 
                       FROM enderecos e 
@@ -158,19 +158,18 @@ if(isset($_GET['compra_id'])) {
     }
 } else {
     // Contar o total de registros para paginação
-    $count_query = "SELECT COUNT(*) as total FROM compras c JOIN usuarios u ON c.usuario_id = u.id $where_sql";
-    
+    $count_query = "SELECT COUNT(*) as total FROM compras c JOIN users u ON c.user_id = u.id $where_sql";
+
     if (!empty($params)) {
         $stmt = $conn->prepare($count_query);
         if ($stmt === false) {
             die("Erro na preparação da consulta de contagem: " . $conn->error);
         }
-        
         $stmt->bind_param($types, ...$params);
         if (!$stmt->execute()) {
             die("Erro na execução da consulta de contagem: " . $stmt->error);
         }
-        
+
         $result_count = $stmt->get_result();
         $total_registros = $result_count->fetch_assoc()['total'];
     } else {
@@ -178,25 +177,34 @@ if(isset($_GET['compra_id'])) {
         if ($result_count === false) {
             die("Erro na consulta de contagem: " . $conn->error);
         }
-        
+
         $total_registros = $result_count->fetch_assoc()['total'];
     }
-    
+
     $total_paginas = ceil($total_registros / $itens_por_pagina);
-    
-    // Buscar todas as compras com informações do cliente
+
     $query = "SELECT c.*, u.nome as nome_cliente 
-             FROM compras c 
-             JOIN usuarios u ON c.usuario_id = u.id 
-             $where_sql
-             ORDER BY c.data_compra DESC 
-             LIMIT ?, ?";
+    FROM compras c 
+    JOIN users u ON c.user_id = u.id 
+    $where_sql
+    ORDER BY 
+        CASE c.status
+            WHEN 'pendente' THEN 1
+            WHEN 'enviado' THEN 2
+            WHEN 'recebido' THEN 3
+            WHEN 'cancelado' THEN 4
+            ELSE 5
+        END,
+        c.id DESC
+    LIMIT ?, ?";
     
+
+
     $stmt = $conn->prepare($query);
     if ($stmt === false) {
         die("Erro na preparação da consulta principal: " . $conn->error);
     }
-    
+
     if (!empty($params)) {
         $params[] = $offset;
         $params[] = $itens_por_pagina;
@@ -205,13 +213,13 @@ if(isset($_GET['compra_id'])) {
     } else {
         $stmt->bind_param("ii", $offset, $itens_por_pagina);
     }
-    
+
     if (!$stmt->execute()) {
         die("Erro na execução da consulta principal: " . $stmt->error);
     }
-    
+
     $result = $stmt->get_result();
-    
+
     // Buscar estatísticas
     $query_stats = "SELECT 
                     COUNT(*) as total_encomendas,
@@ -238,6 +246,7 @@ if(isset($_GET['compra_id'])) {
 
 <!DOCTYPE html>
 <html lang="pt">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -262,20 +271,20 @@ if(isset($_GET['compra_id'])) {
             --light: #f8f9fc;
             --dark: #5a5c69;
         }
-        
+
         body {
             background-color: #f8f9fc;
-            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 
+            font-family: 'Nunito', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
                 'Helvetica Neue', Arial, sans-serif;
         }
-        
+
         .sidebar {
             min-height: 100vh;
             background: linear-gradient(180deg, var(--primary) 10%, #224abe 100%);
             box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
             z-index: 1;
         }
-        
+
         .sidebar a {
             color: rgba(255, 255, 255, 0.8);
             padding: 1rem;
@@ -284,81 +293,81 @@ if(isset($_GET['compra_id'])) {
             display: block;
             text-decoration: none;
         }
-        
+
         .sidebar a:hover {
             color: #fff;
             background-color: rgba(255, 255, 255, 0.1);
         }
-        
+
         .sidebar a.active {
             color: #fff;
             background-color: rgba(255, 255, 255, 0.2);
         }
-        
+
         .sidebar a i {
             margin-right: 0.5rem;
             width: 1.25rem;
             text-align: center;
         }
-        
+
         .content {
             padding: 20px;
         }
-        
+
         .card {
             border: none;
             border-radius: 0.35rem;
             box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.15);
             margin-bottom: 1.5rem;
         }
-        
+
         .card-header {
             background-color: #f8f9fc;
             border-bottom: 1px solid #e3e6f0;
             font-weight: 700;
             color: var(--dark);
         }
-        
+
         .stat-card {
             border-left: 0.25rem solid;
             transition: transform 0.2s;
         }
-        
+
         .stat-card:hover {
             transform: translateY(-5px);
         }
-        
+
         .stat-card.primary {
             border-left-color: var(--primary);
         }
-        
+
         .stat-card.success {
             border-left-color: var(--success);
         }
-        
+
         .stat-card.info {
             border-left-color: var(--info);
         }
-        
+
         .stat-card.warning {
             border-left-color: var(--warning);
         }
-        
+
         .stat-card.danger {
             border-left-color: var(--danger);
         }
-        
+
         .product-img {
             max-width: 80px;
             max-height: 80px;
             object-fit: contain;
         }
-        
+
         .timeline {
             position: relative;
             padding-left: 30px;
         }
-        
+
         .timeline:before {
             content: '';
             position: absolute;
@@ -368,16 +377,16 @@ if(isset($_GET['compra_id'])) {
             width: 2px;
             background: #e3e6f0;
         }
-        
+
         .timeline-item {
             position: relative;
             padding-bottom: 1.5rem;
         }
-        
+
         .timeline-item:last-child {
             padding-bottom: 0;
         }
-        
+
         .timeline-dot {
             position: absolute;
             left: -30px;
@@ -391,45 +400,45 @@ if(isset($_GET['compra_id'])) {
             color: white;
             font-size: 0.7rem;
         }
-        
+
         .timeline-content {
             background: white;
             border-radius: 0.35rem;
             padding: 1rem;
             box-shadow: 0 0.15rem 1.75rem 0 rgba(58, 59, 69, 0.1);
         }
-        
+
         .badge-status {
             font-size: 0.75rem;
             padding: 0.25rem 0.5rem;
         }
-        
+
         .pagination {
             margin-bottom: 0;
         }
-        
+
         .filter-card {
             border-radius: 0.35rem;
             margin-bottom: 1.5rem;
         }
-        
+
         .filter-card .card-body {
             padding: 1rem;
         }
-        
+
         .btn-filter {
             border-radius: 0.25rem;
         }
-        
+
         .table-responsive {
             overflow-x: auto;
         }
-        
+
         .table th {
             font-weight: 700;
             color: var(--dark);
         }
-        
+
         .status-circle {
             display: inline-block;
             width: 10px;
@@ -437,29 +446,30 @@ if(isset($_GET['compra_id'])) {
             border-radius: 50%;
             margin-right: 5px;
         }
-        
+
         .status-pendente {
             background-color: var(--warning);
         }
-        
+
         .status-enviado {
             background-color: var(--primary);
         }
-        
+
         .status-recebido {
             background-color: var(--success);
         }
-        
+
         .status-cancelado {
             background-color: var(--danger);
         }
-        
+
         .dropdown-menu {
             min-width: 8rem;
             box-shadow: 0 0.5rem 1rem rgba(0, 0, 0, 0.15);
         }
     </style>
 </head>
+
 <body>
     <div class="container-fluid">
         <div class="row">
@@ -472,12 +482,12 @@ if(isset($_GET['compra_id'])) {
                 <a href="produtosg.php"><i class="fas fa-box"></i> Gerenciar Produtos</a>
                 <a href="logout.php"><i class="fas fa-sign-out-alt"></i> Sair</a>
             </div>
-            
+
             <!-- Conteúdo principal -->
             <div class="col-md-10 content">
-                <?php if(isset($mensagem)) echo $mensagem; ?>
-                
-                <?php if($mostrar_detalhes): ?>
+                <?php if (isset($mensagem)) echo $mensagem; ?>
+
+                <?php if ($mostrar_detalhes): ?>
                     <!-- Detalhes da Encomenda -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
                         <h2><i class="fas fa-info-circle me-2"></i>Detalhes da Encomenda #<?php echo $compra['id']; ?></h2>
@@ -485,7 +495,7 @@ if(isset($_GET['compra_id'])) {
                             <i class="fas fa-arrow-left me-2"></i> Voltar para Lista
                         </a>
                     </div>
-                    
+
                     <!-- Status Cards -->
                     <div class="row mb-4">
                         <div class="col-12">
@@ -494,24 +504,42 @@ if(isset($_GET['compra_id'])) {
                                     <div class="d-flex justify-content-between align-items-center p-3">
                                         <div class="d-flex align-items-center">
                                             <div class="me-3">
-                                                <span class="badge bg-<?php 
-                                                switch($compra['status']) {
-                                                    case 'pendente': echo 'warning'; break;
-                                                    case 'enviado': echo 'primary'; break;
-                                                    case 'recebido': echo 'success'; break;
-                                                    case 'cancelado': echo 'danger'; break;
-                                                    default: echo 'secondary';
-                                                }
-                                                ?> p-2">
-                                                    <i class="fas fa-<?php 
-                                                    switch($compra['status']) {
-                                                        case 'pendente': echo 'clock'; break;
-                                                        case 'enviado': echo 'truck'; break;
-                                                        case 'recebido': echo 'check-circle'; break;
-                                                        case 'cancelado': echo 'times-circle'; break;
-                                                        default: echo 'question-circle';
-                                                    }
-                                                    ?> me-1"></i>
+                                                <span class="badge bg-<?php
+                                                                        switch ($compra['status']) {
+                                                                            case 'pendente':
+                                                                                echo 'warning';
+                                                                                break;
+                                                                            case 'enviado':
+                                                                                echo 'primary';
+                                                                                break;
+                                                                            case 'recebido':
+                                                                                echo 'success';
+                                                                                break;
+                                                                            case 'cancelado':
+                                                                                echo 'danger';
+                                                                                break;
+                                                                            default:
+                                                                                echo 'secondary';
+                                                                        }
+                                                                        ?> p-2">
+                                                    <i class="fas fa-<?php
+                                                                        switch ($compra['status']) {
+                                                                            case 'pendente':
+                                                                                echo 'clock';
+                                                                                break;
+                                                                            case 'enviado':
+                                                                                echo 'truck';
+                                                                                break;
+                                                                            case 'recebido':
+                                                                                echo 'check-circle';
+                                                                                break;
+                                                                            case 'cancelado':
+                                                                                echo 'times-circle';
+                                                                                break;
+                                                                            default:
+                                                                                echo 'question-circle';
+                                                                        }
+                                                                        ?> me-1"></i>
                                                     <?php echo ucfirst($compra['status']); ?>
                                                 </span>
                                             </div>
@@ -527,7 +555,7 @@ if(isset($_GET['compra_id'])) {
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="row">
                         <div class="col-md-8">
                             <!-- Informações da Encomenda -->
@@ -540,22 +568,23 @@ if(isset($_GET['compra_id'])) {
                                     <div class="row">
                                         <div class="col-md-6">
                                             <p><strong>Data da Compra:</strong><br>
-                                            <?php echo date('d/m/Y H:i', strtotime($compra['data_compra'])); ?></p>
-                                            
+                                                <?php echo date('d/m/Y H:i', strtotime($compra['data_compra'])); ?></p>
+
                                             <p><strong>Método de Pagamento:</strong><br>
-                                            <?php echo !empty($compra['metodo_pagamento']) ? $compra['metodo_pagamento'] : 'Não especificado'; ?></p>
+                                                <?php echo !empty($compra['metodo_pagamento']) ? $compra['metodo_pagamento'] : 'Não especificado'; ?></p>
                                         </div>
                                         <div class="col-md-6">
                                             <p><strong>Valor Total:</strong><br>
-                                            <span class="text-primary fw-bold">€<?php echo number_format($compra['valor_compra'], 2, ',', '.'); ?></span></p>
-                                            
+                                                <span class="text-primary fw-bold">€<?php echo number_format($compra['valor_compra'], 2, ',', '.'); ?></span>
+                                            </p>
+
                                             <p><strong>Número de Itens:</strong><br>
-                                            <?php echo count($itens); ?> produto(s)</p>
+                                                <?php echo count($itens); ?> produto(s)</p>
                                         </div>
                                     </div>
-                                    
+
                                     <hr>
-                                    
+
                                     <h6 class="fw-bold">Linha do Tempo</h6>
                                     <div class="timeline mt-3">
                                         <div class="timeline-item">
@@ -567,34 +596,34 @@ if(isset($_GET['compra_id'])) {
                                                 <p class="text-muted mb-0"><?php echo date('d/m/Y H:i', strtotime($compra['data_compra'])); ?></p>
                                             </div>
                                         </div>
-                                        
-                                        <?php if($compra['status'] == 'enviado' || $compra['status'] == 'recebido'): ?>
-                                        <div class="timeline-item">
-                                            <div class="timeline-dot bg-primary">
-                                                <i class="fas fa-truck"></i>
+
+                                        <?php if ($compra['status'] == 'enviado' || $compra['status'] == 'recebido'): ?>
+                                            <div class="timeline-item">
+                                                <div class="timeline-dot bg-primary">
+                                                    <i class="fas fa-truck"></i>
+                                                </div>
+                                                <div class="timeline-content">
+                                                    <h6 class="mb-1">Pedido Enviado</h6>
+                                                    <p class="text-muted mb-0">Enviado para entrega</p>
+                                                </div>
                                             </div>
-                                            <div class="timeline-content">
-                                                <h6 class="mb-1">Pedido Enviado</h6>
-                                                <p class="text-muted mb-0">Enviado para entrega</p>
-                                            </div>
-                                        </div>
                                         <?php endif; ?>
-                                        
-                                        <?php if($compra['status'] == 'recebido'): ?>
-                                        <div class="timeline-item">
-                                            <div class="timeline-dot bg-success">
-                                                <i class="fas fa-check"></i>
+
+                                        <?php if ($compra['status'] == 'recebido'): ?>
+                                            <div class="timeline-item">
+                                                <div class="timeline-dot bg-success">
+                                                    <i class="fas fa-check"></i>
+                                                </div>
+                                                <div class="timeline-content">
+                                                    <h6 class="mb-1">Pedido Entregue</h6>
+                                                    <p class="text-muted mb-0">Entrega confirmada pelo cliente</p>
+                                                </div>
                                             </div>
-                                            <div class="timeline-content">
-                                                <h6 class="mb-1">Pedido Entregue</h6>
-                                                <p class="text-muted mb-0">Entrega confirmada pelo cliente</p>
-                                            </div>
-                                        </div>
                                         <?php endif; ?>
                                     </div>
                                 </div>
                             </div>
-                            
+
                             <!-- Itens da Encomenda -->
                             <div class="card">
                                 <div class="card-header">
@@ -613,26 +642,26 @@ if(isset($_GET['compra_id'])) {
                                                 </tr>
                                             </thead>
                                             <tbody>
-                                                <?php foreach($itens as $item): ?>
-                                                <tr>
-                                                    <td>
-                                                        <div class="fw-bold"><?php echo $item['nome_produto']; ?></div>
-                                                        <small class="text-muted">ID: <?php echo $item['produto_id']; ?></small>
-                                                    </td>
-                                                    <td>
-                                                        <?php if(!empty($item['imagem'])): ?>
-                                                            <img src="<?php echo $item['imagem']; ?>" alt="<?php echo $item['nome_produto']; ?>" class="product-img">
-                                                        <?php else: ?>
-                                                            <div class="text-center text-muted">
-                                                                <i class="fas fa-image fa-2x"></i>
-                                                                <small>Sem imagem</small>
-                                                            </div>
-                                                        <?php endif; ?>
-                                                    </td>
-                                                    <td class="text-end">€<?php echo number_format($item['preco_unitario'], 2, ',', '.'); ?></td>
-                                                    <td class="text-center"><?php echo $item['quantidade']; ?></td>
-                                                    <td class="text-end fw-bold">€<?php echo number_format($item['subtotal'], 2, ',', '.'); ?></td>
-                                                </tr>
+                                                <?php foreach ($itens as $item): ?>
+                                                    <tr>
+                                                        <td>
+                                                            <div class="fw-bold"><?php echo $item['nome_produto']; ?></div>
+                                                            <small class="text-muted">ID: <?php echo $item['produto_id']; ?></small>
+                                                        </td>
+                                                        <td>
+                                                            <?php if (!empty($item['imagem'])): ?>
+                                                                <img src="<?php echo $item['imagem']; ?>" alt="<?php echo $item['nome_produto']; ?>" class="product-img">
+                                                            <?php else: ?>
+                                                                <div class="text-center text-muted">
+                                                                    <i class="fas fa-image fa-2x"></i>
+                                                                    <small>Sem imagem</small>
+                                                                </div>
+                                                            <?php endif; ?>
+                                                        </td>
+                                                        <td class="text-end">€<?php echo number_format($item['preco_unitario'], 2, ',', '.'); ?></td>
+                                                        <td class="text-center"><?php echo $item['quantidade']; ?></td>
+                                                        <td class="text-end fw-bold">€<?php echo number_format($item['subtotal'], 2, ',', '.'); ?></td>
+                                                    </tr>
                                                 <?php endforeach; ?>
                                             </tbody>
                                             <tfoot class="table-light">
@@ -646,7 +675,7 @@ if(isset($_GET['compra_id'])) {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-md-4">
                             <!-- Informações do Cliente -->
                             <div class="card mb-4">
@@ -662,50 +691,50 @@ if(isset($_GET['compra_id'])) {
                                         </div>
                                         <div>
                                             <h6 class="mb-0"><?php echo $compra['nome_cliente']; ?></h6>
-                                            <small class="text-muted">Cliente ID: <?php echo $compra['usuario_id']; ?></small>
+                                            <small class="text-muted">Cliente ID: <?php echo $compra['user_id']; ?></small>
                                         </div>
                                     </div>
-                                    
+
                                     <hr>
-                                    
+
                                     <p class="mb-2">
                                         <i class="fas fa-envelope text-primary me-2"></i>
                                         <a href="mailto:<?php echo $compra['email']; ?>"><?php echo $compra['email']; ?></a>
                                     </p>
-                                    
+
                                     <p class="mb-2">
                                         <i class="fas fa-phone text-primary me-2"></i>
                                         <a href="tel:<?php echo $compra['telefone']; ?>"><?php echo $compra['telefone']; ?></a>
                                     </p>
-                                    
+
                                     <p class="mb-0">
                                         <i class="fas fa-id-card text-primary me-2"></i>
                                         NIF: <?php echo $compra['nif']; ?>
                                     </p>
                                 </div>
                             </div>
-                            
+
                             <!-- Endereço de Entrega -->
-                            <?php if(isset($endereco) && $endereco): ?>
-                            <div class="card mb-4">
-                                <div class="card-header">
-                                    <h5 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Endereço de Entrega</h5>
+                            <?php if (isset($endereco) && $endereco): ?>
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <h5 class="mb-0"><i class="fas fa-map-marker-alt me-2"></i>Endereço de Entrega</h5>
+                                    </div>
+                                    <div class="card-body">
+                                        <address>
+                                            <strong><?php echo $compra['nome_cliente']; ?></strong><br>
+                                            <?php echo $endereco['rua']; ?>, <?php echo $endereco['numero']; ?><br>
+                                            <?php if (!empty($endereco['complemento'])): ?>
+                                                <?php echo $endereco['complemento']; ?><br>
+                                            <?php endif; ?>
+                                            <?php echo $endereco['cidade']; ?>, <?php echo $endereco['estado']; ?><br>
+                                            <?php echo $endereco['cep']; ?><br>
+                                            <?php echo $endereco['pais']; ?>
+                                        </address>
+                                    </div>
                                 </div>
-                                <div class="card-body">
-                                    <address>
-                                        <strong><?php echo $compra['nome_cliente']; ?></strong><br>
-                                        <?php echo $endereco['rua']; ?>, <?php echo $endereco['numero']; ?><br>
-                                        <?php if(!empty($endereco['complemento'])): ?>
-                                            <?php echo $endereco['complemento']; ?><br>
-                                        <?php endif; ?>
-                                        <?php echo $endereco['cidade']; ?>, <?php echo $endereco['estado']; ?><br>
-                                        <?php echo $endereco['cep']; ?><br>
-                                        <?php echo $endereco['pais']; ?>
-                                    </address>
-                                </div>
-                            </div>
                             <?php endif; ?>
-                            
+
                             <!-- Ações -->
                             <div class="card">
                                 <div class="card-header">
@@ -716,9 +745,6 @@ if(isset($_GET['compra_id'])) {
                                         <a href="generate_invoice.php?compra_id=<?php echo $compra['id']; ?>" class="btn btn-primary" target="_blank">
                                             <i class="fas fa-file-invoice me-2"></i>Gerar Fatura
                                         </a>
-                                        <a href="mailto:<?php echo $compra['email']; ?>" class="btn btn-outline-primary">
-                                            <i class="fas fa-envelope me-2"></i>Contactar Cliente
-                                        </a>
                                         <button class="btn btn-outline-danger" data-bs-toggle="modal" data-bs-target="#cancelModal">
                                             <i class="fas fa-times-circle me-2"></i>Cancelar Encomenda
                                         </button>
@@ -727,7 +753,7 @@ if(isset($_GET['compra_id'])) {
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Modal de Atualização de Status -->
                     <div class="modal fade" id="statusModal" tabindex="-1" aria-labelledby="statusModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -739,17 +765,17 @@ if(isset($_GET['compra_id'])) {
                                 <form method="post" action="encomendas.php?compra_id=<?php echo $compra['id']; ?>">
                                     <div class="modal-body">
                                         <input type="hidden" name="compra_id" value="<?php echo $compra['id']; ?>">
-                                        
+
                                         <div class="mb-3">
                                             <label for="status" class="form-label">Selecione o novo status:</label>
                                             <select name="status" id="status" class="form-select">
-                                                <option value="pendente" <?php if($compra['status'] == 'pendente') echo 'selected'; ?>>Pendente</option>
-                                                <option value="enviado" <?php if($compra['status'] == 'enviado') echo 'selected'; ?>>Enviado</option>
-                                                <option value="recebido" <?php if($compra['status'] == 'recebido') echo 'selected'; ?>>Recebido</option>
-                                                <option value="cancelado" <?php if($compra['status'] == 'cancelado') echo 'selected'; ?>>Cancelado</option>
+                                                <option value="pendente" <?php if ($compra['status'] == 'pendente') echo 'selected'; ?>>Pendente</option>
+                                                <option value="enviado" <?php if ($compra['status'] == 'enviado') echo 'selected'; ?>>Enviado</option>
+                                                <option value="recebido" <?php if ($compra['status'] == 'recebido') echo 'selected'; ?>>Recebido</option>
+                                                <option value="cancelado" <?php if ($compra['status'] == 'cancelado') echo 'selected'; ?>>Cancelado</option>
                                             </select>
                                         </div>
-                                        
+
                                         <div class="alert alert-info">
                                             <i class="fas fa-info-circle me-2"></i>
                                             A alteração do status será registrada e não poderá ser desfeita.
@@ -763,7 +789,7 @@ if(isset($_GET['compra_id'])) {
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Modal de Cancelamento -->
                     <div class="modal fade" id="cancelModal" tabindex="-1" aria-labelledby="cancelModalLabel" aria-hidden="true">
                         <div class="modal-dialog">
@@ -776,13 +802,13 @@ if(isset($_GET['compra_id'])) {
                                     <div class="modal-body">
                                         <input type="hidden" name="compra_id" value="<?php echo $compra['id']; ?>">
                                         <input type="hidden" name="status" value="cancelado">
-                                        
+
                                         <div class="alert alert-danger">
                                             <i class="fas fa-exclamation-triangle me-2"></i>
                                             <strong>Atenção!</strong> Você está prestes a cancelar a encomenda #<?php echo $compra['id']; ?>.
                                             Esta ação não poderá ser desfeita.
                                         </div>
-                                        
+
                                         <p>Tem certeza que deseja cancelar esta encomenda?</p>
                                     </div>
                                     <div class="modal-footer">
@@ -793,7 +819,7 @@ if(isset($_GET['compra_id'])) {
                             </div>
                         </div>
                     </div>
-                
+
                 <?php else: ?>
                     <!-- Lista de Encomendas -->
                     <div class="d-flex justify-content-between align-items-center mb-4">
@@ -804,7 +830,7 @@ if(isset($_GET['compra_id'])) {
                             </button>
                         </div>
                     </div>
-                    
+
                     <!-- Cards de Estatísticas -->
                     <div class="row mb-4">
                         <div class="col-xl-3 col-md-6">
@@ -824,7 +850,7 @@ if(isset($_GET['compra_id'])) {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-xl-3 col-md-6">
                             <div class="card stat-card warning h-100">
                                 <div class="card-body">
@@ -842,7 +868,7 @@ if(isset($_GET['compra_id'])) {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-xl-3 col-md-6">
                             <div class="card stat-card success h-100">
                                 <div class="card-body">
@@ -860,7 +886,7 @@ if(isset($_GET['compra_id'])) {
                                 </div>
                             </div>
                         </div>
-                        
+
                         <div class="col-xl-3 col-md-6">
                             <div class="card stat-card info h-100">
                                 <div class="card-body">
@@ -879,7 +905,7 @@ if(isset($_GET['compra_id'])) {
                             </div>
                         </div>
                     </div>
-                    
+
                     <!-- Filtros -->
                     <div class="card filter-card mb-4">
                         <div class="card-header">
@@ -891,28 +917,28 @@ if(isset($_GET['compra_id'])) {
                                     <label for="filtro_status" class="form-label">Status</label>
                                     <select name="filtro_status" id="filtro_status" class="form-select">
                                         <option value="">Todos</option>
-                                        <option value="pendente" <?php if($filtro_status == 'pendente') echo 'selected'; ?>>Pendente</option>
-                                        <option value="enviado" <?php if($filtro_status == 'enviado') echo 'selected'; ?>>Enviado</option>
-                                        <option value="recebido" <?php if($filtro_status == 'recebido') echo 'selected'; ?>>Recebido</option>
-                                        <option value="cancelado" <?php if($filtro_status == 'cancelado') echo 'selected'; ?>>Cancelado</option>
+                                        <option value="pendente" <?php if ($filtro_status == 'pendente') echo 'selected'; ?>>Pendente</option>
+                                        <option value="enviado" <?php if ($filtro_status == 'enviado') echo 'selected'; ?>>Enviado</option>
+                                        <option value="recebido" <?php if ($filtro_status == 'recebido') echo 'selected'; ?>>Recebido</option>
+                                        <option value="cancelado" <?php if ($filtro_status == 'cancelado') echo 'selected'; ?>>Cancelado</option>
                                     </select>
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <label for="data_inicio" class="form-label">Data Inicial</label>
                                     <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="<?php echo $filtro_data_inicio; ?>">
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <label for="data_fim" class="form-label">Data Final</label>
                                     <input type="date" class="form-control" id="data_fim" name="data_fim" value="<?php echo $filtro_data_fim; ?>">
                                 </div>
-                                
+
                                 <div class="col-md-3">
                                     <label for="cliente" class="form-label">Cliente</label>
                                     <input type="text" class="form-control" id="cliente" name="cliente" placeholder="Nome do cliente" value="<?php echo $filtro_cliente; ?>">
                                 </div>
-                                
+
                                 <div class="col-12 text-end">
                                     <a href="encomendas.php" class="btn btn-secondary me-2">Limpar Filtros</a>
                                     <button type="submit" class="btn btn-primary btn-filter">
@@ -922,7 +948,7 @@ if(isset($_GET['compra_id'])) {
                             </form>
                         </div>
                     </div>
-                    
+
                     <!-- Tabela de Encomendas -->
                     <div class="card">
                         <div class="card-header">
@@ -943,13 +969,13 @@ if(isset($_GET['compra_id'])) {
                                     </thead>
                                     <tbody>
                                         <?php
-                                        if($result->num_rows > 0) {
-                                            while($row = $result->fetch_assoc()) {
+                                        if ($result->num_rows > 0) {
+                                            while ($row = $result->fetch_assoc()) {
                                                 // Definir classe do badge de acordo com o status
                                                 $badge_class = '';
                                                 $status_icon = '';
-                                                
-                                                switch($row['status']) {
+
+                                                switch ($row['status']) {
                                                     case 'pendente':
                                                         $badge_class = 'bg-warning';
                                                         $status_icon = 'clock';
@@ -970,7 +996,7 @@ if(isset($_GET['compra_id'])) {
                                                         $badge_class = 'bg-secondary';
                                                         $status_icon = 'question-circle';
                                                 }
-                                                ?>
+                                        ?>
                                                 <tr>
                                                     <td><?php echo $row['id']; ?></td>
                                                     <td><?php echo $row['nome_cliente']; ?></td>
@@ -1021,7 +1047,9 @@ if(isset($_GET['compra_id'])) {
                                                                         </button>
                                                                     </form>
                                                                 </li>
-                                                                <li><hr class="dropdown-divider"></li>
+                                                                <li>
+                                                                    <hr class="dropdown-divider">
+                                                                </li>
                                                                 <li>
                                                                     <form method="post" action="encomendas.php">
                                                                         <input type="hidden" name="compra_id" value="<?php echo $row['id']; ?>">
@@ -1035,7 +1063,7 @@ if(isset($_GET['compra_id'])) {
                                                         </div>
                                                     </td>
                                                 </tr>
-                                                <?php
+                                        <?php
                                             }
                                         } else {
                                             echo '<tr><td colspan="6" class="text-center">Nenhuma encomenda encontrada</td></tr>';
@@ -1044,89 +1072,89 @@ if(isset($_GET['compra_id'])) {
                                     </tbody>
                                 </table>
                             </div>
-                            
+
                             <!-- Paginação -->
-                            <?php if($result->num_rows > 0): ?>
-                            <div class="d-flex justify-content-between align-items-center mt-3">
-                                <div>
-                                    <p class="mb-0">Exibindo <?php echo min($itens_por_pagina, $result->num_rows); ?> de <?php echo $total_registros; ?> registros</p>
-                                </div>
-                                <nav aria-label="Navegação de página">
-                                    <ul class="pagination">
-                                        <?php if($pagina_atual > 1): ?>
-                                        <li class="page-item">
-                                            <a class="page-link" href="encomendas.php?pagina=1<?php 
-                                                echo (!empty($filtro_status)) ? "&filtro_status=$filtro_status" : "";
-                                                echo (!empty($filtro_data_inicio)) ? "&data_inicio=$filtro_data_inicio" : "";
-                                                echo (!empty($filtro_data_fim)) ? "&data_fim=$filtro_data_fim" : "";
-                                                echo (!empty($filtro_cliente)) ? "&cliente=$filtro_cliente" : "";
-                                            ?>" aria-label="Primeira">
-                                                <span aria-hidden="true">&laquo;</span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="encomendas.php?pagina=<?php echo $pagina_atual - 1; ?><?php 
-                                                echo (!empty($filtro_status)) ? "&filtro_status=$filtro_status" : "";
-                                                echo (!empty($filtro_data_inicio)) ? "&data_inicio=$filtro_data_inicio" : "";
-                                                echo (!empty($filtro_data_fim)) ? "&data_fim=$filtro_data_fim" : "";
-                                                echo (!empty($filtro_cliente)) ? "&cliente=$filtro_cliente" : "";
-                                            ?>" aria-label="Anterior">
-                                                <span aria-hidden="true">&lt;</span>
-                                            </a>
-                                        </li>
-                                        <?php endif; ?>
-                                        
-                                        <?php
-                                        // Determinar quais páginas mostrar
-                                        $inicio_paginas = max(1, $pagina_atual - 2);
-                                        $fim_paginas = min($total_paginas, $pagina_atual + 2);
-                                        
-                                        // Garantir que sempre mostramos 5 páginas se possível
-                                        if ($fim_paginas - $inicio_paginas + 1 < 5) {
-                                            if ($inicio_paginas == 1) {
-                                                $fim_paginas = min($total_paginas, $inicio_paginas + 4);
-                                            } elseif ($fim_paginas == $total_paginas) {
-                                                $inicio_paginas = max(1, $fim_paginas - 4);
+                            <?php if ($result->num_rows > 0): ?>
+                                <div class="d-flex justify-content-between align-items-center mt-3">
+                                    <div>
+                                        <p class="mb-0">Exibindo <?php echo min($itens_por_pagina, $result->num_rows); ?> de <?php echo $total_registros; ?> registros</p>
+                                    </div>
+                                    <nav aria-label="Navegação de página">
+                                        <ul class="pagination">
+                                            <?php if ($pagina_atual > 1): ?>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="encomendas.php?pagina=1<?php
+                                                                                                        echo (!empty($filtro_status)) ? "&filtro_status=$filtro_status" : "";
+                                                                                                        echo (!empty($filtro_data_inicio)) ? "&data_inicio=$filtro_data_inicio" : "";
+                                                                                                        echo (!empty($filtro_data_fim)) ? "&data_fim=$filtro_data_fim" : "";
+                                                                                                        echo (!empty($filtro_cliente)) ? "&cliente=$filtro_cliente" : "";
+                                                                                                        ?>" aria-label="Primeira">
+                                                        <span aria-hidden="true">&laquo;</span>
+                                                    </a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="encomendas.php?pagina=<?php echo $pagina_atual - 1; ?><?php
+                                                                                                                                        echo (!empty($filtro_status)) ? "&filtro_status=$filtro_status" : "";
+                                                                                                                                        echo (!empty($filtro_data_inicio)) ? "&data_inicio=$filtro_data_inicio" : "";
+                                                                                                                                        echo (!empty($filtro_data_fim)) ? "&data_fim=$filtro_data_fim" : "";
+                                                                                                                                        echo (!empty($filtro_cliente)) ? "&cliente=$filtro_cliente" : "";
+                                                                                                                                        ?>" aria-label="Anterior">
+                                                        <span aria-hidden="true">&lt;</span>
+                                                    </a>
+                                                </li>
+                                            <?php endif; ?>
+
+                                            <?php
+                                            // Determinar quais páginas mostrar
+                                            $inicio_paginas = max(1, $pagina_atual - 2);
+                                            $fim_paginas = min($total_paginas, $pagina_atual + 2);
+
+                                            // Garantir que sempre mostramos 5 páginas se possível
+                                            if ($fim_paginas - $inicio_paginas + 1 < 5) {
+                                                if ($inicio_paginas == 1) {
+                                                    $fim_paginas = min($total_paginas, $inicio_paginas + 4);
+                                                } elseif ($fim_paginas == $total_paginas) {
+                                                    $inicio_paginas = max(1, $fim_paginas - 4);
+                                                }
                                             }
-                                        }
-                                        
-                                        for ($i = $inicio_paginas; $i <= $fim_paginas; $i++):
-                                        ?>
-                                        <li class="page-item <?php echo ($i == $pagina_atual) ? 'active' : ''; ?>">
-                                            <a class="page-link" href="encomendas.php?pagina=<?php echo $i; ?><?php 
-                                                echo (!empty($filtro_status)) ? "&filtro_status=$filtro_status" : "";
-                                                echo (!empty($filtro_data_inicio)) ? "&data_inicio=$filtro_data_inicio" : "";
-                                                echo (!empty($filtro_data_fim)) ? "&data_fim=$filtro_data_fim" : "";
-                                                echo (!empty($filtro_cliente)) ? "&cliente=$filtro_cliente" : "";
-                                            ?>"><?php echo $i; ?></a>
-                                        </li>
-                                        <?php endfor; ?>
-                                        
-                                        <?php if($pagina_atual < $total_paginas): ?>
-                                        <li class="page-item">
-                                            <a class="page-link" href="encomendas.php?pagina=<?php echo $pagina_atual + 1; ?><?php 
-                                                echo (!empty($filtro_status)) ? "&filtro_status=$filtro_status" : "";
-                                                echo (!empty($filtro_data_inicio)) ? "&data_inicio=$filtro_data_inicio" : "";
-                                                echo (!empty($filtro_data_fim)) ? "&data_fim=$filtro_data_fim" : "";
-                                                echo (!empty($filtro_cliente)) ? "&cliente=$filtro_cliente" : "";
-                                            ?>" aria-label="Próxima">
-                                                <span aria-hidden="true">&gt;</span>
-                                            </a>
-                                        </li>
-                                        <li class="page-item">
-                                            <a class="page-link" href="encomendas.php?pagina=<?php echo $total_paginas; ?><?php 
-                                                echo (!empty($filtro_status)) ? "&filtro_status=$filtro_status" : "";
-                                                echo (!empty($filtro_data_inicio)) ? "&data_inicio=$filtro_data_inicio" : "";
-                                                echo (!empty($filtro_data_fim)) ? "&data_fim=$filtro_data_fim" : "";
-                                                echo (!empty($filtro_cliente)) ? "&cliente=$filtro_cliente" : "";
-                                            ?>" aria-label="Última">
-                                                <span aria-hidden="true">&raquo;</span>
-                                            </a>
-                                        </li>
-                                        <?php endif; ?>
-                                    </ul>
-                                </nav>
-                            </div>
+
+                                            for ($i = $inicio_paginas; $i <= $fim_paginas; $i++):
+                                            ?>
+                                                <li class="page-item <?php echo ($i == $pagina_atual) ? 'active' : ''; ?>">
+                                                    <a class="page-link" href="encomendas.php?pagina=<?php echo $i; ?><?php
+                                                                                                                        echo (!empty($filtro_status)) ? "&filtro_status=$filtro_status" : "";
+                                                                                                                        echo (!empty($filtro_data_inicio)) ? "&data_inicio=$filtro_data_inicio" : "";
+                                                                                                                        echo (!empty($filtro_data_fim)) ? "&data_fim=$filtro_data_fim" : "";
+                                                                                                                        echo (!empty($filtro_cliente)) ? "&cliente=$filtro_cliente" : "";
+                                                                                                                        ?>"><?php echo $i; ?></a>
+                                                </li>
+                                            <?php endfor; ?>
+
+                                            <?php if ($pagina_atual < $total_paginas): ?>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="encomendas.php?pagina=<?php echo $pagina_atual + 1; ?><?php
+                                                                                                                                        echo (!empty($filtro_status)) ? "&filtro_status=$filtro_status" : "";
+                                                                                                                                        echo (!empty($filtro_data_inicio)) ? "&data_inicio=$filtro_data_inicio" : "";
+                                                                                                                                        echo (!empty($filtro_data_fim)) ? "&data_fim=$filtro_data_fim" : "";
+                                                                                                                                        echo (!empty($filtro_cliente)) ? "&cliente=$filtro_cliente" : "";
+                                                                                                                                        ?>" aria-label="Próxima">
+                                                        <span aria-hidden="true">&gt;</span>
+                                                    </a>
+                                                </li>
+                                                <li class="page-item">
+                                                    <a class="page-link" href="encomendas.php?pagina=<?php echo $total_paginas; ?><?php
+                                                                                                                                    echo (!empty($filtro_status)) ? "&filtro_status=$filtro_status" : "";
+                                                                                                                                    echo (!empty($filtro_data_inicio)) ? "&data_inicio=$filtro_data_inicio" : "";
+                                                                                                                                    echo (!empty($filtro_data_fim)) ? "&data_fim=$filtro_data_fim" : "";
+                                                                                                                                    echo (!empty($filtro_cliente)) ? "&cliente=$filtro_cliente" : "";
+                                                                                                                                    ?>" aria-label="Última">
+                                                        <span aria-hidden="true">&raquo;</span>
+                                                    </a>
+                                                </li>
+                                            <?php endif; ?>
+                                        </ul>
+                                    </nav>
+                                </div>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -1144,7 +1172,7 @@ if(isset($_GET['compra_id'])) {
     <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
     <!-- SheetJS (Excel Export) -->
     <script src="https://cdn.sheetjs.com/xlsx-0.19.3/package/dist/xlsx.full.min.js"></script>
-    
+
     <script>
         // Inicializar DataTable para pesquisa e ordenação
         $(document).ready(function() {
@@ -1160,25 +1188,25 @@ if(isset($_GET['compra_id'])) {
                     info: false
                 });
             }
-            
+
             // Exportar para Excel
             $('#exportBtn').on('click', function() {
                 // Criar uma tabela temporária para exportação
                 var $exportTable = $('#encomendasTable').clone();
-                
+
                 // Remover a coluna de ações
                 $exportTable.find('thead th:last-child, tbody td:last-child').remove();
-                
+
                 // Converter a tabela em uma matriz de dados
                 var data = [];
                 var headers = [];
-                
+
                 $exportTable.find('thead th').each(function() {
                     headers.push($(this).text().trim());
                 });
-                
+
                 data.push(headers);
-                
+
                 $exportTable.find('tbody tr').each(function() {
                     var rowData = [];
                     $(this).find('td').each(function() {
@@ -1186,16 +1214,17 @@ if(isset($_GET['compra_id'])) {
                     });
                     data.push(rowData);
                 });
-                
+
                 // Criar uma planilha Excel
                 var ws = XLSX.utils.aoa_to_sheet(data);
                 var wb = XLSX.utils.book_new();
                 XLSX.utils.book_append_sheet(wb, ws, "Encomendas");
-                
+
                 // Gerar o arquivo e fazer o download
                 XLSX.writeFile(wb, "Encomendas_" + new Date().toISOString().split('T')[0] + ".xlsx");
             });
         });
     </script>
 </body>
+
 </html>

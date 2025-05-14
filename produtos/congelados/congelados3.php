@@ -2,19 +2,19 @@
 session_start();
 include('../db_connect.php');
 
-// Verificar se o usuário está logado
+// Verificar se o Utilizador está logado
 if (!isset($_SESSION['email'])) {
     // Redirecionar para a página de login
     header("Location: ../../login/login.php");
     exit();
 }
 
-// Verifica se o usuário está logado para definir o redirecionamento
+// Verifica se o Utilizador está logado para definir o redirecionamento
 if (isset($_SESSION['email'])) {
-    // Usuário logado, redireciona para o dashboard
+    // Utilizador logado, redireciona para o dashboard
     $redirectUrl = "../../client/dashboard.php";
 } else {
-    // Usuário não logado, redireciona para o login
+    // Utilizador não logado, redireciona para o login
     $redirectUrl = "../../login/login.php";
 }
 
@@ -23,7 +23,7 @@ if (!isset($_SESSION['carrinho'])) {
     $_SESSION['carrinho'] = [];
 }
 
-// Buscar produtos do banco de dados
+// Buscar produtos do base de dados
 $categoria = "outroscongelado"; // Ajuste conforme necessário
 $sql = "SELECT * FROM produtos WHERE categoria = '$categoria'";
 $result = $conn->query($sql);
@@ -35,7 +35,9 @@ $result = $conn->query($sql);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bebidas não Alcoólicas | Alcoólicas</title>
+    <title>Congelados | Outros</title>
+    <link rel="shortcut icon" type="image/x-icon" href="../../img/logolopes.ico">
+
     <meta name="description" content="Produtos de padaria e pastelaria de alta qualidade dos Armazéns Lopes">
     <link rel="stylesheet" href="../styles/style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
@@ -164,7 +166,6 @@ $result = $conn->query($sql);
                         <button id="clear-cart"><i class="fas fa-trash"></i> Limpar</button>
                     </div>
                     <div class="cart-items">
-                        <!-- Os itens do carrinho serão adicionados aqui via JavaScript -->
                         <div class="empty-cart">
                             <i class="fas fa-shopping-basket"></i>
                             <p>Seu carrinho está vazio</p>
@@ -210,7 +211,6 @@ $result = $conn->query($sql);
             </div>
             <h3>Pedido Realizado com Sucesso!</h3>
             <p>O seu pedido foi registado e será processado em breve.</p>
-            <p>Número do pedido: <strong id="order-number">ORD-12345</strong></p>
             <button id="continue-shopping">Continuar Comprando</button>
         </div>
     </div>
@@ -225,9 +225,10 @@ $result = $conn->query($sql);
                 <a href="../../index.php#container6">Contactos</a>
             </div>
             <div class="footer-social">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+                <a href="https://www.facebook.com/escolabasica.secundariaourem/?locale=pt_PT"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/aeourem/"><i class="fab fa-instagram"></i></a>
+
+                
             </div>
         </div>
         <div class="footer-bottom">

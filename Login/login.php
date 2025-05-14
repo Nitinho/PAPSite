@@ -1,16 +1,16 @@
 <?php
 session_start();
-include('config.php');  // A conexão com o banco de dados
+include('config.php');  // A conexão com o base de dados
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    // Conectando ao banco de dados
+    // Conectando ao base de dados
     $conn = getDBConnection();
 
-    // Verifique se o usuário existe no banco de dados
-    $sql = "SELECT * FROM usuarios WHERE email = :email";
+    // Verifique se o Utilizador existe no base de dados
+    $sql = "SELECT * FROM users WHERE email = :email";
     $stmt = $conn->prepare($sql);
     $stmt->bindParam(':email', $email);
     $stmt->execute();
@@ -18,19 +18,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if ($stmt->rowCount() > 0) {
         $user = $stmt->fetch(PDO::FETCH_ASSOC);
 
-        // Comparando a senha informada com o hash da senha no banco de dados
+        // Comparando a senha informada com o hash da senha no base de dados
         if (password_verify($password, $user['senha'])) {
-            // Se a senha for válida, inicia a sessão do usuário
+            // Se a senha for válida, inicia a sessão do Utilizador
             $_SESSION['email'] = $user['email']; // Salva o e-mail na sessão
-            header("Location: http://localhost/papsite/client/dashboard.php"); // Redireciona para o dashboard
+            header("Location: http://localhost/armazemlopes/client/dashboard.php"); // Redireciona para o dashboard
             exit();
         } else {
             // Se a senha estiver incorreta
             $error_message = "Senha incorreta!";
         }
     } else {
-        // Se o e-mail não for encontrado no banco de dados
-        $error_message = "Usuário não encontrado!";
+        // Se o e-mail não for encontrado no base de dados
+        $error_message = "Utilizador não encontrado!";
     }
 }
 ?>
@@ -144,9 +144,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 <a href="../index.php#container6">Contactos</a>
             </div>
             <div class="footer-social">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-linkedin"></i></a>
+
             </div>
         </div>
         <div class="footer-bottom">

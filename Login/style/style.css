@@ -605,7 +605,7 @@ footer {
 
 .mobile-menu {
     display: none;
-    /* Outras propriedades CSS */
+
 }
 
 .mobile-menu.active {
@@ -696,7 +696,7 @@ footer {
     background-color: var(--white);
   }
   
-  /* Usando o mesmo estilo do botão de login */
+
   .register-button {
     width: 100%;
     padding: 12px;

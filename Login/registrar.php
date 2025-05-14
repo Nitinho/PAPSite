@@ -1,8 +1,30 @@
 <?php
 session_start();
-include('config.php');  // A conexão com o banco de dados
+include('config.php');  // A conexão com o base de dados
 
 $errors = [];
+
+// Função para validação do NIF português
+function validateNIF($nif) {
+    $nif = trim($nif);
+    if (!is_numeric($nif) || strlen($nif) != 9) {
+        return false;
+    }
+    $nif_split = str_split($nif);
+    $nif_primeiros_digito = array(1, 2, 3, 5, 6, 7, 8, 9);
+    if (!in_array((int)$nif_split[0], $nif_primeiros_digito)) {
+        return false;
+    }
+    $check_digit = 0;
+    for ($i = 0; $i < 8; $i++) {
+        $check_digit += $nif_split[$i] * (9 - $i);
+    }
+    $check_digit = 11 - ($check_digit % 11);
+    if ($check_digit >= 10) {
+        $check_digit = 0;
+    }
+    return ($check_digit == $nif_split[8]);
+}
 
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Receber dados do formulário
@@ -20,7 +42,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $numero = trim($_POST['numero'] ?? '');
     $cidade = trim($_POST['cidade'] ?? '');
     $codigo_postal = trim($_POST['codigo_postal'] ?? '');
-    $termos = isset($_POST['termos']);
 
     // Validações
     if (empty($nome)) {
@@ -45,12 +66,16 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     if (empty($nif)) {
         $errors['nif'] = "NIF é obrigatório";
-    } elseif (!preg_match('/^\d{9}$/', $nif)) {
-        $errors['nif'] = "O NIF deve ter exatamente 9 dígitos";
+    } elseif (!validateNIF($nif)) {
+        $errors['nif'] = "NIF inválido (deve ter 9 dígitos e dígito de controlo válido)";
     }
 
-    if (!empty($nif_empresa) && !preg_match('/^\d{9}$/', $nif_empresa)) {
-        $errors['nif_empresa'] = "O NIF da empresa deve ter exatamente 9 dígitos";
+    if (!empty($nif_empresa)) {
+        if (!preg_match('/^\d{9}$/', $nif_empresa)) {
+            $errors['nif_empresa'] = "NIF da empresa deve conter exatamente 9 dígitos numéricos";
+        } elseif (!validateNIF($nif_empresa)) {
+            $errors['nif_empresa'] = "NIF da empresa inválido (deve ter 9 dígitos e dígito de controlo válido)";
+        }
     }
 
     if (empty($rua)) {
@@ -69,31 +94,24 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['codigo_postal'] = "Código Postal é obrigatório";
     }
 
-    if (!$termos) {
-        $errors['termos'] = "Você deve aceitar os termos e condições";
-    }
-
     // Se não houver erros, prosseguir com o registro
     if (empty($errors)) {
         $conn = getDBConnection();
 
         try {
             // Verificar se o email já existe
-            $stmt = $conn->prepare("SELECT COUNT(*) FROM usuarios WHERE email = :email");
+            $stmt = $conn->prepare("SELECT COUNT(*) FROM users WHERE email = :email");
             $stmt->bindParam(':email', $email);
             $stmt->execute();
 
             if ($stmt->fetchColumn() > 0) {
                 $errors['email'] = "Este email já está em uso";
             } else {
-                // Iniciar transação
                 $conn->beginTransaction();
 
-                // Hash da senha
                 $senha_hash = password_hash($senha, PASSWORD_DEFAULT);
 
-                // Inserir usuário
-                $sql = "INSERT INTO usuarios (nome, email, senha, nif, nome_da_empresa, nif_da_empresa, telefone)
+                $sql = "INSERT INTO users (nome, email, senha, nif, nome_da_empresa, nif_da_empresa, telefone)
                         VALUES (:nome, :email, :senha, :nif, :nome_empresa, :nif_empresa, :telefone)";
 
                 $stmt = $conn->prepare($sql);
@@ -106,24 +124,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
                 $stmt->bindParam(':telefone', $telefone);
                 $stmt->execute();
 
-                // Obter o ID do usuário recém-inserido
-                $usuario_id = $conn->lastInsertId();
+                $user_id = $conn->lastInsertId();
 
-                // Inserir endereço
-                $sql = "INSERT INTO enderecos (usuario_id, rua, numero, cidade, codigo_postal) 
-                        VALUES (:usuario_id, :rua, :numero, :cidade, :codigo_postal)";
+                $sql = "INSERT INTO enderecos (user_id, rua, numero, cidade, codigo_postal)
+                        VALUES (:user_id, :rua, :numero, :cidade, :codigo_postal)";
                 $stmt = $conn->prepare($sql);
-                $stmt->bindParam(':usuario_id', $usuario_id);
+                $stmt->bindParam(':user_id', $user_id);
                 $stmt->bindParam(':rua', $rua);
                 $stmt->bindParam(':numero', $numero);
                 $stmt->bindParam(':cidade', $cidade);
                 $stmt->bindParam(':codigo_postal', $codigo_postal);
                 $stmt->execute();
 
-                // Confirmar transação
                 $conn->commit();
 
-                // Redirecionar para a página de login com mensagem de sucesso
                 $_SESSION['registro_sucesso'] = "Registro realizado com sucesso! Faça login para continuar.";
                 header("Location: login.php");
                 exit();
@@ -158,11 +172,111 @@ function hasError($field) {
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="shortcut icon" type="image/x-icon" href="../img/logolopes.ico">
     <style>
-        /* ... (mantém os estilos do seu arquivo original) ... */
+        .form-group input.error {
+            border-color: var(--primary-color);
+            background-color: rgba(255, 76, 76, 0.05);
+        }
+        .error-feedback {
+            color: var(--primary-color);
+            font-size: 0.8rem;
+            margin-top: 5px;
+            display: block;
+        }
+        .form-section {
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--medium-gray);
+        }
+        .form-section:last-child {
+            border-bottom: none;
+        }
+        .form-section-title {
+            display: flex;
+            align-items: center;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        .form-section-title i {
+            margin-right: 10px;
+            background-color: var(--primary-color);
+            color: white;
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .form-row {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 0;
+        }
+        .form-row .form-group {
+            flex: 1;
+        }
+        .password-strength {
+            margin-top: 8px;
+            font-size: 0.8rem;
+        }
+        .strength-meter {
+            height: 4px;
+            background-color: #ddd;
+            margin-top: 5px;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+        .strength-meter-fill {
+            height: 100%;
+            width: 0;
+            background-color: #ddd;
+            transition: width 0.3s ease, background-color 0.3s ease;
+        }
+        .strength-meter-fill.weak {
+            width: 33%;
+            background-color: #ff4d4d;
+        }
+        .strength-meter-fill.medium {
+            width: 66%;
+            background-color: #ffa64d;
+        }
+        .strength-meter-fill.strong {
+            width: 100%;
+            background-color: #2ecc71;
+        }
+        .strength-text {
+            font-size: 0.8rem;
+            margin-top: 5px;
+        }
     </style>
 </head>
 <body>
-    <!-- ... (mantém o header e navegação) ... -->
+    <header>
+        <div id="headerimg">
+            <a href="../index.php"><img src="../img/logolopes.png" alt="Logo Armazéns Lopes"></a>
+        </div>
+        <div id="headerselect">
+            <a href="../index.php">INÍCIO</a>
+            <a href="../index.php#container2">PRODUTOS</a>
+            <a href="../index.php#sobre">SOBRE</a>
+            <a href="../index.php#container6">CONTACTOS</a>
+        </div>
+        <div class="mobile-menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav class="mobile-menu">
+            <a href="../index.php">INÍCIO</a>
+            <a href="../index.php#container2">PRODUTOS</a>
+            <a href="../index.php#sobre">SOBRE</a>
+            <a href="../index.php#container6">CONTACTOS</a>
+            <a href="../formulario.php">VIRAR CLIENTE</a>
+            <a href="#" class="mobile-area-cliente"><strong>ÁREA CLIENTE</strong></a>
+        </nav>
+    </header>
 
     <main>
         <div class="register-container">
@@ -172,28 +286,24 @@ function hasError($field) {
                         <h1>Criar Conta</h1>
                         <p>Preencha os dados abaixo para se tornar cliente</p>
                     </div>
-                    
                     <?php if (!empty($errors) && !isset($errors['specific'])): ?>
                         <div class="error-message">
                             <i class="fas fa-exclamation-circle"></i>
                             Por favor, corrija os erros no formulário para continuar.
                         </div>
                     <?php endif; ?>
-                    
                     <?php if (isset($error_message)): ?>
                         <div class="error-message">
                             <i class="fas fa-exclamation-circle"></i>
                             <?php echo $error_message; ?>
                         </div>
                     <?php endif; ?>
-                    
                     <form method="POST" action="registrar.php" class="register-form" novalidate>
                         <div class="form-section">
                             <div class="form-section-title">
                                 <i class="fas fa-user"></i>
                                 <span>Dados Pessoais</span>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="nome">Nome Completo</label>
                                 <input type="text" id="nome" name="nome" value="<?php echo getValue('nome'); ?>" class="<?php echo hasError('nome'); ?>" required>
@@ -201,7 +311,6 @@ function hasError($field) {
                                     <span class="error-feedback"><?php echo $errors['nome']; ?></span>
                                 <?php endif; ?>
                             </div>
-                            
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="email">Email</label>
@@ -210,7 +319,6 @@ function hasError($field) {
                                         <span class="error-feedback"><?php echo $errors['email']; ?></span>
                                     <?php endif; ?>
                                 </div>
-                                
                                 <div class="form-group">
                                     <label for="telefone">Telefone</label>
                                     <input type="tel" id="telefone" name="telefone" value="<?php echo getValue('telefone'); ?>" class="<?php echo hasError('telefone'); ?>">
@@ -219,7 +327,6 @@ function hasError($field) {
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            
                             <div class="form-row">
                                 <div class="form-group">
                                     <label for="senha">Senha</label>
@@ -240,7 +347,6 @@ function hasError($field) {
                                         </div>
                                     <?php endif; ?>
                                 </div>
-                                
                                 <div class="form-group">
                                     <label for="confirmar_senha">Confirmar Senha</label>
                                     <div class="password-input-container">
@@ -254,7 +360,6 @@ function hasError($field) {
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="nif">NIF (Número de Identificação Fiscal)</label>
                                 <input type="text" id="nif" name="nif" maxlength="9" pattern="\d{9}" value="<?php echo getValue('nif'); ?>" class="<?php echo hasError('nif'); ?>" required>
@@ -263,13 +368,11 @@ function hasError($field) {
                                 <?php endif; ?>
                             </div>
                         </div>
-                        
                         <div class="form-section">
                             <div class="form-section-title">
                                 <i class="fas fa-building"></i>
                                 <span>Dados da Empresa</span>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="nome_empresa">Nome da Empresa</label>
                                 <input type="text" id="nome_empresa" name="nome_empresa" value="<?php echo getValue('nome_empresa'); ?>" class="<?php echo hasError('nome_empresa'); ?>">
@@ -277,7 +380,6 @@ function hasError($field) {
                                     <span class="error-feedback"><?php echo $errors['nome_empresa']; ?></span>
                                 <?php endif; ?>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="nif_empresa">NIF da Empresa</label>
                                 <input type="text" id="nif_empresa" name="nif_empresa" maxlength="9" pattern="\d{9}" value="<?php echo getValue('nif_empresa'); ?>" class="<?php echo hasError('nif_empresa'); ?>">
@@ -286,13 +388,11 @@ function hasError($field) {
                                 <?php endif; ?>
                             </div>
                         </div>
-                        
                         <div class="form-section">
                             <div class="form-section-title">
                                 <i class="fas fa-map-marker-alt"></i>
                                 <span>Endereço</span>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="rua">Rua</label>
                                 <input type="text" id="rua" name="rua" value="<?php echo getValue('rua'); ?>" class="<?php echo hasError('rua'); ?>" required>
@@ -308,7 +408,6 @@ function hasError($field) {
                                         <span class="error-feedback"><?php echo $errors['numero']; ?></span>
                                     <?php endif; ?>
                                 </div>
-                                
                                 <div class="form-group">
                                     <label for="cidade">Cidade</label>
                                     <input type="text" id="cidade" name="cidade" value="<?php echo getValue('cidade'); ?>" class="<?php echo hasError('cidade'); ?>" required>
@@ -317,7 +416,6 @@ function hasError($field) {
                                     <?php endif; ?>
                                 </div>
                             </div>
-                            
                             <div class="form-group">
                                 <label for="codigo_postal">Código Postal</label>
                                 <input type="text" id="codigo_postal" name="codigo_postal" value="<?php echo getValue('codigo_postal'); ?>" class="<?php echo hasError('codigo_postal'); ?>" placeholder="0000-000" required>
@@ -326,22 +424,10 @@ function hasError($field) {
                                 <?php endif; ?>
                             </div>
                         </div>
-                        
-                        <div class="terms-checkbox <?php echo hasError('termos'); ?>">
-                            <input type="checkbox" id="termos" name="termos" <?php echo isset($_POST['termos']) ? 'checked' : ''; ?>>
-                            <label for="termos">
-                                Li e concordo com os <a href="#" target="_blank">Termos de Uso</a> e <a href="#" target="_blank">Política de Privacidade</a>
-                            </label>
-                            <?php if (isset($errors['termos'])): ?>
-                                <span class="error-feedback"><?php echo $errors['termos']; ?></span>
-                            <?php endif; ?>
-                        </div>
-                        
                         <button type="submit" class="register-button">
                             <span>Criar Conta</span>
                             <i class="fas fa-user-plus"></i>
                         </button>
-                        
                         <div class="login-link">
                             <p>Já é cliente? <a href="login.php">Faça login</a></p>
                         </div>
@@ -351,16 +437,36 @@ function hasError($field) {
         </div>
     </main>
 
-    <!-- ... (footer permanece igual) ... -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <!-- Logo no footer se necessário -->
+            </div>
+            <div class="footer-links">
+                <a href="../index.php">Início</a>
+                <a href="../index.php#container2">Produtos</a>
+                <a href="../index.php#sobre">Sobre</a>
+                <a href="../index.php#container6">Contactos</a>
+            </div>
+            <div class="footer-social">
+                <a href="https://www.facebook.com/escolabasica.secundariaourem/?locale=pt_PT"><i class="fab fa-facebook"></i></a>
+                <a href="https://www.instagram.com/aeourem/"><i class="fab fa-instagram"></i></a>
+
+                
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p><strong>© 2025 ARMAZÉNS LOPES. TODOS OS DIREITOS RESERVADOS.</strong></p>
+        </div>
+    </footer>
 
     <script>
-        // Toggle password visibility
+       
         document.querySelectorAll('.toggle-password').forEach(button => {
             button.addEventListener('click', function() {
                 const targetId = this.getAttribute('data-target');
                 const passwordInput = document.getElementById(targetId);
                 const icon = this.querySelector('i');
-                
                 if (passwordInput.type === 'password') {
                     passwordInput.type = 'text';
                     icon.classList.remove('fa-eye');
@@ -373,17 +479,15 @@ function hasError($field) {
             });
         });
 
-        // Verificador de força da senha
+        // Força da senha
         const passwordInput = document.getElementById('senha');
         const strengthMeter = document.querySelector('.strength-meter-fill');
         const strengthText = document.querySelector('.strength-text');
-        
         if (passwordInput && strengthMeter && strengthText) {
             passwordInput.addEventListener('input', function() {
                 const password = this.value;
                 let strength = 0;
                 let message = '';
-                
                 if (password.length > 0) {
                     if (password.length >= 8) strength += 1;
                     if (password.match(/[a-z]+/)) strength += 1;
@@ -409,18 +513,6 @@ function hasError($field) {
                 }
             });
         }
-
-        // Limitar NIF e NIF da empresa a 9 dígitos
-        function limitarNifInput(input) {
-            input.addEventListener('input', function() {
-                this.value = this.value.replace(/\D/g, '').slice(0, 9);
-            });
-        }
-
-        const nifInput = document.getElementById('nif');
-        const nifEmpresaInput = document.getElementById('nif_empresa');
-        if (nifInput) limitarNifInput(nifInput);
-        if (nifEmpresaInput) limitarNifInput(nifEmpresaInput);
 
         // Formatação do código postal
         const codigoPostalInput = document.getElementById('codigo_postal');
@@ -455,6 +547,17 @@ function hasError($field) {
                 }
             });
         }
+
+        // Limitar NIF e NIF da empresa a 9 dígitos numéricos
+        function limitNifInput(input) {
+            input.addEventListener('input', function() {
+                this.value = this.value.replace(/\D/g, '').slice(0,9);
+            });
+        }
+        const nifInput = document.getElementById('nif');
+        const nifEmpresaInput = document.getElementById('nif_empresa');
+        if (nifInput) limitNifInput(nifInput);
+        if (nifEmpresaInput) limitNifInput(nifEmpresaInput);
 
         // Mobile menu toggle
         const menuToggle = document.querySelector('.mobile-menu-toggle');

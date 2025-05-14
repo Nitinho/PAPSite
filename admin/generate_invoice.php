@@ -22,7 +22,7 @@ $compra_id = $_GET['compra_id'];
 // Obter detalhes da compra
 $query_compra = "SELECT c.*, u.nome as nome_cliente, u.email, u.telefone, u.nif 
                 FROM compras c 
-                JOIN usuarios u ON c.usuario_id = u.id 
+                JOIN users u ON c.user_id = u.id 
                 WHERE c.id = ?";
 $stmt = $conn->prepare($query_compra);
 if ($stmt === false) {

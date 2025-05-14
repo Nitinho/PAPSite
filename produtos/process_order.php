@@ -4,27 +4,27 @@ session_start();
 include('db_connect.php');
 
 
-// Verificar se o usuário está logado
+// Verificar se o Utilizador está logado
 if (!isset($_SESSION['email'])) {
-    echo json_encode(['success' => false, 'message' => 'Usuário não está logado']);
+    echo json_encode(['success' => false, 'message' => 'Utilizador não está logado']);
     exit();
 }
 
-// Obter o ID do usuário logado
+// Obter o ID do Utilizador logado
 $email = $_SESSION['email'];
-$query = "SELECT id FROM usuarios WHERE email = ?";
+$query = "SELECT id FROM users WHERE email = ?";
 $stmt = $conn->prepare($query);
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
 
 if ($result->num_rows === 0) {
-    echo json_encode(['success' => false, 'message' => 'Usuário não encontrado']);
+    echo json_encode(['success' => false, 'message' => 'Utilizador não encontrado']);
     exit();
 }
 
-$usuario = $result->fetch_assoc();
-$usuario_id = $usuario['id'];
+$users = $result->fetch_assoc();
+$user_id = $users['id'];
 
 // Receber os dados do pedido
 $input = file_get_contents('php://input');
@@ -43,9 +43,9 @@ $conn->begin_transaction();
 
 try {
     // Inserir na tabela compras
-    $query = "INSERT INTO compras (usuario_id, valor_compra, pontos_ganhos) VALUES (?, ?, ?)";
+    $query = "INSERT INTO compras (user_id, valor_compra, pontos_ganhos) VALUES (?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("idi", $usuario_id, $orderData['total'], $pontos_ganhos);
+    $stmt->bind_param("idi", $user_id, $orderData['total'], $pontos_ganhos);
     
     if (!$stmt->execute()) {
         throw new Exception("Erro ao registrar a compra: " . $stmt->error);

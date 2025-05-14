@@ -10,19 +10,19 @@ require_once 'config.php';
 verificarLoginAdmin();
 
 // Inicializar variáveis para evitar erros
-$total_usuarios = 0;
+$total_users = 0;
 $total_enderecos = 0;
 $ultimo_registro = "N/A";
 
-// Consulta para total de usuários com tratamento de erro
-$sql_usuarios = "SELECT COUNT(*) as total FROM usuarios";
-$result_usuarios = $conn->query($sql_usuarios);
-if ($result_usuarios === false) {
+// Consulta para total de Utilizadors com tratamento de erro
+$sql_users = "SELECT COUNT(*) as total FROM users";
+$result_users = $conn->query($sql_users);
+if ($result_users === false) {
     // Registrar erro
-    error_log("Erro na consulta de usuários: " . $conn->error);
+    error_log("Erro na consulta de Utilizadors: " . $conn->error);
 } else {
-    $row = $result_usuarios->fetch_assoc();
-    $total_usuarios = $row['total'];
+    $row = $result_users->fetch_assoc();
+    $total_users = $row['total'];
 }
 
 // Consulta para total de endereços com tratamento de erro
@@ -37,7 +37,7 @@ if ($result_enderecos === false) {
 }
 
 // Consulta para último registro com tratamento de erro
-$sql_ultimo = "SELECT data_registro FROM usuarios ORDER BY data_registro DESC LIMIT 1";
+$sql_ultimo = "SELECT data_registro FROM users ORDER BY data_registro DESC LIMIT 1";
 $result_ultimo = $conn->query($sql_ultimo);
 if ($result_ultimo === false) {
     // Registrar erro
@@ -49,16 +49,16 @@ if ($result_ultimo === false) {
     }
 }
 
-// Consulta para últimos usuários registrados com tratamento de erro
-$ultimos_usuarios = [];
-$sql_ultimos = "SELECT id, nome, email, nif, data_registro FROM usuarios ORDER BY data_registro DESC LIMIT 5";
+// Consulta para últimos Utilizadors registrados com tratamento de erro
+$ultimos_users = [];
+$sql_ultimos = "SELECT id, nome, email, nif, data_registro FROM users ORDER BY data_registro DESC LIMIT 5";
 $result_ultimos = $conn->query($sql_ultimos);
 if ($result_ultimos === false) {
     // Registrar erro
-    error_log("Erro na consulta dos últimos usuários: " . $conn->error);
+    error_log("Erro na consulta dos últimos Utilizadors: " . $conn->error);
 } else {
     while ($row = $result_ultimos->fetch_assoc()) {
-        $ultimos_usuarios[] = $row;
+        $ultimos_users[] = $row;
     }
 }
 
@@ -339,9 +339,7 @@ if ($result_vendas_mensais === false) {
             <div class="col-md-10 content">
                 <div class="d-flex justify-content-between align-items-center mb-4">
                     <h2>Dashboard</h2>
-                    <div>
-                        <span class="text-muted">Hoje: <?php echo date('d/m/Y'); ?></span>
-                    </div>
+
                 </div>
                 
                 <div class="row">
@@ -351,7 +349,7 @@ if ($result_vendas_mensais === false) {
                                 <div class="row align-items-center">
                                     <div class="col-8">
                                         <h5 class="card-title text-primary">Utilizadores</h5>
-                                        <h3><?php echo $total_usuarios; ?></h3>
+                                        <h3><?php echo $total_users; ?></h3>
                                     </div>
                                     <div class="col-4 text-end">
                                         <i class="fas fa-users fa-2x text-gray-300"></i>
@@ -440,7 +438,7 @@ if ($result_vendas_mensais === false) {
                 
                 <div class="card mt-4">
                     <div class="card-header">
-                        <h5><i class="fas fa-user me-2"></i>Últimos Usuários Registrados</h5>
+                        <h5><i class="fas fa-user me-2"></i>Últimos Utilizadors Registrados</h5>
                     </div>
                     <div class="card-body">
                         <div class="table-responsive">
@@ -456,18 +454,18 @@ if ($result_vendas_mensais === false) {
                                 </thead>
                                 <tbody>
                                     <?php
-                                    if (count($ultimos_usuarios) > 0) {
-                                        foreach ($ultimos_usuarios as $usuario) {
+                                    if (count($ultimos_users) > 0) {
+                                        foreach ($ultimos_users as $users) {
                                             echo "<tr>";
-                                            echo "<td>" . $usuario["id"] . "</td>";
-                                            echo "<td>" . $usuario["nome"] . "</td>";
-                                            echo "<td>" . $usuario["email"] . "</td>";
-                                            echo "<td>" . $usuario["nif"] . "</td>";
-                                            echo "<td>" . date('d/m/Y H:i', strtotime($usuario["data_registro"])) . "</td>";
+                                            echo "<td>" . $users["id"] . "</td>";
+                                            echo "<td>" . $users["nome"] . "</td>";
+                                            echo "<td>" . $users["email"] . "</td>";
+                                            echo "<td>" . $users["nif"] . "</td>";
+                                            echo "<td>" . date('d/m/Y H:i', strtotime($users["data_registro"])) . "</td>";
                                             echo "</tr>";
                                         }
                                     } else {
-                                        echo "<tr><td colspan='5' class='text-center'>Nenhum usuário registrado</td></tr>";
+                                        echo "<tr><td colspan='5' class='text-center'>Nenhum Utilizador registrado</td></tr>";
                                     }
                                     ?>
                                 </tbody>
@@ -475,7 +473,7 @@ if ($result_vendas_mensais === false) {
                         </div>
                     </div>
                     <div class="card-footer">
-                        <a href="registrar.php" class="btn btn-primary">Ver Todos os Usuários</a>
+                        <a href="registrar.php" class="btn btn-primary">Ver Todos os Utilizadors</a>
                     </div>
                 </div>
             </div>
@@ -484,7 +482,7 @@ if ($result_vendas_mensais === false) {
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
-        // Dados para o gráfico de vendas (reais do banco de dados)
+        // Dados para o gráfico de vendas (reais do base de dados)
         const meses = <?php echo json_encode($labels_meses); ?>;
         const vendas = <?php echo json_encode($dados_vendas); ?>;
         

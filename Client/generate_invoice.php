@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// Verificar se o usuário está logado
+// Verificar se o Utilizador está logado
 if (!isset($_SESSION['email'])) {
   header("Location: ../Login/login.php");
   exit();
@@ -10,7 +10,7 @@ if (!isset($_SESSION['email'])) {
 // Incluir a biblioteca TCPDF
 require_once('tcpdf/tcpdf.php');
 
-// Conexão ao banco de dados
+// Conexão ao base de dados
 $conn = new mysqli('localhost', 'root', '', 'lopesarmazem');
 
 // Verificar conexão
@@ -28,7 +28,7 @@ $order_id = intval($_GET['order_id']);
 // Obter informações da compra
 $stmt = $conn->prepare("SELECT c.*, u.nome, u.email, u.telefone, u.nome_da_empresa 
                         FROM compras c 
-                        JOIN usuarios u ON c.usuario_id = u.id 
+                        JOIN users u ON c.user_id = u.id 
                         WHERE c.id = ?");
 $stmt->bind_param("i", $order_id);
 $stmt->execute();
@@ -156,7 +156,7 @@ $pdf->Cell(0, 5, 'ATCUD: ' . date('Y') . '/' . $order_id, 0, 1, 'L');
 // Gerar o PDF e forçar o download
 $pdf->Output('Fatura_' . $order_id . '.pdf', 'D');
 
-// Fechar conexão com o banco de dados
+// Fechar conexão com o base de dados
 $stmt->close();
 $conn->close();
 ?>

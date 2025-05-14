@@ -1,5 +1,5 @@
 <?php
-// Configuração da conexão com o banco de dados
+// Configuração da conexão com o base de dados
 $servername = "localhost";
 $username = "root";
 $password = "";
@@ -27,7 +27,7 @@ if (session_status() == PHP_SESSION_NONE) {
     session_start();
 }
 
-// Função para verificar se o usuário está logado como admin
+// Função para verificar se o Utilizador está logado como admin
 function verificarLoginAdmin() {
     if (!isset($_SESSION['admin_logado']) || $_SESSION['admin_logado'] !== true) {
         header("Location: index.php");
@@ -35,7 +35,7 @@ function verificarLoginAdmin() {
     }
 }
 
-// Função para verificar se o usuário está logado como cliente
+// Função para verificar se o Utilizador está logado como cliente
 function verificarLogin() {
     if (!isset($_SESSION['logado']) || $_SESSION['logado'] !== true) {
         header("Location: ../Login/login.php");

@@ -1,13 +1,13 @@
 <?php
 session_start();
 
-// Verificar se o usuário está logado
+// Verificar se o Utilizador está logado
 if (!isset($_SESSION['email'])) {
   header("Location: ../Login/login.php");
   exit();
 }
 
-// Conexão ao banco de dados
+// Conexão ao base de dados
 $conn = new mysqli('localhost', 'root', '', 'lopesarmazem');
 
 // Verificar conexão
@@ -15,9 +15,9 @@ if ($conn->connect_error) {
   die("Falha na conexão: " . $conn->connect_error);
 }
 
-// Obter informações do usuário logado
+// Obter informações do Utilizador logado
 $email = $_SESSION['email'];
-$sql = "SELECT id, nome, email, nome_da_empresa, data_registro, telefone FROM usuarios WHERE email = ?";
+$sql = "SELECT id, nome, email, nome_da_empresa, data_registro, telefone FROM users WHERE email = ?";
 $stmt = $conn->prepare($sql);
 if ($stmt === false) {
   die("Erro na preparação da consulta: " . $conn->error);
@@ -32,12 +32,12 @@ if ($result === false) {
 }
 $user = $result->fetch_assoc();
 if ($user === null) {
-  die("Usuário não encontrado.");
+  die("Utilizador não encontrado.");
 }
 
-$usuario_id = $user['id']; // Obter o ID do usuário
-$nomeUsuario = $user['nome'] ?? "Usuário";
-$emailUsuario = $user['email'] ?? $email;
+$user_id = $user['id']; // Obter o ID do Utilizador
+$nomeusers = $user['nome'] ?? "Utilizador";
+$emailusers = $user['email'] ?? $email;
 $nomeDaEmpresa = $user['nome_da_empresa'] ?? "Não informado";
 $dataRegistro = $user['data_registro'] ?? null;
 $telefone = $user['telefone'] ?? "Não informado";
@@ -45,14 +45,14 @@ $telefone = $user['telefone'] ?? "Não informado";
 // Formatar a data de registro
 $dataFormatada = $dataRegistro ? date("d/m/Y", strtotime($dataRegistro)) : "Data não disponível";
 
-// Função para obter o histórico de compras do usuário
-function getHistoricoCompras($conn, $usuario_id)
+// Função para obter o histórico de compras do Utilizador
+function getHistoricoCompras($conn, $user_id)
 {
   $stmt = $conn->prepare("SELECT c.id, c.data_compra, c.valor_compra, c.status, c.pontos_ganhos 
                            FROM compras c 
-                           WHERE c.usuario_id = ? 
+                           WHERE c.user_id = ? 
                            ORDER BY c.data_compra DESC");
-  $stmt->bind_param("i", $usuario_id);
+  $stmt->bind_param("i", $user_id);
   $stmt->execute();
   $result = $stmt->get_result();
 
@@ -124,7 +124,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         addPhone($conn, $email);
         break;
       case 'add_test_purchase':
-        addTestPurchase($conn, $usuario_id);
+        addTestPurchase($conn, $user_id);
         break;
       case 'update_status':
         $compra_id = $_POST['compra_id'];
@@ -142,30 +142,30 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 }
 
 // Funções para obter dados de compras
-function getTotalCompras($conn, $usuario_id)
+function getTotalCompras($conn, $user_id)
 {
-  $stmt = $conn->prepare("SELECT COUNT(*) FROM compras WHERE usuario_id = ?");
-  $stmt->bind_param("i", $usuario_id);
+  $stmt = $conn->prepare("SELECT COUNT(*) FROM compras WHERE user_id = ?");
+  $stmt->bind_param("i", $user_id);
   $stmt->execute();
   $result = $stmt->get_result();
   $row = $result->fetch_row();
   return $row[0] ?? 0; // Retorna o número total de compras
 }
 
-function getTotalGasto($conn, $usuario_id)
+function getTotalGasto($conn, $user_id)
 {
-  $stmt = $conn->prepare("SELECT SUM(valor_compra) FROM compras WHERE usuario_id = ?");
-  $stmt->bind_param("i", $usuario_id);
+  $stmt = $conn->prepare("SELECT SUM(valor_compra) FROM compras WHERE user_id = ?");
+  $stmt->bind_param("i", $user_id);
   $stmt->execute();
   $result = $stmt->get_result();
   $row = $result->fetch_row();
   return $row[0] ?? 0; // Retorna o total gasto ou 0 se não houver compras
 }
 
-function getTotalPontos($conn, $usuario_id)
+function getTotalPontos($conn, $user_id)
 {
-  $stmt = $conn->prepare("SELECT SUM(pontos_ganhos) FROM compras WHERE usuario_id = ?");
-  $stmt->bind_param("i", $usuario_id);
+  $stmt = $conn->prepare("SELECT SUM(pontos_ganhos) FROM compras WHERE user_id = ?");
+  $stmt->bind_param("i", $user_id);
   $stmt->execute();
   $result = $stmt->get_result();
   $row = $result->fetch_row();
@@ -173,27 +173,27 @@ function getTotalPontos($conn, $usuario_id)
 }
 
 // Obter informações de compras
-$totalCompras = getTotalCompras($conn, $usuario_id);
-$totalGasto = getTotalGasto($conn, $usuario_id);
-$totalPontos = getTotalPontos($conn, $usuario_id);
+$totalCompras = getTotalCompras($conn, $user_id);
+$totalGasto = getTotalGasto($conn, $user_id);
+$totalPontos = getTotalPontos($conn, $user_id);
 
 // Função para registrar a compra
-function registrarCompra($conn, $usuario_id, $valor_compra, $pontos_ganhos)
+function registrarCompra($conn, $user_id, $valor_compra, $pontos_ganhos)
 {
-  $stmt = $conn->prepare("INSERT INTO compras (usuario_id, valor_compra, pontos_ganhos) VALUES (?, ?, ?)");
-  $stmt->bind_param("idd", $usuario_id, $valor_compra, $pontos_ganhos);
+  $stmt = $conn->prepare("INSERT INTO compras (user_id, valor_compra, pontos_ganhos) VALUES (?, ?, ?)");
+  $stmt->bind_param("idd", $user_id, $valor_compra, $pontos_ganhos);
   $stmt->execute();
 }
 
 // Função para adicionar a compra de teste
-function addTestPurchase($conn, $usuario_id)
+function addTestPurchase($conn, $user_id)
 {
   // Valores da compra de teste
   $valor_compra = 2500.00;
   $pontos_ganhos = floor($valor_compra / 10); // 1 ponto por cada 10 euros
 
-  // Inserir a compra de teste no banco de dados
-  registrarCompra($conn, $usuario_id, $valor_compra, $pontos_ganhos);
+  // Inserir a compra de teste no base de dados
+  registrarCompra($conn, $user_id, $valor_compra, $pontos_ganhos);
 
   //Redireciona para o painel
   header("Location: dashboard.php");
@@ -211,7 +211,7 @@ function changePassword($conn, $email)
     return;
   }
 
-  $stmt = $conn->prepare("SELECT senha FROM usuarios WHERE email = ?");
+  $stmt = $conn->prepare("SELECT senha FROM users WHERE email = ?");
   $stmt->bind_param("s", $email);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -223,7 +223,7 @@ function changePassword($conn, $email)
   }
 
   $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
-  $update_stmt = $conn->prepare("UPDATE usuarios SET senha = ? WHERE email = ?");
+  $update_stmt = $conn->prepare("UPDATE users SET senha = ? WHERE email = ?");
   $update_stmt->bind_param("ss", $hashed_password, $email);
 
   if ($update_stmt->execute()) {
@@ -238,7 +238,7 @@ function changeEmail($conn, $email)
   $new_email = $_POST['new_email'];
   $password = $_POST['password'];
 
-  $stmt = $conn->prepare("SELECT senha FROM usuarios WHERE email = ?");
+  $stmt = $conn->prepare("SELECT senha FROM users WHERE email = ?");
   $stmt->bind_param("s", $email);
   $stmt->execute();
   $result = $stmt->get_result();
@@ -249,7 +249,7 @@ function changeEmail($conn, $email)
     return;
   }
 
-  $update_stmt = $conn->prepare("UPDATE usuarios SET email = ? WHERE email = ?");
+  $update_stmt = $conn->prepare("UPDATE users SET email = ? WHERE email = ?");
   $update_stmt->bind_param("ss", $new_email, $email);
 
   if ($update_stmt->execute()) {
@@ -264,7 +264,7 @@ function changeName($conn, $email)
 {
   $new_name = $_POST['new_name'];
 
-  $update_stmt = $conn->prepare("UPDATE usuarios SET nome = ? WHERE email = ?");
+  $update_stmt = $conn->prepare("UPDATE users SET nome = ? WHERE email = ?");
   $update_stmt->bind_param("ss", $new_name, $email);
 
   if ($update_stmt->execute()) {
@@ -281,16 +281,16 @@ function addAddress($conn, $email)
   $cidade = $_POST['cidade'];
   $codigo_postal = $_POST['codigo_postal'];
 
-  // Obter o ID do usuário
-  $stmt = $conn->prepare("SELECT id FROM usuarios WHERE email = ?");
+  // Obter o ID do Utilizador
+  $stmt = $conn->prepare("SELECT id FROM users WHERE email = ?");
   $stmt->bind_param("s", $email);
   $stmt->execute();
   $result = $stmt->get_result();
   $user = $result->fetch_assoc();
-  $usuario_id = $user['id'];
+  $user_id = $user['id'];
 
-  $insert_stmt = $conn->prepare("INSERT INTO enderecos (usuario_id, rua, numero, cidade, codigo_postal) VALUES (?, ?, ?, ?, ?)");
-  $insert_stmt->bind_param("issss", $usuario_id, $rua, $numero, $cidade, $codigo_postal);
+  $insert_stmt = $conn->prepare("INSERT INTO enderecos (user_id, rua, numero, cidade, codigo_postal) VALUES (?, ?, ?, ?, ?)");
+  $insert_stmt->bind_param("issss", $user_id, $rua, $numero, $cidade, $codigo_postal);
 
   if ($insert_stmt->execute()) {
     echo json_encode(['status' => 'success', 'message' => 'Endereço adicionado com sucesso!']);
@@ -303,7 +303,7 @@ function addPhone($conn, $email)
 {
   $phone = $_POST['phone'];
 
-  $update_stmt = $conn->prepare("UPDATE usuarios SET telefone = ? WHERE email = ?");
+  $update_stmt = $conn->prepare("UPDATE users SET telefone = ? WHERE email = ?");
   $update_stmt->bind_param("ss", $phone, $email);
 
   if ($update_stmt->execute()) {
@@ -313,12 +313,12 @@ function addPhone($conn, $email)
   }
 }
 
-// Obter o histórico de compras do usuário
-$historicoCompras = getHistoricoCompras($conn, $usuario_id);
+// Obter o histórico de compras do Utilizador
+$historicoCompras = getHistoricoCompras($conn, $user_id);
 
 
 
-// Fechar a conexão com o banco de dados
+// Fechar a conexão com o base de dados
 $stmt->close();
 $conn->close();
 ?>
@@ -372,8 +372,8 @@ $conn->close();
           <div class="profile-avatar">
             <i class="fas fa-user"></i>
           </div>
-          <h3><?php echo htmlspecialchars($nomeUsuario); ?></h3>
-          <p><?php echo htmlspecialchars($emailUsuario); ?></p>
+          <h3><?php echo htmlspecialchars($nomeusers); ?></h3>
+          <p><?php echo htmlspecialchars($emailusers); ?></p>
         </div>
 
         <nav class="sidebar-nav">
@@ -393,7 +393,7 @@ $conn->close();
         <section id="overview" class="dashboard-section active">
           <div class="section-header">
             <h2><i class="fas fa-chart-line"></i> Visão Geral</h2>
-            <p>Bem-vindo de volta, <?php echo htmlspecialchars($nomeUsuario); ?>!</p>
+            <p>Bem-vindo de volta, <?php echo htmlspecialchars($nomeusers); ?>!</p>
           </div>
 
           <div class="stats-cards">
@@ -425,11 +425,11 @@ $conn->close();
             <div class="info-grid">
               <div class="info-item">
                 <span class="info-label">Nome:</span>
-                <span class="info-value"><?php echo htmlspecialchars($nomeUsuario); ?></span>
+                <span class="info-value"><?php echo htmlspecialchars($nomeusers); ?></span>
               </div>
               <div class="info-item">
                 <span class="info-label">Email:</span>
-                <span class="info-value"><?php echo htmlspecialchars($emailUsuario); ?></span>
+                <span class="info-value"><?php echo htmlspecialchars($emailusers); ?></span>
               </div>
               <div class="info-item">
                 <span class="info-label">Empresa:</span>
@@ -443,7 +443,6 @@ $conn->close();
             <div class="recent-purchases">
               <div class="section-header-small">
                 <h3>Compras Recentes</h3>
-                <a href="#purchases" class="view-all">Ver Todas</a>
               </div>
 
               <div class="purchases-list">
@@ -606,7 +605,7 @@ $conn->close();
               </div>
               <div class="settings-info">
                 <h3>Alterar Senha</h3>
-                <p>Atualize sua senha para manter sua conta segura</p>
+                <p>Atualize a sua senha para manter sua conta segura</p>
               </div>
               <div class="settings-action">
                 <i class="fas fa-chevron-right"></i>
@@ -619,7 +618,7 @@ $conn->close();
               </div>
               <div class="settings-info">
                 <h3>Alterar Email</h3>
-                <p>Atualize seu endereço de email</p>
+                <p>Atualize o seu endereço de email</p>
               </div>
               <div class="settings-action">
                 <i class="fas fa-chevron-right"></i>
@@ -632,7 +631,7 @@ $conn->close();
               </div>
               <div class="settings-info">
                 <h3>Alterar Nome</h3>
-                <p>Atualize seu nome de usuário</p>
+                <p>Atualize o seu nome de Utilizador</p>
               </div>
               <div class="settings-action">
                 <i class="fas fa-chevron-right"></i>
@@ -644,8 +643,8 @@ $conn->close();
                 <i class="fas fa-map-marker-alt"></i>
               </div>
               <div class="settings-info">
-                <h3>Adicionar Morada</h3>
-                <p>Adicione ou atualize seu endereço de entrega</p>
+                <h3>Alterar Morada</h3>
+                <p>Atualizeo seu endereço de entrega</p>
               </div>
               <div class="settings-action">
                 <i class="fas fa-chevron-right"></i>
@@ -657,8 +656,8 @@ $conn->close();
                 <i class="fas fa-phone"></i>
               </div>
               <div class="settings-info">
-                <h3>Adicionar Telefone</h3>
-                <p>Adicione ou atualize seu número de telefone</p>
+                <h3>Alterar Telefone</h3>
+                <p>Atualize o seu número de telefone</p>
               </div>
               <div class="settings-action">
                 <i class="fas fa-chevron-right"></i>
@@ -694,7 +693,8 @@ $conn->close();
   <footer>
     <div class="footer-content">
       <div class="footer-links"> <a href="../index.php">Início</a> <a href="../index.php#container2">Produtos</a> <a href="../index.php#sobre">Sobre</a> <a href="../index.php#container6">Contactos</a> </div>
-      <div class="footer-social"> <a href="#"><i class="fab fa-facebook"></i></a> <a href="#"><i class="fab fa-instagram"></i></a> <a href="#"><i class="fab fa-linkedin"></i></a> </div>
+      <div class="footer-social"> <a href="https://www.facebook.com/escolabasica.secundariaourem/?locale=pt_PT"><i class="fab fa-facebook"></i></a> <a href="https://www.instagram.com/aeourem/"><i class="fab fa-instagram"></i></a>
+  </div>
     </div>
     <div class="footer-bottom">
       <p><strong>© 2024 ARMAZÉNS LOPES. TODOS OS DIREITOS RESERVADOS.</strong></p>
